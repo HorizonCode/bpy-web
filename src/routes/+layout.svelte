@@ -39,7 +39,7 @@
 			<svelte:fragment slot="trail">
 				<Avatar
 					initials="U"
-					class="w-11 select-none cursor-pointer hover:ring hover:ring-gray-600 transition-all"
+					class="!w-10 select-none cursor-pointer hover:ring hover:ring-gray-600 transition-all"
 				/>
 			</svelte:fragment>
 		</AppBar>
