@@ -20,22 +20,36 @@
 	// Floating UI for Popups
 	import { computePosition, autoUpdate, flip, shift, offset, arrow } from '@floating-ui/dom';
 	import { storePopup } from '@skeletonlabs/skeleton';
+	import { goto } from '$app/navigation';
+	import { fly, scale } from 'svelte/transition';
 	storePopup.set({ computePosition, autoUpdate, flip, shift, offset, arrow });
+
+	export let data;
 </script>
 
-<!-- App Shell -->
 <AppShell>
 	<svelte:fragment slot="header">
-		<!-- App Bar -->
 		<AppBar>
 			<svelte:fragment slot="lead">
-				<strong class="text-xl uppercase">bpy-web</strong>
+				<!-- svelte-ignore a11y-no-static-element-interactions -->
+				<!-- svelte-ignore a11y-click-events-have-key-events -->
+				<!-- svelte-ignore a11y-missing-attribute -->
+				<a class="text-xl uppercase cursor-pointer" on:click={() => goto('/')}>bpy-web</a>
 			</svelte:fragment>
-      <svelte:fragment slot="trail">
-				<Avatar initials="U" class="w-10 select-none cursor-pointer hover:ring hover:ring-gray-600 transition-all" />
+			<svelte:fragment slot="trail">
+				<Avatar
+					initials="U"
+					class="w-11 select-none cursor-pointer hover:ring hover:ring-gray-600 transition-all"
+				/>
 			</svelte:fragment>
 		</AppBar>
 	</svelte:fragment>
-	<!-- Page Route Content -->
-	<slot />
+	{#key data.url}
+		<div
+			in:scale={{ start: 0.99, duration: 200, delay: 200 }}
+			out:scale={{ start: 0.99, duration: 200 }}
+		>
+			<slot />
+		</div>
+	{/key}
 </AppShell>
