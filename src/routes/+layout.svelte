@@ -1,6 +1,6 @@
 <script lang="ts">
 	import '../app.postcss';
-	import { AppShell, AppBar, Avatar } from '@skeletonlabs/skeleton';
+	import { AppShell, AppBar, Avatar, type PopupSettings, popup } from '@skeletonlabs/skeleton';
 
 	// Highlight JS
 	import hljs from 'highlight.js/lib/core';
@@ -21,10 +21,16 @@
 	import { computePosition, autoUpdate, flip, shift, offset, arrow } from '@floating-ui/dom';
 	import { storePopup } from '@skeletonlabs/skeleton';
 	import { goto } from '$app/navigation';
-	import { fly, scale } from 'svelte/transition';
+	import { scale } from 'svelte/transition';
 	storePopup.set({ computePosition, autoUpdate, flip, shift, offset, arrow });
 
 	export let data;
+
+	const avatarPopup: PopupSettings = {
+		event: 'click',
+		target: 'avatarPopup',
+		placement: 'bottom-end'
+	};
 </script>
 
 <AppShell>
@@ -37,10 +43,25 @@
 				<a class="text-xl uppercase cursor-pointer" on:click={() => goto('/')}>bpy-web</a>
 			</svelte:fragment>
 			<svelte:fragment slot="trail">
-				<Avatar
-					initials="U"
-					class="!w-10 select-none cursor-pointer hover:ring hover:ring-gray-600 transition-all"
-				/>
+				<div use:popup={avatarPopup}>
+					<Avatar
+						src="https://a.ez-pp.farm/0"
+						class="!w-10 select-none cursor-pointer hover:ring hover:ring-gray-600 transition-all"
+					/>
+				</div>
+				<div class="card p-4 variant-filled-surface" data-popup="avatarPopup">
+					<div class="flex flex-col gap-2">
+						<button
+							class="w-32 btn variant-filled-surface rounded-lg"
+							on:click={() => goto('/login')}>Login</button
+						>
+						<button
+							class="w-32 btn variant-filled-surface rounded-lg"
+							on:click={() => goto('/register')}>Register</button
+						>
+					</div>
+					<div class="arrow variant-filled-surface !left-[121px]" />
+				</div>
 			</svelte:fragment>
 		</AppBar>
 	</svelte:fragment>
