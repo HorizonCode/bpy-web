@@ -1,6 +1,15 @@
 <script lang="ts">
 	import '../app.postcss';
-	import { AppShell, AppBar, Avatar, type PopupSettings, popup } from '@skeletonlabs/skeleton';
+	import {
+		AppShell,
+		AppBar,
+		Avatar,
+		type PopupSettings,
+		popup,
+		Toast,
+		getToastStore,
+		initializeStores
+	} from '@skeletonlabs/skeleton';
 
 	// Highlight JS
 	import hljs from 'highlight.js/lib/core';
@@ -25,6 +34,9 @@
 	import { page } from '$app/stores';
 	import { userData } from '$lib/storage';
 	storePopup.set({ computePosition, autoUpdate, flip, shift, offset, arrow });
+	initializeStores();
+
+	const toastStore = getToastStore();
 
 	export let data;
 
@@ -34,6 +46,8 @@
 		placement: 'bottom-end'
 	};
 </script>
+
+<Toast />
 
 <AppShell>
 	<svelte:fragment slot="header">
@@ -63,6 +77,9 @@
 									<button
 										class="w-32 btn variant-filled-surface rounded-lg"
 										on:click={() => {
+											toastStore.trigger({
+												message: `Logged out!`
+											});
 											userData.set(undefined);
 											goto('/');
 										}}>Logout</button

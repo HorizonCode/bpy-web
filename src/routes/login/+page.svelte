@@ -1,9 +1,11 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import { userData } from '$lib/storage';
-	import { ProgressRadial } from '@skeletonlabs/skeleton';
+	import { ProgressRadial, getToastStore, type ToastSettings } from '@skeletonlabs/skeleton';
 	import { User, Key } from 'svelte-feathers';
 	import { fly, scale } from 'svelte/transition';
+
+	const toastStore = getToastStore();
 
 	const loginData = {
 		username: '',
@@ -21,7 +23,10 @@
 			id: 1001,
 			username: 'Quetzalcoatl'
 		});
-
+		const t: ToastSettings = {
+			message: `Welcome back, ${$userData?.username}`
+		};
+		toastStore.trigger(t);
 		goto('/');
 	};
 </script>
