@@ -40,6 +40,10 @@
 
 	export let data;
 
+	if (data.currentUser) {
+		userData.set(data.currentUser);
+	}
+
 	const avatarPopup: PopupSettings = {
 		event: 'click',
 		target: 'avatarPopup',
@@ -53,18 +57,32 @@
 	<svelte:fragment slot="header">
 		{#if $page.data.url != '/login'}
 			<div in:fly={{ y: -15, duration: 200, delay: 200 }} out:fly={{ y: -15, duration: 200 }}>
-				<AppBar>
+				<AppBar class="!bg-surface-700">
 					<svelte:fragment slot="lead">
 						<!-- svelte-ignore a11y-no-static-element-interactions -->
 						<!-- svelte-ignore a11y-click-events-have-key-events -->
 						<!-- svelte-ignore a11y-missing-attribute -->
-						<a class="text-xl uppercase cursor-pointer" on:click={() => goto('/')}>bpy-web</a>
+						<div class="flex flex-row items-center gap-2">
+							<a class="text-xl uppercase cursor-pointer mr-12" on:click={() => goto('/')}
+								>bpy-web</a
+							>
+
+							<a
+								href="/leaderboards"
+								class="btn {$page.data.url == '/leaderboards'
+									? 'variant-ghost-surface '
+									: ''}rounded-lg"
+							>
+								Leaderboards
+							</a>
+							<button class="btn rounded-lg">Donate</button>
+						</div>
 					</svelte:fragment>
 					<svelte:fragment slot="trail">
 						<div use:popup={avatarPopup}>
 							<Avatar
 								src="https://a.ez-pp.farm/{$userData?.id ?? 0}"
-								class="!w-10 select-none cursor-pointer hover:ring hover:ring-gray-600 transition-all"
+								class="!w-10 select-none cursor-pointer hover:ring hover:ring-surface-600 transition-all"
 							/>
 						</div>
 						<div class="card p-4 variant-filled-surface" data-popup="avatarPopup">
@@ -78,7 +96,8 @@
 										class="w-32 btn variant-filled-surface rounded-lg"
 										on:click={() => {
 											toastStore.trigger({
-												message: `Logged out!`
+												message: `Logged out!`,
+												classes: '!bg-surface-800 !text-surface-200 !border-surface-700 !border'
 											});
 											userData.set(undefined);
 											goto('/');

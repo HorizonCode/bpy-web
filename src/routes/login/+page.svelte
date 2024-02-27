@@ -1,7 +1,12 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import { userData } from '$lib/storage';
-	import { ProgressRadial, getToastStore, type ToastSettings } from '@skeletonlabs/skeleton';
+	import {
+		ProgressRadial,
+		getToastStore,
+		type ToastSettings,
+		focusTrap
+	} from '@skeletonlabs/skeleton';
 	import { User, Key } from 'svelte-feathers';
 	import { fly, scale } from 'svelte/transition';
 
@@ -24,7 +29,8 @@
 			username: 'Quetzalcoatl'
 		});
 		const t: ToastSettings = {
-			message: `Welcome back, ${$userData?.username}`
+			message: `Welcome back, ${$userData?.username}`,
+			classes: '!bg-surface-800 !text-surface-200 !border-surface-700 !border'
 		};
 		toastStore.trigger(t);
 		goto('/');
@@ -32,17 +38,16 @@
 </script>
 
 <div class="w-screen h-screen flex flex-col justify-center items-center">
-	<div
-		class="md:min-w-[450px] h-[500px] p-12 md:border md:border-gray-800 rounded-lg gap-3 shadow-xl"
-	>
+	<div class="md:min-w-[450px] h-[500px] p-12 md:border md:border-surface-700 rounded-lg gap-3">
 		{#if !passwordMask}
 			<div
 				class="w-full h-full flex flex-col justify-center items-center"
 				in:fly={{ x: -10, duration: 200, delay: 200 }}
 				out:fly={{ x: -10, duration: 200 }}
+				use:focusTrap={true}
 			>
 				<div in:scale={{ start: 0.9, delay: 200, duration: 400 }}>
-					<User size={45} />
+					<User size={45} class="!outline-none !border-none" />
 				</div>
 				<p class="text-2xl font-normal">Sign in</p>
 				<p class="mb-20">Use your bpy-web Account</p>
@@ -59,19 +64,19 @@
 							passwordMask = true;
 						}
 					}}
-					class="border border-gray-800 bg-gray-950 rounded-lg p-4 text-[17px] mb-2 w-full transition-colors {errored
+					class="border border-surface-700 bg-surface-900 rounded-lg !ring-pink-700 focus:!border-pink-700 p-4 text-[17px] mb-2 w-full transition-colors {errored
 						? 'input-error'
 						: ''}"
 					bind:value={loginData.username}
 				/>
-				<a href="/login" class="text-primary-500 me-auto mb-7">Forgot email?</a>
+				<a href="/login" class="text-pink-700 me-auto mb-7">Forgot email?</a>
 				<div class="w-full flex flex-row justify-between mt-auto">
 					<button
-						class="btn variant-ghost-tertiary !bg-transparent hover:!bg-slate-100/5 ring-0"
+						class="btn variant-ghost-tertiary !bg-transparent hover:!bg-surface-100/5 ring-0"
 						on:click={() => goto('/register')}>Create account</button
 					>
 					<button
-						class="btn variant-filled-primary"
+						class="btn bg-pink-700"
 						on:click={() => {
 							if (loginData.username.length <= 3) {
 								errored = true;
@@ -84,16 +89,17 @@
 			</div>
 		{:else}
 			<div
-				class="w-full h-full flex flex-col justify-center items-center shadow-xl"
+				class="w-full h-full flex flex-col justify-center items-center"
 				in:fly={{ x: 10, duration: 200, delay: 200 }}
 				out:fly={{ x: 10, duration: 200 }}
+				use:focusTrap={true}
 			>
 				<div in:scale={{ start: 0.9, delay: 200, duration: 400 }}>
 					<Key size={45} />
 				</div>
 				<p class="text-2xl font-normal">Welcome</p>
 				<p
-					class="flex flex-row justify-center items-center gap-2 mt-2 mb-8 rounded-full !border-[1px] p-1 px-2 border-gray-700"
+					class="flex flex-row justify-center items-center gap-2 mt-2 mb-8 rounded-full !border-[1px] p-1 px-2 border-surface-700"
 				>
 					<User class="border border-white rounded-full" size={12} />
 					{loginData.username}
@@ -101,21 +107,25 @@
 				<input
 					type="password"
 					placeholder="Password"
-					class="border border-gray-800 bg-gray-950 rounded-lg p-4 text-[17px] w-full mb-2"
+					class="border border-surface-700 !ring-pink-700 focus:!border-pink-700 bg-surface-900 rounded-lg p-4 text-[17px] w-full mb-2"
 					bind:value={loginData.password}
+					disabled={loading}
 					on:keypress={(e) => {
 						if (e.key === 'Enter') {
 							performLogin();
 						}
 					}}
 				/>
-				<a href="/login" class="text-primary-500 me-auto mb-7">Forgot password?</a>
+				<a href="/login" class="text-pink-700 me-auto mb-7">Forgot password?</a>
 				<div class="w-full flex flex-row justify-between mt-auto">
 					<button
-						class="btn variant-ghost-tertiary !bg-transparent hover:!bg-slate-100/5 ring-0"
-						on:click={() => (passwordMask = false)}>Back</button
+						class="btn variant-ghost-tertiary !bg-transparent hover:!bg-surface-100/5 ring-0"
+						disabled={loading}
+						on:click={() => (passwordMask = false)}
 					>
-					<button class="btn variant-filled-primary" on:click={performLogin} disabled={loading}>
+						Back
+					</button>
+					<button class="btn bg-pink-700" on:click={performLogin} disabled={loading}>
 						{#if loading}
 							<ProgressRadial class="h-5 w-5" />
 						{:else}
