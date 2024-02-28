@@ -1,18 +1,21 @@
 <script lang="ts">
+	import type { LBUser } from '$lib/types';
+	import { onMount } from 'svelte';
 	import { ChevronLeft, ChevronRight } from 'svelte-feathers';
 
-	let currentLeaderboard: unknown[] = [];
+	let currentLeaderboard: LBUser[] = [];
 
 	const refreshLeaderboard = async () => {
 		const leaderboard = await fetch('https://api.ez-pp.farm/get_leaderboard');
 		const leaderboardJSON = await leaderboard.json();
+		console.log(leaderboardJSON);
 		currentLeaderboard = leaderboardJSON.leaderboard;
 	};
 
-	refreshLeaderboard();
+	onMount(() => {
+		refreshLeaderboard();
+	});
 </script>
-
-{JSON.stringify(currentLeaderboard, null, 2)}}
 
 <div class="max-w-[1640px] mx-auto w-full p-5">
 	<div class="bg-surface-700 flex flex-col justify-center gap-4 p-2 rounded-lg">
@@ -44,5 +47,32 @@
 				<ChevronRight class="outline-none border-none" />
 			</button>
 		</div>
+	</div>
+	<div class="w-full p-5">
+		<table class="w-full">
+			<thead>
+				<td></td>
+				<td></td>
+				<td>Accuracy</td>
+				<td>Play Count</td>
+				<td>Performance</td>
+				<td>SS</td>
+				<td>S</td>
+				<td>A</td>
+			</thead>
+			<tbody>
+				{#each currentLeaderboard as user, i}
+					<tr>
+						<td>#{i + 1}</td>
+						<td>{user.name}</td>
+						<td>{user.acc.toFixed(2)}%</td>
+						<td>{user.plays}</td>
+						<td>{user.pp.toFixed(0)}</td>
+						<td>{user.x_count + user.xh_count}</td>
+						<td>{user.s_count + user.sh_count}</td>
+						<td>{user.a_count}</td>
+					</tr>{/each}
+			</tbody>
+		</table>
 	</div>
 </div>
