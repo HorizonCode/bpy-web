@@ -59,7 +59,7 @@
 	};
 
 	onMount(() => {
-		//refreshLeaderboard();
+		refreshLeaderboard();
 	});
 </script>
 
@@ -80,6 +80,7 @@
 						? 'bg-surface-500'
 						: 'bg-surface-600'} rounded-none"
 					on:click={() => setType('relax')}
+					disabled={currentMode == 'mania'}
 				>
 					Relax
 				</button>
@@ -87,19 +88,48 @@
 					class="w-[25%] !scale-100 btn {currentType == 'autopilot'
 						? 'bg-surface-500'
 						: 'bg-surface-600'} rounded-lg rounded-l-none"
+					disabled={currentMode == 'taiko' || currentMode == 'catch' || currentMode == 'mania'}
 					on:click={() => setType('autopilot')}
 				>
 					Autopilot
 				</button>
 			</div>
 			<div class="w-full flex rounded-lg">
-				<button class="w-[25%] !scale-100 btn bg-surface-500 rounded-lg rounded-r-none">osu!</button
+				<button
+					class="w-[25%] !scale-100 btn {currentMode == 'osu'
+						? 'bg-surface-500'
+						: 'bg-surface-600'} rounded-lg rounded-r-none"
+					on:click={() => setMode('osu')}
 				>
-				<button class="w-[25%] !scale-100 btn bg-surface-600 rounded-none">taiko</button>
-				<button class="w-[25%] !scale-100 btn bg-surface-600 rounded-none">catch</button>
-				<button class="w-[25%] !scale-100 btn bg-surface-600 rounded-lg rounded-l-none"
-					>mania</button
+					osu!
+				</button>
+				<button
+					class="w-[25%] !scale-100 btn {currentMode == 'taiko'
+						? 'bg-surface-500'
+						: 'bg-surface-600'} rounded-none"
+					on:click={() => setMode('taiko')}
+					disabled={currentType == 'autopilot'}
 				>
+					taiko
+				</button>
+				<button
+					class="w-[25%] !scale-100 btn {currentMode == 'catch'
+						? 'bg-surface-500'
+						: 'bg-surface-600'} rounded-none"
+					on:click={() => setMode('catch')}
+					disabled={currentType == 'autopilot'}
+				>
+					catch
+				</button>
+				<button
+					class="w-[25%] !scale-100 btn {currentMode == 'mania'
+						? 'bg-surface-500'
+						: 'bg-surface-600'} rounded-lg rounded-l-none"
+					on:click={() => setMode('mania')}
+					disabled={currentType == 'relax' || currentType == 'autopilot'}
+				>
+					mania
+				</button>
 			</div>
 		</div>
 		<div class="w-full flex flex-row justify-between px-2">
@@ -148,7 +178,10 @@
 						{/each}
 					{:else}
 						{#each { length: 50 } as _, i}
-							<tr class="bg-surface-800 rounded animate-pulse" transition:scale={{ duration: 200, delay: 100 * i }}>
+							<tr
+								class="bg-surface-800 rounded animate-pulse"
+								transition:scale={{ duration: 200, delay: 100 * i }}
+							>
 								<td class="text-center">#{i + 1}</td>
 								<td><div class="placeholder"></div></td>
 								<td class="text-center"><div class="placeholder"></div></td>
