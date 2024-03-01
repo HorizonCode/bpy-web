@@ -8,11 +8,15 @@
 
 	let currentLeaderboard: LBUser[] = [];
 
+	let loading = false;
+
 	let currentType = 'vanilla';
 	let currentMode = 'osu';
 	let currentPage = 1;
 
 	const refreshLeaderboard = async () => {
+		if (loading) return;
+		loading = true;
 		currentLeaderboard = [];
 		let mode = 0;
 		const urlParams = new URLSearchParams();
@@ -46,6 +50,7 @@
 		const leaderboardJSON = await leaderboard.json();
 		console.log(leaderboardJSON);
 		currentLeaderboard = leaderboardJSON.leaderboard;
+		loading = false;
 	};
 
 	const setMode = (mode: string) => {
@@ -72,6 +77,7 @@
 						? 'bg-surface-500'
 						: 'bg-surface-600'} rounded-lg rounded-r-none"
 					on:click={() => setType('vanilla')}
+					disabled={loading}
 				>
 					Vanilla
 				</button>
@@ -80,7 +86,7 @@
 						? 'bg-surface-500'
 						: 'bg-surface-600'} rounded-none"
 					on:click={() => setType('relax')}
-					disabled={currentMode == 'mania'}
+					disabled={currentMode == 'mania' || loading}
 				>
 					Relax
 				</button>
@@ -88,7 +94,7 @@
 					class="w-[25%] !scale-100 btn {currentType == 'autopilot'
 						? 'bg-surface-500'
 						: 'bg-surface-600'} rounded-lg rounded-l-none"
-					disabled={currentMode == 'taiko' || currentMode == 'catch' || currentMode == 'mania'}
+					disabled={currentMode == 'taiko' || currentMode == 'catch' || currentMode == 'mania' || loading}
 					on:click={() => setType('autopilot')}
 				>
 					Autopilot
@@ -100,6 +106,7 @@
 						? 'bg-surface-500'
 						: 'bg-surface-600'} rounded-lg rounded-r-none"
 					on:click={() => setMode('osu')}
+					disabled={loading}
 				>
 					osu!
 				</button>
@@ -108,7 +115,7 @@
 						? 'bg-surface-500'
 						: 'bg-surface-600'} rounded-none"
 					on:click={() => setMode('taiko')}
-					disabled={currentType == 'autopilot'}
+					disabled={currentType == 'autopilot' || loading}
 				>
 					taiko
 				</button>
@@ -117,7 +124,7 @@
 						? 'bg-surface-500'
 						: 'bg-surface-600'} rounded-none"
 					on:click={() => setMode('catch')}
-					disabled={currentType == 'autopilot'}
+					disabled={currentType == 'autopilot' || loading}
 				>
 					catch
 				</button>
@@ -126,14 +133,14 @@
 						? 'bg-surface-500'
 						: 'bg-surface-600'} rounded-lg rounded-l-none"
 					on:click={() => setMode('mania')}
-					disabled={currentType == 'relax' || currentType == 'autopilot'}
+					disabled={currentType == 'relax' || currentType == 'autopilot' || loading}
 				>
 					mania
 				</button>
 			</div>
 		</div>
 		<div class="w-full flex flex-row justify-between px-2">
-			<button class="btn variant-filled-surface rounded-lg" disabled={true}>
+			<button class="btn variant-filled-surface rounded-lg" disabled={currentPage <= 1 || loading}>
 				<ChevronLeft class="outline-none border-none" />
 			</button>
 			<button class="btn variant-filled-surface rounded-lg">
@@ -153,7 +160,7 @@
 					<td class="w-24">A</td>
 				</thead>
 				<tbody>
-					{#if currentLeaderboard && currentLeaderboard.length > 0}
+					{#if (currentLeaderboard && currentLeaderboard.length > 0) || !loading}
 						{#each currentLeaderboard as user, i}
 							<tr
 								class="bg-surface-800 rounded"
