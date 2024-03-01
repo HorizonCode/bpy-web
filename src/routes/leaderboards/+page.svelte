@@ -4,6 +4,7 @@
 	import { onMount } from 'svelte';
 	import { ChevronLeft, ChevronRight } from 'svelte-feathers';
 	import { goto } from '$app/navigation';
+	import { scale } from 'svelte/transition';
 
 	let currentLeaderboard: LBUser[] = [];
 
@@ -12,14 +13,53 @@
 	let currentPage = 1;
 
 	const refreshLeaderboard = async () => {
-		const leaderboard = await fetch('https://api.ez-pp.farm/get_leaderboard');
+		currentLeaderboard = [];
+		let mode = 0;
+		const urlParams = new URLSearchParams();
+
+		switch (currentMode) {
+			case 'taiko':
+				mode += 1;
+				break;
+			case 'catch':
+				mode += 2;
+				break;
+			case 'mania':
+				mode += 3;
+				break;
+		}
+
+		switch (currentType) {
+			case 'relax':
+				mode += 4;
+				break;
+			case 'autopilot':
+				mode += 8;
+				break;
+		}
+
+		urlParams.set('mode', mode.toFixed(0));
+
+		const leaderboard = await fetch(
+			'https://api.ez-pp.farm/get_leaderboard?' + urlParams.toString()
+		);
 		const leaderboardJSON = await leaderboard.json();
 		console.log(leaderboardJSON);
 		currentLeaderboard = leaderboardJSON.leaderboard;
 	};
 
-	onMount(() => {
+	const setMode = (mode: string) => {
+		currentMode = mode;
 		refreshLeaderboard();
+	};
+
+	const setType = (type: string) => {
+		currentType = type;
+		refreshLeaderboard();
+	};
+
+	onMount(() => {
+		//refreshLeaderboard();
 	});
 </script>
 
@@ -31,18 +71,23 @@
 					class="w-[25%] !scale-100 btn {currentType == 'vanilla'
 						? 'bg-surface-500'
 						: 'bg-surface-600'} rounded-lg rounded-r-none"
+					on:click={() => setType('vanilla')}
 				>
 					Vanilla
 				</button>
 				<button
 					class="w-[25%] !scale-100 btn {currentType == 'relax'
 						? 'bg-surface-500'
-						: 'bg-surface-600'} rounded-none">Relax</button
+						: 'bg-surface-600'} rounded-none"
+					on:click={() => setType('relax')}
 				>
+					Relax
+				</button>
 				<button
 					class="w-[25%] !scale-100 btn {currentType == 'autopilot'
 						? 'bg-surface-500'
 						: 'bg-surface-600'} rounded-lg rounded-l-none"
+					on:click={() => setType('autopilot')}
 				>
 					Autopilot
 				</button>
@@ -80,7 +125,11 @@
 				<tbody>
 					{#if currentLeaderboard && currentLeaderboard.length > 0}
 						{#each currentLeaderboard as user, i}
-							<tr class="bg-surface-800 rounded" on:click={() => goto(`u/${user.player_id}`)}>
+							<tr
+								class="bg-surface-800 rounded"
+								on:click={() => goto(`u/${user.player_id}`)}
+								transition:scale={{ duration: 200, delay: 100 * i }}
+							>
 								<td class="text-center">#{i + 1}</td>
 								<td>
 									<img
@@ -99,15 +148,15 @@
 						{/each}
 					{:else}
 						{#each { length: 50 } as _, i}
-							<tr class="bg-surface-800 rounded animate-pulse">
+							<tr class="bg-surface-800 rounded animate-pulse" transition:scale={{ duration: 200, delay: 100 * i }}>
 								<td class="text-center">#{i + 1}</td>
-								<td></td>
-								<td class="text-center"></td>
-								<td class="text-center"></td>
-								<td class="text-center"></td>
-								<td class="text-center"></td>
-								<td class="text-center"></td>
-								<td class="text-center"></td>
+								<td><div class="placeholder"></div></td>
+								<td class="text-center"><div class="placeholder"></div></td>
+								<td class="text-center"><div class="placeholder"></div></td>
+								<td class="text-center"><div class="placeholder"></div></td>
+								<td class="text-center"><div class="placeholder"></div></td>
+								<td class="text-center"><div class="placeholder"></div></td>
+								<td class="text-center"><div class="placeholder"></div></td>
 							</tr>
 						{/each}
 					{/if}
