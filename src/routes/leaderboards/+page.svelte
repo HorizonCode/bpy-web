@@ -44,6 +44,9 @@
 
 		urlParams.set('mode', mode.toFixed(0));
 
+		urlParams.set('limit', "50");
+		urlParams.set('offset', ((currentPage - 1) * 50).toFixed(0));
+
 		const leaderboard = await fetch(
 			'https://api.ez-pp.farm/get_leaderboard?' + urlParams.toString()
 		);
@@ -60,6 +63,17 @@
 
 	const setType = (type: string) => {
 		currentType = type;
+		refreshLeaderboard();
+	};
+
+	const nextPage = () => {
+		currentPage += 1;
+		refreshLeaderboard();
+	};
+	
+	const prevPage = () => {
+		if(currentPage <= 1) return;
+		currentPage -= 1;
 		refreshLeaderboard();
 	};
 
@@ -94,7 +108,10 @@
 					class="w-[25%] !scale-100 btn {currentType == 'autopilot'
 						? 'bg-surface-500'
 						: 'bg-surface-600'} rounded-lg rounded-l-none"
-					disabled={currentMode == 'taiko' || currentMode == 'catch' || currentMode == 'mania' || loading}
+					disabled={currentMode == 'taiko' ||
+						currentMode == 'catch' ||
+						currentMode == 'mania' ||
+						loading}
 					on:click={() => setType('autopilot')}
 				>
 					Autopilot
@@ -139,11 +156,12 @@
 				</button>
 			</div>
 		</div>
-		<div class="w-full flex flex-row justify-between px-2">
-			<button class="btn variant-filled-surface rounded-lg" disabled={currentPage <= 1 || loading}>
+		<div class="w-full flex flex-row justify-between items-center px-2">
+			<button class="btn variant-filled-surface rounded-lg" on:click={prevPage} disabled={currentPage <= 1 || loading}>
 				<ChevronLeft class="outline-none border-none" />
 			</button>
-			<button class="btn variant-filled-surface rounded-lg">
+			<p class="text-slate-400">Page {currentPage}</p>
+			<button class="btn variant-filled-surface rounded-lg" on:click={nextPage}>
 				<ChevronRight class="outline-none border-none" />
 			</button>
 		</div>
@@ -167,7 +185,7 @@
 								on:click={() => goto(`u/${user.player_id}`)}
 								transition:scale={{ duration: 200, delay: 100 * i }}
 							>
-								<td class="text-center">#{i + 1}</td>
+								<td class="text-center">#{i + ((currentPage - 1) * 50) + 1}</td>
 								<td>
 									<img
 										src="https://ez-pp.farm/assets/img/flags/{user.country.toUpperCase()}.png"
@@ -189,7 +207,7 @@
 								class="bg-surface-800 rounded animate-pulse"
 								transition:scale={{ duration: 200, delay: 100 * i }}
 							>
-								<td class="text-center">#{i + 1}</td>
+								<td class="text-center">#{i + ((currentPage - 1) * 50) + 1}</td>
 								<td><div class="placeholder"></div></td>
 								<td class="text-center"><div class="placeholder"></div></td>
 								<td class="text-center"><div class="placeholder"></div></td>
