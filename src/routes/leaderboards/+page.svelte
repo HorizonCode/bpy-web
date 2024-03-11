@@ -5,6 +5,9 @@
 	import { ChevronLeft, ChevronRight } from 'svelte-feathers';
 	import { goto } from '$app/navigation';
 	import { scale } from 'svelte/transition';
+	import Popup from '$lib/Popup.svelte';
+
+	let regionNames = new Intl.DisplayNames(['en'], { type: 'region' });
 
 	let currentLeaderboard: LBUser[] = [];
 
@@ -44,11 +47,11 @@
 
 		urlParams.set('mode', mode.toFixed(0));
 
-		urlParams.set('limit', "50");
+		urlParams.set('limit', '50');
 		urlParams.set('offset', ((currentPage - 1) * 50).toFixed(0));
 
 		const leaderboard = await fetch(
-			'https://api.ez-pp.farm/get_leaderboard?' + urlParams.toString()
+			'https://api.kokisu.moe/v1/get_leaderboard?' + urlParams.toString()
 		);
 		const leaderboardJSON = await leaderboard.json();
 		console.log(leaderboardJSON);
@@ -70,9 +73,9 @@
 		currentPage += 1;
 		refreshLeaderboard();
 	};
-	
+
 	const prevPage = () => {
-		if(currentPage <= 1) return;
+		if (currentPage <= 1) return;
 		currentPage -= 1;
 		refreshLeaderboard();
 	};
@@ -157,7 +160,11 @@
 			</div>
 		</div>
 		<div class="w-full flex flex-row justify-between items-center px-2">
-			<button class="btn variant-filled-surface rounded-lg" on:click={prevPage} disabled={currentPage <= 1 || loading}>
+			<button
+				class="btn variant-filled-surface rounded-lg"
+				on:click={prevPage}
+				disabled={currentPage <= 1 || loading}
+			>
 				<ChevronLeft class="outline-none border-none" />
 			</button>
 			<p class="text-slate-400">Page {currentPage}</p>
@@ -185,13 +192,20 @@
 								on:click={() => goto(`u/${user.player_id}`)}
 								transition:scale={{ duration: 200, delay: 100 * i }}
 							>
-								<td class="text-center">#{i + ((currentPage - 1) * 50) + 1}</td>
+								<td class="text-center">#{i + (currentPage - 1) * 50 + 1}</td>
 								<td>
-									<img
-										src="https://ez-pp.farm/assets/img/flags/{user.country.toUpperCase()}.png"
-										alt="{user.country} Flag"
-										class="h-5 inline-block mr-2 pointer-events-none"
-									/>{user.name}</td
+									<Popup
+										text={regionNames.of(user.country.toUpperCase()) ?? user.country.toUpperCase()}
+										placement="right"
+									>
+										<img
+											src="https://ez-pp.farm/assets/img/flags/{user.country.toUpperCase()}.png"
+											alt="{regionNames.of(user.country) ?? user.country.toUpperCase()} Flag"
+											class="h-5 inline-block mr-2 pointer-events-none"
+										/>
+									</Popup>
+
+									{user.name}</td
 								>
 								<td class="text-center">{user.acc.toFixed(2)}%</td>
 								<td class="text-center">{user.plays}</td>
@@ -207,7 +221,7 @@
 								class="bg-surface-800 rounded animate-pulse"
 								transition:scale={{ duration: 200, delay: 100 * i }}
 							>
-								<td class="text-center">#{i + ((currentPage - 1) * 50) + 1}</td>
+								<td class="text-center">#{i + (currentPage - 1) * 50 + 1}</td>
 								<td><div class="placeholder"></div></td>
 								<td class="text-center"><div class="placeholder"></div></td>
 								<td class="text-center"><div class="placeholder"></div></td>
@@ -220,6 +234,19 @@
 					{/if}
 				</tbody>
 			</table>
+		</div>
+		<div class="w-full flex flex-row justify-between items-center px-2 mb-2">
+			<button
+				class="btn variant-filled-surface rounded-lg"
+				on:click={prevPage}
+				disabled={currentPage <= 1 || loading}
+			>
+				<ChevronLeft class="outline-none border-none" />
+			</button>
+			<p class="text-slate-400">Page {currentPage}</p>
+			<button class="btn variant-filled-surface rounded-lg" on:click={nextPage}>
+				<ChevronRight class="outline-none border-none" />
+			</button>
 		</div>
 	</div>
 </div>

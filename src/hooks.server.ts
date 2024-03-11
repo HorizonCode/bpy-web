@@ -15,6 +15,7 @@ export let redisClient: redis.RedisClientType<
 config();
 
 (async () => {
+  return;
   const redisUser = env.REDIS_USER ?? undefined;
   const redisPassword = env.REDIS_PASSWORD ?? undefined;
   const redisHost = env.REDIS_HOST ?? "127.0.0.1";
