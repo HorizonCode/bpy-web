@@ -52,6 +52,12 @@
 		placement: 'bottom-end'
 	};
 
+	const avatarPopup_sticky: PopupSettings = {
+		event: 'click',
+		target: 'avatarPopup_sticky',
+		placement: 'bottom-end'
+	};
+
 	let showStickyNav = false;
 
 	onMount(() => {
@@ -78,7 +84,7 @@
 <!-- svelte-ignore a11y-missing-attribute -->
 <AppShell>
 	<svelte:fragment slot="header">
-		{#if showStickyNav}
+		{#if showStickyNav && $page.data.url != '/login'}
 			<div
 				class="fixed w-full"
 				in:fly={{ y: -15, duration: 200, delay: 200 }}
@@ -98,13 +104,13 @@
 							</a>
 							<button class="btn rounded-lg">Donate</button>
 						</div>
-						<div use:popup={avatarPopup}>
+						<div use:popup={avatarPopup_sticky}>
 							<Avatar
 								src="https://a.ez-pp.farm/{$userData?.id ?? 0}"
 								class="!w-10 select-none cursor-pointer hover:ring hover:ring-surface-600 transition-all"
 							/>
 						</div>
-						<div class="card p-4 variant-filled-surface" data-popup="avatarPopup">
+						<div class="card p-4 variant-filled-surface" data-popup="avatarPopup_sticky">
 							<div class="flex flex-col gap-2">
 								{#if $userData}
 									<button
@@ -141,7 +147,7 @@
 				</div>
 			</div>
 		{/if}
-		{#if !showStickyNav}
+		{#if !showStickyNav && $page.data.url != '/login'}
 			<div in:fly={{ y: -15, duration: 200, delay: 200 }} out:fly={{ y: -15, duration: 200 }}>
 				<AppBar class="fixed w-full !bg-surface-700">
 					<svelte:fragment slot="lead">
