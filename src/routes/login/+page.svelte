@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
+	import { appName } from '$lib/env';
 	import { userData } from '$lib/storage';
 	import {
 		ProgressRadial,
@@ -36,6 +37,10 @@
 		goto('/');
 	};
 </script>
+
+<svelte:head>
+	<title>{appName} :: Login</title>
+</svelte:head>
 
 <div class="w-screen h-screen flex flex-col justify-center items-center">
 	<div class="md:min-w-[450px] h-[500px] p-12 md:border md:border-surface-700 rounded-lg gap-3">

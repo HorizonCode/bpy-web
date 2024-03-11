@@ -6,7 +6,7 @@
 	import { goto } from '$app/navigation';
 	import { scale } from 'svelte/transition';
 	import Popup from '$lib/Popup.svelte';
-	import { apiUrl } from '$lib/env';
+	import { apiUrl, appName } from '$lib/env';
 
 	let regionNames = new Intl.DisplayNames(['en'], { type: 'region' });
 
@@ -83,6 +83,10 @@
 		refreshLeaderboard();
 	});
 </script>
+
+<svelte:head>
+	<title>{appName} :: Leaderboard</title>
+</svelte:head>
 
 <div class="container mx-auto w-full p-5">
 	<div class="bg-surface-700 flex flex-col justify-center gap-4 p-2 rounded-lg">

@@ -1,3 +1,10 @@
+<script lang="ts">
+	import { appName } from '$lib/env';
+</script>
+
+<svelte:head>
+	<title>{appName} :: Register</title>
+</svelte:head>
 <div class="w-screen p-5 flex flex-col justify-center items-center">
 	<div class="flex flex-col gap-5 bg-surface-800 p-5 border border-surface-700 rounded-lg">
 		<label class="label">

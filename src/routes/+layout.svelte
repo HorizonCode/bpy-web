@@ -34,7 +34,7 @@
 	import { page } from '$app/stores';
 	import { userData } from '$lib/storage';
 	import { onMount } from 'svelte';
-	import { avatarUrl } from '$lib/env';
+	import { appName, avatarUrl } from '$lib/env';
 
 	storePopup.set({ computePosition, autoUpdate, flip, shift, offset, arrow });
 	initializeStores();
@@ -93,7 +93,9 @@
 			>
 				<div class="mx-auto w-[85%] mt-1 bg-surface-700/95 border border-surface-500 rounded-lg">
 					<div class="flex p-2 flex-row justify-between items-center gap-2">
-						<a class="text-xl uppercase cursor-pointer mr-12" on:click={() => goto('/')}>bpy-web</a>
+						<a class="text-xl uppercase cursor-pointer mr-12" on:click={() => goto('/')}
+							>{appName}</a
+						>
 						<div class="flex flex-row justify-start items-center gap-2 me-auto">
 							<a
 								href="/leaderboards"
@@ -154,7 +156,7 @@
 					<svelte:fragment slot="lead">
 						<div class="flex flex-row items-center gap-2">
 							<a class="text-xl uppercase cursor-pointer mr-12" on:click={() => goto('/')}
-								>bpy-web</a
+								>{appName}</a
 							>
 
 							<a
