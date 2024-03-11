@@ -4,6 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "vite dev",
+    "run": "npm run build && tsx server.ts",
+    "run-nobuild": "tsx server.ts",
     "build": "vite build",
     "preview": "vite preview",
     "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
@@ -20,7 +22,10 @@
     "@sveltejs/vite-plugin-svelte": "^3.0.0",
     "@tailwindcss/forms": "0.5.7",
     "@tailwindcss/typography": "0.5.10",
+    "@types/dotenv": "^8.2.0",
     "@types/eslint": "8.56.0",
+    "@types/express": "^4.17.21",
+    "@types/knex": "^0.16.1",
     "@types/node": "20.11.17",
     "@typescript-eslint/eslint-plugin": "^6.0.0",
     "@typescript-eslint/parser": "^6.0.0",
@@ -43,6 +48,11 @@
   "type": "module",
   "dependencies": {
     "@floating-ui/dom": "1.6.1",
-    "highlight.js": "11.9.0"
+    "chalk": "^5.3.0",
+    "dotenv": "^16.4.5",
+    "express": "^4.18.3",
+    "highlight.js": "11.9.0",
+    "knex": "^3.1.0",
+    "mysql2": "^3.9.2"
   }
 }
