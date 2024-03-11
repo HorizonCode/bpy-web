@@ -13,6 +13,7 @@
 	let currentLeaderboard: LBUser[] = [];
 
 	let loading = false;
+	let failed = false;
 
 	let currentType = 'vanilla';
 	let currentMode = 'osu';
@@ -51,10 +52,13 @@
 		urlParams.set('limit', '50');
 		urlParams.set('offset', ((currentPage - 1) * 50).toFixed(0));
 
-		const leaderboard = await fetch(`${apiUrl}/get_leaderboard?` + urlParams.toString());
-		const leaderboardJSON = await leaderboard.json();
-		console.log(leaderboardJSON);
-		currentLeaderboard = leaderboardJSON.leaderboard;
+		try {
+			const leaderboard = await fetch(`${apiUrl}/get_leaderboard?` + urlParams.toString());
+			const leaderboardJSON = await leaderboard.json();
+			currentLeaderboard = leaderboardJSON.leaderboard;
+		} catch {
+			failed = true;
+		}
 		loading = false;
 	};
 
@@ -97,7 +101,7 @@
 						? 'bg-surface-500'
 						: 'bg-surface-600'} rounded-lg rounded-r-none"
 					on:click={() => setType('vanilla')}
-					disabled={loading}
+					disabled={loading || failed}
 				>
 					Vanilla
 				</button>
@@ -106,7 +110,7 @@
 						? 'bg-surface-500'
 						: 'bg-surface-600'} rounded-none"
 					on:click={() => setType('relax')}
-					disabled={currentMode == 'mania' || loading}
+					disabled={currentMode == 'mania' || loading || failed}
 				>
 					Relax
 				</button>
@@ -117,7 +121,8 @@
 					disabled={currentMode == 'taiko' ||
 						currentMode == 'catch' ||
 						currentMode == 'mania' ||
-						loading}
+						loading ||
+						failed}
 					on:click={() => setType('autopilot')}
 				>
 					Autopilot
@@ -129,7 +134,7 @@
 						? 'bg-surface-500'
 						: 'bg-surface-600'} rounded-lg rounded-r-none"
 					on:click={() => setMode('osu')}
-					disabled={loading}
+					disabled={loading || failed}
 				>
 					osu!
 				</button>
@@ -138,7 +143,7 @@
 						? 'bg-surface-500'
 						: 'bg-surface-600'} rounded-none"
 					on:click={() => setMode('taiko')}
-					disabled={currentType == 'autopilot' || loading}
+					disabled={currentType == 'autopilot' || loading || failed}
 				>
 					taiko
 				</button>
@@ -147,7 +152,7 @@
 						? 'bg-surface-500'
 						: 'bg-surface-600'} rounded-none"
 					on:click={() => setMode('catch')}
-					disabled={currentType == 'autopilot' || loading}
+					disabled={currentType == 'autopilot' || loading || failed}
 				>
 					catch
 				</button>
@@ -156,7 +161,7 @@
 						? 'bg-surface-500'
 						: 'bg-surface-600'} rounded-lg rounded-l-none"
 					on:click={() => setMode('mania')}
-					disabled={currentType == 'relax' || currentType == 'autopilot' || loading}
+					disabled={currentType == 'relax' || currentType == 'autopilot' || loading || failed}
 				>
 					mania
 				</button>
@@ -166,88 +171,106 @@
 			<button
 				class="btn variant-filled-surface rounded-lg"
 				on:click={prevPage}
-				disabled={currentPage <= 1 || loading}
+				disabled={currentPage <= 1 || loading || failed}
 			>
 				<ChevronLeft class="outline-none border-none" />
 			</button>
 			<p class="text-slate-400">Page {currentPage}</p>
-			<button class="btn variant-filled-surface rounded-lg" on:click={nextPage}>
+			<button
+				class="btn variant-filled-surface rounded-lg"
+				on:click={nextPage}
+				disabled={loading || failed}
+			>
 				<ChevronRight class="outline-none border-none" />
 			</button>
 		</div>
-		<div class="w-full p-5 overflow-x-auto">
-			<table class="w-full overflow-x-auto">
-				<thead class="text-center">
-					<td></td>
-					<td></td>
-					<td class="w-24">Accuracy</td>
-					<td class="w-24">Play Count</td>
-					<td class="w-24">Performance</td>
-					<td class="w-24">SS</td>
-					<td class="w-24">S</td>
-					<td class="w-24">A</td>
-				</thead>
-				<tbody>
-					{#if (currentLeaderboard && currentLeaderboard.length > 0) || !loading}
-						{#each currentLeaderboard as user, i}
-							<tr
-								class="bg-surface-800 rounded"
-								on:click={() => goto(`u/${user.player_id}`)}
-								transition:scale={{ duration: 200, delay: 100 * i }}
-							>
-								<td class="text-center">#{i + (currentPage - 1) * 50 + 1}</td>
-								<td>
-									<Popup
-										text={regionNames.of(user.country.toUpperCase()) ?? user.country.toUpperCase()}
-										placement="right"
-									>
-										<img
-											src="https://ez-pp.farm/assets/img/flags/{user.country.toUpperCase()}.png"
-											alt="{regionNames.of(user.country) ?? user.country.toUpperCase()} Flag"
-											class="h-5 inline-block mr-2 pointer-events-none"
-										/>
-									</Popup>
-
-									{user.name}</td
+		{#if failed}
+			<div class="w-full flex flex-col justify-center items-center gap-2">
+				<p class="text-slate-400">Failed to load leaderboard.</p>
+				<button class="btn variant-filled-surface rounded-lg" on:click={refreshLeaderboard}>
+					Refresh
+				</button>
+			</div>
+		{:else}
+			<div class="w-full p-5 overflow-x-auto">
+				<table class="w-full overflow-x-auto">
+					<thead class="text-center">
+						<td></td>
+						<td></td>
+						<td class="w-24">Accuracy</td>
+						<td class="w-24">Play Count</td>
+						<td class="w-24">Performance</td>
+						<td class="w-24">SS</td>
+						<td class="w-24">S</td>
+						<td class="w-24">A</td>
+					</thead>
+					<tbody>
+						{#if (currentLeaderboard && currentLeaderboard.length > 0) || !loading}
+							{#each currentLeaderboard as user, i}
+								<tr
+									class="bg-surface-800 rounded"
+									on:click={() => goto(`u/${user.player_id}`)}
+									transition:scale={{ duration: 200, delay: 100 * i }}
 								>
-								<td class="text-center">{user.acc.toFixed(2)}%</td>
-								<td class="text-center">{user.plays}</td>
-								<td class="text-center">{user.pp.toFixed(0)}</td>
-								<td class="text-center">{user.x_count + user.xh_count}</td>
-								<td class="text-center">{user.s_count + user.sh_count}</td>
-								<td class="text-center">{user.a_count}</td>
-							</tr>
-						{/each}
-					{:else}
-						{#each { length: 50 } as _, i}
-							<tr
-								class="bg-surface-800 rounded animate-pulse"
-								transition:scale={{ duration: 200, delay: 100 * i }}
-							>
-								<td class="text-center">#{i + (currentPage - 1) * 50 + 1}</td>
-								<td><div class="placeholder"></div></td>
-								<td class="text-center"><div class="placeholder"></div></td>
-								<td class="text-center"><div class="placeholder"></div></td>
-								<td class="text-center"><div class="placeholder"></div></td>
-								<td class="text-center"><div class="placeholder"></div></td>
-								<td class="text-center"><div class="placeholder"></div></td>
-								<td class="text-center"><div class="placeholder"></div></td>
-							</tr>
-						{/each}
-					{/if}
-				</tbody>
-			</table>
-		</div>
+									<td class="text-center">#{i + (currentPage - 1) * 50 + 1}</td>
+									<td>
+										<Popup
+											text={regionNames.of(user.country.toUpperCase()) ??
+												user.country.toUpperCase()}
+											placement="right"
+										>
+											<img
+												src="/flags/{user.country.toUpperCase()}.png"
+												alt="{regionNames.of(user.country) ?? user.country.toUpperCase()} Flag"
+												class="h-5 inline-block mr-2 pointer-events-none"
+											/>
+										</Popup>
+
+										{user.name}</td
+									>
+									<td class="text-center">{user.acc.toFixed(2)}%</td>
+									<td class="text-center">{user.plays}</td>
+									<td class="text-center">{user.pp.toFixed(0)}</td>
+									<td class="text-center">{user.x_count + user.xh_count}</td>
+									<td class="text-center">{user.s_count + user.sh_count}</td>
+									<td class="text-center">{user.a_count}</td>
+								</tr>
+							{/each}
+						{:else}
+							{#each { length: 50 } as _, i}
+								<tr
+									class="bg-surface-800 rounded animate-pulse"
+									transition:scale={{ duration: 200, delay: 100 * i }}
+								>
+									<td class="text-center">#{i + (currentPage - 1) * 50 + 1}</td>
+									<td><div class="placeholder"></div></td>
+									<td class="text-center"><div class="placeholder"></div></td>
+									<td class="text-center"><div class="placeholder"></div></td>
+									<td class="text-center"><div class="placeholder"></div></td>
+									<td class="text-center"><div class="placeholder"></div></td>
+									<td class="text-center"><div class="placeholder"></div></td>
+									<td class="text-center"><div class="placeholder"></div></td>
+								</tr>
+							{/each}
+						{/if}
+					</tbody>
+				</table>
+			</div>
+		{/if}
 		<div class="w-full flex flex-row justify-between items-center px-2 mb-2">
 			<button
 				class="btn variant-filled-surface rounded-lg"
 				on:click={prevPage}
-				disabled={currentPage <= 1 || loading}
+				disabled={currentPage <= 1 || loading || failed}
 			>
 				<ChevronLeft class="outline-none border-none" />
 			</button>
 			<p class="text-slate-400">Page {currentPage}</p>
-			<button class="btn variant-filled-surface rounded-lg" on:click={nextPage}>
+			<button
+				class="btn variant-filled-surface rounded-lg"
+				on:click={nextPage}
+				disabled={loading || failed}
+			>
 				<ChevronRight class="outline-none border-none" />
 			</button>
 		</div>
