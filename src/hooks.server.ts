@@ -21,6 +21,7 @@ config();
       },
     });
     await database.raw("SELECT 1 + 1 as connection_test;");
+    console.log(chalk.green("Connected to database!"));
   } catch {
     console.log(
       chalk.red(
