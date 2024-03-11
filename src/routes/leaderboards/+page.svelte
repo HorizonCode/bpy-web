@@ -85,7 +85,7 @@
 	});
 </script>
 
-<div class="max-w-[1640px] mx-auto w-full p-5">
+<div class="container mx-auto w-full p-5">
 	<div class="bg-surface-700 flex flex-col justify-center gap-4 p-2 rounded-lg">
 		<div class="grid md:grid-cols-[auto_auto] gap-2">
 			<div class="w-full justify-center md:justify-start flex rounded-lg">
