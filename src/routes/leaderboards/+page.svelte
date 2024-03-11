@@ -6,6 +6,7 @@
 	import { goto } from '$app/navigation';
 	import { scale } from 'svelte/transition';
 	import Popup from '$lib/Popup.svelte';
+	import { apiUrl } from '$lib/env';
 
 	let regionNames = new Intl.DisplayNames(['en'], { type: 'region' });
 
@@ -50,9 +51,7 @@
 		urlParams.set('limit', '50');
 		urlParams.set('offset', ((currentPage - 1) * 50).toFixed(0));
 
-		const leaderboard = await fetch(
-			'https://api.kokisu.moe/v1/get_leaderboard?' + urlParams.toString()
-		);
+		const leaderboard = await fetch(`${apiUrl}/get_leaderboard?` + urlParams.toString());
 		const leaderboardJSON = await leaderboard.json();
 		console.log(leaderboardJSON);
 		currentLeaderboard = leaderboardJSON.leaderboard;

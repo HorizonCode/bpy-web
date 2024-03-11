@@ -1,9 +1,8 @@
-import { env } from "process";
+import { env } from "$env/dynamic/private";
 import chalk from "chalk";
 import knex_pkg from "knex";
 import redis from "redis";
 const { knex } = knex_pkg;
-import { config } from "dotenv";
 
 export let mysqlDatabase: knex_pkg.Knex;
 export let redisClient: redis.RedisClientType<
@@ -11,8 +10,6 @@ export let redisClient: redis.RedisClientType<
   redis.RedisFunctions,
   redis.RedisScripts
 >;
-
-config();
 
 (async () => {
   return;
@@ -40,7 +37,7 @@ config();
     console.log(chalk.gray("Connecting to Redis..."));
     redisClient = await redis.createClient({
       url: redisUrl,
-      database: redisDb as number,
+      database: parseInt(redisDb),
     }).on("error", (error) => {
       if (error.code === "ECONNREFUSED") {
         console.log(chalk.red("Could not connect to Redis!"));
