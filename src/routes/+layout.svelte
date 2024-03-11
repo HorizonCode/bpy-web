@@ -34,6 +34,7 @@
 	import { page } from '$app/stores';
 	import { userData } from '$lib/storage';
 	import { onMount } from 'svelte';
+	import { avatarUrl } from '$lib/env';
 
 	storePopup.set({ computePosition, autoUpdate, flip, shift, offset, arrow });
 	initializeStores();
@@ -106,7 +107,7 @@
 						</div>
 						<div use:popup={avatarPopup_sticky}>
 							<Avatar
-								src="https://a.ez-pp.farm/{$userData?.id ?? 0}"
+								src="{avatarUrl}/{$userData?.id ?? 0}"
 								class="!w-10 select-none cursor-pointer hover:ring hover:ring-surface-600 transition-all"
 							/>
 						</div>
@@ -170,7 +171,7 @@
 					<svelte:fragment slot="trail">
 						<div use:popup={avatarPopup}>
 							<Avatar
-								src="https://a.ez-pp.farm/{$userData?.id ?? 0}"
+								src="{avatarUrl}/{$userData?.id ?? 0}"
 								class="!w-10 select-none cursor-pointer hover:ring hover:ring-surface-600 transition-all"
 							/>
 						</div>
