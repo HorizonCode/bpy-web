@@ -8,7 +8,9 @@
 		popup,
 		Toast,
 		getToastStore,
-		initializeStores
+		initializeStores,
+		Drawer,
+		getDrawerStore
 	} from '@skeletonlabs/skeleton';
 
 	// Highlight JS
@@ -35,11 +37,14 @@
 	import { userData } from '$lib/storage';
 	import { onMount } from 'svelte';
 	import { appName, avatarUrl } from '$lib/env';
+	import { Menu } from 'svelte-feathers';
+	import NavItems from '$lib/navItems.svelte';
 
 	storePopup.set({ computePosition, autoUpdate, flip, shift, offset, arrow });
 	initializeStores();
 
 	const toastStore = getToastStore();
+	const drawerStore = getDrawerStore();
 
 	export let data;
 
@@ -78,38 +83,56 @@
 
 <Toast />
 
+<div class="md:hidden">
+	<Drawer>
+		<div class="flex flex-col gap-2 p-3">
+			<NavItems {drawerStore} />
+		</div>
+	</Drawer>
+</div>
+
 <!-- svelte-ignore a11y-no-static-element-interactions -->
 <!-- svelte-ignore a11y-click-events-have-key-events -->
 <!-- svelte-ignore a11y-missing-attribute -->
 <AppShell>
 	<svelte:fragment slot="header">
-		{#if showStickyNav && $page.data.url != '/login'}
+		{#if $page.data.url != '/login'}
 			<div
 				class="fixed w-full"
 				in:fly={{ y: -15, duration: 200, delay: 200 }}
 				out:fly={{ y: -15, duration: 200 }}
 			>
-				<div class="mx-auto w-[85%] mt-1 bg-surface-700/95 border border-surface-500 rounded-lg">
+				<div
+					class="mx-auto border {showStickyNav
+						? 'mt-2 w-[85%] bg-surface-700/95 rounded-lg border-surface-500'
+						: 'w-[100%] bg-surface-700 border-surface-700'}  transition-all duration-700"
+				>
 					<div class="flex p-2 px-4 flex-row justify-between items-center gap-2">
 						<a class="text-xl uppercase cursor-pointer mr-12" on:click={() => goto('/')}
 							>{appName}</a
 						>
-						<div class="flex flex-row justify-start items-center gap-2 me-auto">
-							<a
-								href="/leaderboards"
-								class="btn {$page.data.url == '/leaderboards'
-									? 'variant-ghost-surface '
-									: ''}rounded-lg"
-							>
-								Leaderboards
-							</a>
-							<button class="btn rounded-lg">Donate</button>
+						<div class="hidden md:flex flex-row justify-start items-center gap-2 me-auto">
+							<NavItems {drawerStore} />
 						</div>
-						<div use:popup={avatarPopup_sticky}>
-							<Avatar
-								src="{avatarUrl}/{$userData?.id ?? 0}"
-								class="!w-10 select-none cursor-pointer hover:ring hover:ring-surface-600 transition-all"
-							/>
+						<div class="flex flex-row gap-5 items-center">
+							<div use:popup={avatarPopup_sticky}>
+								<Avatar
+									src="{avatarUrl}/{$userData?.id ?? 0}"
+									class="!w-10 select-none cursor-pointer hover:ring hover:ring-surface-600 transition-all"
+								/>
+							</div>
+							<div class="md:hidden">
+								<button
+									class="btn btn-icon variant-ghost-surface rounded-lg"
+									on:click={() =>
+										drawerStore.open({
+											padding: 'p-4',
+											rounded: 'rounded-lg'
+										})}
+								>
+									<Menu class="!outline-none !border-none" />
+								</button>
+							</div>
 						</div>
 						<div class="card p-4 variant-filled-surface" data-popup="avatarPopup_sticky">
 							<div class="flex flex-col gap-2">
@@ -146,68 +169,6 @@
 						</div>
 					</div>
 				</div>
-			</div>
-		{/if}
-		{#if !showStickyNav && $page.data.url != '/login'}
-			<div in:fly={{ y: -15, duration: 200, delay: 200 }} out:fly={{ y: -15, duration: 200 }}>
-				<AppBar class="fixed w-full !bg-surface-700">
-					<svelte:fragment slot="lead">
-						<div class="flex flex-row items-center gap-2">
-							<a class="text-xl uppercase cursor-pointer mr-12" on:click={() => goto('/')}
-								>{appName}</a
-							>
-
-							<a
-								href="/leaderboards"
-								class="btn {$page.data.url == '/leaderboards'
-									? 'variant-ghost-surface '
-									: ''}rounded-lg"
-							>
-								Leaderboards
-							</a>
-							<button class="btn rounded-lg">Donate</button>
-						</div>
-					</svelte:fragment>
-					<svelte:fragment slot="trail">
-						<div use:popup={avatarPopup}>
-							<Avatar
-								src="{avatarUrl}/{$userData?.id ?? 0}"
-								class="!w-10 select-none cursor-pointer hover:ring hover:ring-surface-600 transition-all"
-							/>
-						</div>
-						<div class="card p-4 variant-filled-surface" data-popup="avatarPopup">
-							<div class="flex flex-col gap-2">
-								{#if $userData}
-									<button
-										class="w-32 btn variant-filled-surface rounded-lg"
-										on:click={() => goto(`/u/${$userData?.id}`)}>Profile</button
-									>
-									<button
-										class="w-32 btn variant-filled-surface rounded-lg"
-										on:click={() => {
-											toastStore.trigger({
-												message: `Logged out!`,
-												classes: '!bg-surface-800 !text-surface-200 !border-surface-700 !border'
-											});
-											userData.set(undefined);
-											goto('/');
-										}}>Logout</button
-									>
-								{:else}
-									<button
-										class="w-32 btn variant-filled-surface rounded-lg"
-										on:click={() => goto('/login')}>Login</button
-									>
-									<button
-										class="w-32 btn variant-filled-surface rounded-lg"
-										on:click={() => goto('/register')}>Register</button
-									>
-								{/if}
-							</div>
-							<div class="arrow variant-filled-surface !left-[121px]" />
-						</div>
-					</svelte:fragment>
-				</AppBar>
 			</div>
 		{/if}
 	</svelte:fragment>
