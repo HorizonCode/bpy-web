@@ -120,7 +120,7 @@
 		<div class="grid md:grid-cols-[auto_auto] gap-2">
 			<div class="w-full justify-center md:justify-start flex rounded-lg">
 				<button
-					class="w-[25%] !scale-100 btn {currentType == 'vanilla'
+					class="w-[100%] md:w-[25%] !scale-100 btn {currentType == 'vanilla'
 						? 'bg-surface-500'
 						: 'bg-surface-600'} rounded-lg rounded-r-none"
 					on:click={() => setType('vanilla')}
@@ -129,7 +129,7 @@
 					Vanilla
 				</button>
 				<button
-					class="w-[25%] !scale-100 btn {currentType == 'relax'
+					class="w-[100%] md:w-[25%] !scale-100 btn {currentType == 'relax'
 						? 'bg-surface-500'
 						: 'bg-surface-600'} rounded-none"
 					on:click={() => setType('relax')}
@@ -138,7 +138,7 @@
 					Relax
 				</button>
 				<button
-					class="w-[25%] !scale-100 btn {currentType == 'autopilot'
+					class="w-[100%] md:w-[25%] !scale-100 btn {currentType == 'autopilot'
 						? 'bg-surface-500'
 						: 'bg-surface-600'} rounded-lg rounded-l-none"
 					disabled={currentMode == 'taiko' ||
