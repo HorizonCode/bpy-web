@@ -54,8 +54,10 @@
 				<div in:scale={{ start: 0.9, delay: 200, duration: 400 }}>
 					<User size={45} class="!outline-none !border-none" />
 				</div>
-				<p class="text-2xl font-normal">Sign in</p>
-				<p class="mb-20">Use your bpy-web Account</p>
+				<div class="text-center">
+					<p class="text-2xl font-normal">Sign in</p>
+					<p class="mb-20">Use your bpy-web Account</p>
+				</div>
 				<input
 					type="text"
 					placeholder="Email or Username"
