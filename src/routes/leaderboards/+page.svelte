@@ -7,7 +7,7 @@
 	import { scale } from 'svelte/transition';
 	import Popup from '$lib/Popup.svelte';
 	import { apiUrl, appName } from '$lib/env';
-	import { queryParam } from 'sveltekit-search-params';
+	import { queryParam, ssp } from 'sveltekit-search-params';
 
 	const modes = ['osu', 'taiko', 'catch', 'mania'];
 	const types = ['vanilla', 'relax', 'autopilot'];
@@ -21,6 +21,7 @@
 
 	const queryMode = queryParam('mode');
 	const queryType = queryParam('type');
+	const queryPage = queryParam('page', ssp.number(1));
 
 	let currentType = 'vanilla';
 	let currentMode = 'osu';
@@ -30,6 +31,7 @@
 	const selectedType = $queryType;
 	if (modes.includes(selectedMode!)) currentMode = selectedMode!;
 	if (types.includes(selectedType!)) currentType = selectedType!;
+	if ($queryPage! > 0) currentPage = $queryPage!;
 
 	const refreshLeaderboard = async () => {
 		if (loading) return;
@@ -43,6 +45,7 @@
 
 		queryMode.set(currentMode);
 		queryType.set(currentType);
+		queryPage.set(currentPage);
 
 		switch (currentMode) {
 			case 'taiko':
