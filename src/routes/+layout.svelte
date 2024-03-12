@@ -66,12 +66,10 @@
 		if (pageMain) {
 			showStickyNav = pageMain.scrollTop > 100;
 			pageMain.addEventListener('scroll', () => {
-				console.log(pageMain.scrollTop);
 				showStickyNav = pageMain.scrollTop > 100;
 			});
 
 			pageMain.addEventListener('resize', () => {
-				console.log(pageMain.scrollTop);
 				showStickyNav = pageMain.scrollTop > 100;
 			});
 		}
@@ -92,7 +90,7 @@
 				out:fly={{ y: -15, duration: 200 }}
 			>
 				<div class="mx-auto w-[85%] mt-1 bg-surface-700/95 border border-surface-500 rounded-lg">
-					<div class="flex p-2 flex-row justify-between items-center gap-2">
+					<div class="flex p-2 px-4 flex-row justify-between items-center gap-2">
 						<a class="text-xl uppercase cursor-pointer mr-12" on:click={() => goto('/')}
 							>{appName}</a
 						>
