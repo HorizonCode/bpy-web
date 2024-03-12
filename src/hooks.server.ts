@@ -80,5 +80,5 @@ export let redisClient: redis.RedisClientType<
 })();
 
 export function handleError(error: Error): void {
-  console.log(chalk.red(error));
+  console.log(chalk.red(JSON.stringify(error, null, 2)));
 }
