@@ -32,7 +32,7 @@
 	import { computePosition, autoUpdate, flip, shift, offset, arrow } from '@floating-ui/dom';
 	import { storePopup } from '@skeletonlabs/skeleton';
 	import { goto } from '$app/navigation';
-	import { fly, scale } from 'svelte/transition';
+	import { draw, fly, scale } from 'svelte/transition';
 	import { page } from '$app/stores';
 	import { userData } from '$lib/storage';
 	import { onMount } from 'svelte';
@@ -74,8 +74,9 @@
 				showStickyNav = pageMain.scrollTop > 100;
 			});
 
-			pageMain.addEventListener('resize', () => {
+			window.addEventListener('resize', () => {
 				showStickyNav = pageMain.scrollTop > 100;
+				drawerStore.close();
 			});
 		}
 	});
@@ -83,13 +84,11 @@
 
 <Toast />
 
-<div class="md:hidden">
-	<Drawer>
-		<div class="flex flex-col gap-2 p-3">
-			<NavItems {drawerStore} />
-		</div>
-	</Drawer>
-</div>
+<Drawer>
+	<div class="flex flex-col gap-2 p-3">
+		<NavItems {drawerStore} />
+	</div>
+</Drawer>
 
 <!-- svelte-ignore a11y-no-static-element-interactions -->
 <!-- svelte-ignore a11y-click-events-have-key-events -->
