@@ -214,16 +214,20 @@
 								>
 									<td class="text-center">#{i + (currentPage - 1) * 50 + 1}</td>
 									<td>
-										<Popup
-											text={regionNames.of(user.country.toUpperCase()) ??
-												user.country.toUpperCase()}
-											placement="right"
-										>
+										<Popup placement="right">
 											<img
 												src="/flags/{user.country.toUpperCase()}.png"
 												alt="{regionNames.of(user.country) ?? user.country.toUpperCase()} Flag"
 												class="h-5 inline-block mr-2 pointer-events-none"
 											/>
+											<svelte:fragment slot="popup">
+												<div class="card p-2 px-4 rounded-lg variant-filled-surface">
+													{regionNames.of(user.country.toUpperCase()) ?? user.country.toUpperCase()}
+													<div
+														class="arrow border-l border-b border-gray-700 variant-filled-surface"
+													></div>
+												</div>
+											</svelte:fragment>
 										</Popup>
 
 										{user.name}</td
