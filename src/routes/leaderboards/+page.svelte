@@ -26,6 +26,7 @@
 	let currentType = 'vanilla';
 	let currentMode = 'osu';
 	let currentPage = 1;
+	let hasNextPage = true;
 
 	const selectedMode = $queryMode;
 	const selectedType = $queryType;
@@ -76,6 +77,7 @@
 		try {
 			const leaderboard = await fetch(`${apiUrl}/get_leaderboard?` + urlParams.toString());
 			const leaderboardJSON = await leaderboard.json();
+			hasNextPage = leaderboardJSON.leaderboard.length >= 50;
 			currentLeaderboard = leaderboardJSON.leaderboard;
 		} catch {
 			failed = true;
@@ -200,7 +202,7 @@
 			<button
 				class="btn variant-filled-surface rounded-lg"
 				on:click={nextPage}
-				disabled={loading || failed}
+				disabled={loading || failed || !hasNextPage}
 			>
 				<ChevronRight class="outline-none border-none" />
 			</button>
@@ -294,7 +296,7 @@
 			<button
 				class="btn variant-filled-surface rounded-lg"
 				on:click={nextPage}
-				disabled={loading || failed}
+				disabled={loading || failed || !hasNextPage}
 			>
 				<ChevronRight class="outline-none border-none" />
 			</button>
