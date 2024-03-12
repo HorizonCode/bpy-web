@@ -78,3 +78,7 @@ export let redisClient: redis.RedisClientType<
     process.exit(1);
   }
 })();
+
+export function handleError(error: Error): void {
+  console.log(chalk.red(error));
+}
