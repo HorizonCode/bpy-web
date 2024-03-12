@@ -22,26 +22,24 @@
 		{data.user.name}
 	{:else}
 		<div class="mx-auto card p-6 py-12">
-			<div class="flex flex-col justify-around items-center gap-10">
-				<div
-					class="w-full flex flex-col lg:divide-x divide-surface-500 lg:flex-row items-center justify-around gap-5 lg:gap-2"
-				>
-					<div class="flex flex-col items-center justify-center">
-						<p class="text-4xl">404</p>
-						<p class="text-xl">User Profile not found.</p>
-					</div>
-					<div class="flex flex-col items-center lg:items-start justify-normal lg:ps-20">
-						<p class="text-lg font-semibold underline underline-offset-2">
-							There are a few possible reasons for this:
-						</p>
-						<ul class="list-disc ms-5">
-							<li>They may have changed their username</li>
-							<li>The account may be temporarily unavailable due to security or abuse issues</li>
-							<li>You may have made a typo!</li>
-						</ul>
-					</div>
+			<div
+				class="w-full flex flex-col lg:divide-x divide-surface-500 lg:flex-row items-center justify-around gap-5 lg:gap-2"
+			>
+				<div class="flex flex-col items-center justify-center">
+					<p class="text-4xl">404</p>
+					<p class="text-xl">User Profile not found.</p>
 				</div>
-				<a class="btn variant-filled-surface" href="/">Back to Home</a>
+				<div class="flex flex-col items-center lg:items-start justify-normal lg:ps-20 gap-2">
+					<p class="text-lg font-semibold underline underline-offset-2">
+						There are a few possible reasons for this:
+					</p>
+					<ul class="list-disc ms-5">
+						<li>They may have changed their username</li>
+						<li>The account may be temporarily unavailable due to security or abuse issues</li>
+						<li>You may have made a typo!</li>
+					</ul>
+					<a class="mx-auto mt-10 btn variant-filled-surface" href="/">Back to Home</a>
+				</div>
 			</div>
 		</div>
 	{/if}
