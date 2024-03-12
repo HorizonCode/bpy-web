@@ -21,7 +21,7 @@
 
 	const queryMode = queryParam('mode');
 	const queryType = queryParam('type');
-	const queryPage = queryParam('page', ssp.number(1));
+	const queryPage = queryParam('page');
 
 	let currentType = 'vanilla';
 	let currentMode = 'osu';
@@ -32,7 +32,7 @@
 	const selectedType = $queryType;
 	if (modes.includes(selectedMode!)) currentMode = selectedMode!;
 	if (types.includes(selectedType!)) currentType = selectedType!;
-	if ($queryPage! > 0) currentPage = $queryPage!;
+	if (/^\d+$/.test($queryPage!) && parseInt($queryPage!) > 0) currentPage = parseInt($queryPage!);
 
 	const refreshLeaderboard = async () => {
 		if (loading) return;
@@ -46,7 +46,7 @@
 
 		queryMode.set(currentMode);
 		queryType.set(currentType);
-		queryPage.set(currentPage);
+		queryPage.set(currentPage.toFixed(0));
 
 		switch (currentMode) {
 			case 'taiko':
