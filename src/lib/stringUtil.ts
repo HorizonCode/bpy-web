@@ -9,3 +9,5 @@ export function makeid(length?: number): string {
     () => characters.charAt(Math.floor(Math.random() * charactersLength)),
   ).join("");
 }
+
+export const regionNames = new Intl.DisplayNames(["en"], { type: "region" });

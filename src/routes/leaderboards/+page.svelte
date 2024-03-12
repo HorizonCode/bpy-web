@@ -7,12 +7,11 @@
 	import { scale } from 'svelte/transition';
 	import Popup from '$lib/Popup.svelte';
 	import { apiUrl, appName } from '$lib/env';
-	import { queryParam, ssp } from 'sveltekit-search-params';
+	import { queryParam } from 'sveltekit-search-params';
+	import { regionNames } from '$lib/stringUtil';
 
 	const modes = ['osu', 'taiko', 'catch', 'mania'];
 	const types = ['vanilla', 'relax', 'autopilot'];
-
-	let regionNames = new Intl.DisplayNames(['en'], { type: 'region' });
 
 	let currentLeaderboard: LBUser[] = [];
 

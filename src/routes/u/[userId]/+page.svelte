@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { appName, appUrl, avatarUrl } from '$lib/env.js';
+	import { regionNames } from '$lib/stringUtil.js';
 	import { foregroundColors } from 'chalk';
 
 	export let data;
@@ -19,7 +20,29 @@
 </svelte:head>
 <div class="container mx-auto w-full p-5">
 	{#if data.user?.id}
-		{data.user.name}
+		<div class="mx-auto card">
+			<div class="w-full flex flex-col">
+				<div
+					class="h-64 bg-center bg-cover bg-no-repeat rounded-t-lg"
+					style="background-image: url('https://assets.ppy.sh/user-profile-covers/5466785/e205ad5fcedbd036f55781ac7b59af8799f68046e20678d41deeecdd36656ec7.jpeg');"
+				></div>
+				<div class="relative flex flex-row bg-surface-600 p-2">
+					<div class="flex flex-col">
+						<div class="text-xl">
+							{data.user.name}
+						</div>
+						<div class="flex flex-row gap-2">
+							<img
+								class="w-8"
+								src="/flags/{data.user.country.toUpperCase()}.png"
+								alt="country flag"
+							/>
+							{regionNames.of(data.user.country.toUpperCase()) ?? 'Unknown'}
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
 	{:else}
 		<div class="mx-auto card p-6 py-12">
 			<div
