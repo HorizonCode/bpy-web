@@ -243,7 +243,7 @@
 												class="h-5 inline-block mr-2 pointer-events-none"
 											/>
 											<svelte:fragment slot="popup">
-												<div class="card p-2 px-4 rounded-lg variant-filled-surface">
+												<div class="card p-2 px-4 rounded-lg variant-filled-surface text-sm">
 													{regionNames.of(user.country.toUpperCase()) ?? user.country.toUpperCase()}
 													<div
 														class="arrow border-l border-b border-gray-700 variant-filled-surface"

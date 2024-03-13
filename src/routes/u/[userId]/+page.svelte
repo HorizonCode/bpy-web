@@ -48,7 +48,7 @@
 									alt="country flag"
 								/>
 								<svelte:fragment slot="popup">
-									<div class="card p-2 px-4 rounded-lg variant-filled-surface">
+									<div class="card p-2 px-4 rounded-lg variant-filled-surface text-sm">
 										{regionNames.of(data.user.country.toUpperCase()) ?? 'Unknown'}
 										<div
 											class="arrow border-r border-b border-gray-700 variant-filled-surface"
