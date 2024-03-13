@@ -69,8 +69,10 @@
 				<div class="flex flex-row-reverse bg-surface-700 p-7 py-2">
 					<div class="flex flex-row items-center gap-5">
 						<div class="flex flex-col font-semibold text-xs text-end">
-							<Popup>
-								<div class="relative h-2 w-52 bg-gray-950 rounded-lg border border-surface-700">
+							<Popup placement="top">
+								<div
+									class="hidden md:block relative h-2 w-52 bg-gray-950 rounded-lg border border-surface-700"
+								>
 									<div
 										class="bg-gradient-to-r from-primary-400 to-primary-600 h-full rounded-lg"
 										style="width: {getLevelProgress(data.user.stats[0].tscore)}%;"
