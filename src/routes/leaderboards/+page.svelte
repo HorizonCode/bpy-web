@@ -6,7 +6,7 @@
 	import { goto } from '$app/navigation';
 	import { scale } from 'svelte/transition';
 	import Popup from '$lib/Popup.svelte';
-	import { apiUrl, appName } from '$lib/env';
+	import { apiUrl, appName, avatarUrl } from '$lib/env';
 	import { queryParam } from 'sveltekit-search-params';
 	import { regionNames } from '$lib/stringUtil';
 
@@ -15,6 +15,7 @@
 
 	let currentLeaderboard: LBUser[] = [];
 
+	let firstLoad = true;
 	let loading = false;
 	let failed = false;
 
@@ -78,6 +79,7 @@
 			const leaderboardJSON = await leaderboard.json();
 			hasNextPage = leaderboardJSON.leaderboard.length >= 50;
 			currentLeaderboard = leaderboardJSON.leaderboard;
+			firstLoad = false;
 		} catch {
 			failed = true;
 		}
@@ -85,23 +87,29 @@
 	};
 
 	const setMode = (mode: string) => {
+		currentPage = 1;
 		currentMode = mode;
 		refreshLeaderboard();
 	};
 
 	const setType = (type: string) => {
+		currentPage = 1;
 		currentType = type;
 		refreshLeaderboard();
 	};
 
 	const nextPage = () => {
 		currentPage += 1;
+		const pageMain = document.getElementById('page');
+		if (pageMain) pageMain.scrollTo({ top: 0, behavior: 'smooth' });
 		refreshLeaderboard();
 	};
 
 	const prevPage = () => {
 		if (currentPage <= 1) return;
 		currentPage -= 1;
+		const pageMain = document.getElementById('page');
+		if (pageMain) pageMain.scrollTo({ top: 0, behavior: 'smooth' });
 		refreshLeaderboard();
 	};
 
@@ -227,55 +235,74 @@
 						<td class="w-24">A</td>
 					</thead>
 					<tbody>
-						{#if (currentLeaderboard && currentLeaderboard.length > 0) || !loading}
-							{#each currentLeaderboard as user, i}
-								<tr
-									class="bg-surface-800 rounded"
-									on:click={() => goto(`u/${user.player_id}`)}
-									transition:scale={{ duration: 200, delay: 100 * i }}
-								>
-									<td class="text-center">#{i + (currentPage - 1) * 50 + 1}</td>
-									<td>
-										<Popup placement="right">
-											<img
-												src="/flags/{user.country.toUpperCase()}.png"
-												alt="{regionNames.of(user.country) ?? user.country.toUpperCase()} Flag"
-												class="h-5 inline-block mr-2 pointer-events-none"
-											/>
-											<svelte:fragment slot="popup">
-												<div class="card p-2 px-4 rounded-lg variant-filled-surface text-sm">
-													{regionNames.of(user.country.toUpperCase()) ?? user.country.toUpperCase()}
-													<div
-														class="arrow border-l border-b border-gray-700 variant-filled-surface"
-													></div>
-												</div>
-											</svelte:fragment>
-										</Popup>
-
-										{user.name}</td
-									>
-									<td class="text-center">{user.acc.toFixed(2)}%</td>
-									<td class="text-center">{user.plays}</td>
-									<td class="text-center">{user.pp.toFixed(0)}</td>
-									<td class="text-center">{user.x_count + user.xh_count}</td>
-									<td class="text-center">{user.s_count + user.sh_count}</td>
-									<td class="text-center">{user.a_count}</td>
-								</tr>
-							{/each}
-						{:else}
+						{#if firstLoad}
 							{#each { length: 50 } as _, i}
 								<tr
 									class="bg-surface-800 rounded animate-pulse"
 									transition:scale={{ duration: 200, delay: 100 * i }}
 								>
 									<td class="text-center">#{i + (currentPage - 1) * 50 + 1}</td>
-									<td><div class="placeholder"></div></td>
+									<td>
+										<div class="flex flex-row items-center gap-2">
+											<div class="h-5 w-7 placeholder rounded-lg"></div>
+											<div class="h-10 w-11 placeholder rounded-[30%]"></div>
+											<div class="w-full placeholder"></div>
+										</div>
+									</td>
 									<td class="text-center"><div class="placeholder"></div></td>
 									<td class="text-center"><div class="placeholder"></div></td>
 									<td class="text-center"><div class="placeholder"></div></td>
 									<td class="text-center"><div class="placeholder"></div></td>
 									<td class="text-center"><div class="placeholder"></div></td>
 									<td class="text-center"><div class="placeholder"></div></td>
+								</tr>
+							{/each}
+						{:else}
+							{#each currentLeaderboard as user, i}
+								<tr
+									class="bg-surface-800 rounded"
+									on:click={() => goto(`u/${user.player_id}`)}
+									transition:scale={{ start: 0.995, duration: 200, delay: 50 * (i / 2) }}
+								>
+									<td class="text-center">#{i + (currentPage - 1) * 50 + 1}</td>
+									<td>
+										<div class="flex flex-row items-center gap-2">
+											<Popup placement="right">
+												<img
+													src="/flags/{user.country.toUpperCase()}.png"
+													alt="{regionNames.of(user.country) ?? user.country.toUpperCase()} Flag"
+													class="h-5 w-7 shadow-[0_2px_5px_1px_rgba(0,0,0,0.3)] pointer-events-none"
+												/>
+												<svelte:fragment slot="popup">
+													<div class="card p-2 px-4 rounded-lg variant-filled-surface text-sm">
+														{regionNames.of(user.country.toUpperCase()) ??
+															user.country.toUpperCase()}
+														<div
+															class="arrow border-l border-b border-gray-700 variant-filled-surface"
+														></div>
+													</div>
+												</svelte:fragment>
+											</Popup>
+											<div
+												class="h-10 w-10 rounded-[30%] shadow-[0_2px_5px_1px_rgba(0,0,0,0.3)] bg-surface-600 overflow-hidden"
+											>
+												{#key user}
+													<img
+														class="h-10 w-10"
+														src="{avatarUrl}/{user.player_id}"
+														alt="profilePicture"
+													/>
+												{/key}
+											</div>
+											<span class="font-semibold">{user.name}</span>
+										</div>
+									</td>
+									<td class="text-center">{user.acc.toFixed(2)}%</td>
+									<td class="text-center">{user.plays}</td>
+									<td class="text-center">{user.pp.toFixed(0)}</td>
+									<td class="text-center">{user.x_count + user.xh_count}</td>
+									<td class="text-center">{user.s_count + user.sh_count}</td>
+									<td class="text-center">{user.a_count}</td>
 								</tr>
 							{/each}
 						{/if}
