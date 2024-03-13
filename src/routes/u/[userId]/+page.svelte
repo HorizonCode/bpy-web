@@ -69,15 +69,25 @@
 				<div class="flex flex-row-reverse bg-surface-700 p-7 py-2">
 					<div class="flex flex-row items-center gap-5">
 						<div class="flex flex-col font-semibold text-xs text-end">
-							<div class="relative h-2 w-52 bg-surface-900 rounded-lg">
-								<div
-									class="bg-primary-500 h-full rounded-lg"
-									style="width: {getLevelProgress(data.user.stats[0].tscore)}%;"
-								></div>
-								<div class="absolute mt-[2px] top-[100%] right-0">
-									{getLevelProgress(data.user.stats[0].tscore).toFixed(0)}%
+							<Popup>
+								<div class="relative h-2 w-52 bg-gray-950 rounded-lg border border-surface-700">
+									<div
+										class="bg-gradient-to-r from-primary-400 to-primary-600 h-full rounded-lg"
+										style="width: {getLevelProgress(data.user.stats[0].tscore)}%;"
+									></div>
+									<div class="absolute mt-[2px] top-[100%] right-0">
+										{getLevelProgress(data.user.stats[0].tscore).toFixed(0)}%
+									</div>
 								</div>
-							</div>
+								<svelte:fragment slot="popup">
+									<div class="card p-2 px-4 rounded-lg variant-filled-surface font-normal text-xs">
+										progress to next level
+										<div
+											class="arrow border-r border-b border-gray-700 variant-filled-surface"
+										></div>
+									</div>
+								</svelte:fragment>
+							</Popup>
 						</div>
 						<div class="relative inline-flex items-center justify-center h-[50px] w-[50px]">
 							<div
