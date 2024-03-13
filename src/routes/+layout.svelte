@@ -2,7 +2,6 @@
 	import '../app.postcss';
 	import {
 		AppShell,
-		AppBar,
 		Avatar,
 		type PopupSettings,
 		popup,
@@ -12,6 +11,8 @@
 		Drawer,
 		getDrawerStore
 	} from '@skeletonlabs/skeleton';
+
+	import { BarLoader } from 'svelte-loading-spinners';
 
 	// Highlight JS
 	import hljs from 'highlight.js/lib/core';
@@ -32,8 +33,8 @@
 	import { computePosition, autoUpdate, flip, shift, offset, arrow } from '@floating-ui/dom';
 	import { storePopup } from '@skeletonlabs/skeleton';
 	import { goto } from '$app/navigation';
-	import { draw, fly, scale } from 'svelte/transition';
-	import { page } from '$app/stores';
+	import { draw, fade, fly, scale } from 'svelte/transition';
+	import { navigating, page } from '$app/stores';
 	import { userData } from '$lib/storage';
 	import { onMount } from 'svelte';
 	import { appName, avatarUrl } from '$lib/env';
@@ -89,6 +90,19 @@
 		<NavItems {drawerStore} />
 	</div>
 </Drawer>
+
+{#if $navigating}
+	<div
+		class="fixed top-0 right-0 w-screen h-screen z-50 pointer-events-none"
+		in:fade={{ delay: 1000 }}
+		out:fade={{ duration: 500 }}
+	>
+		<div class="h-full flex flex-col justify-center items-center gap-2 bg-surface-900/80">
+			<BarLoader size="60" color="#fff" unit="px" duration="1s" />
+			<p class="text-xs font-light">Taking longer than expected...</p>
+		</div>
+	</div>
+{/if}
 
 <!-- svelte-ignore a11y-no-static-element-interactions -->
 <!-- svelte-ignore a11y-click-events-have-key-events -->
