@@ -1,7 +1,7 @@
 <script lang="ts">
+	import Popup from '$lib/Popup.svelte';
 	import { appName, appUrl, avatarUrl } from '$lib/env.js';
 	import { regionNames } from '$lib/stringUtil.js';
-	import { foregroundColors } from 'chalk';
 
 	export let data;
 </script>
@@ -23,21 +23,42 @@
 		<div class="mx-auto card">
 			<div class="w-full flex flex-col">
 				<div
-					class="h-64 bg-center bg-cover bg-no-repeat rounded-t-lg"
+					class="h-28 md:h-64 bg-center bg-cover bg-no-repeat rounded-t-lg"
 					style="background-image: url('https://assets.ppy.sh/user-profile-covers/5466785/e205ad5fcedbd036f55781ac7b59af8799f68046e20678d41deeecdd36656ec7.jpeg');"
 				></div>
-				<div class="relative flex flex-row bg-surface-600 p-2">
-					<div class="flex flex-col">
-						<div class="text-xl">
+				<div class="relative flex flex-row bg-surface-700 md:px-12 p-2">
+					<div
+						class="md:absolute md:-top-[55px] w-14 h-14 md:w-32 md:h-32 bg-surface-600 rounded-[30%] overflow-hidden shadow-[0_2px_5px_1px_rgba(0,0,0,0.4)]"
+					>
+						<img
+							class="w-14 h-14 md:w-32 md:h-32 rounded-[30%]"
+							src="{avatarUrl}/{data.user.id}"
+							alt="playerProfile"
+						/>
+					</div>
+					<div class="flex flex-col my-auto gap-1 md:gap-2 ms-2 md:ms-36">
+						<div class="text-xl md:text-2xl">
 							{data.user.name}
 						</div>
-						<div class="flex flex-row gap-2">
-							<img
-								class="w-8"
-								src="/flags/{data.user.country.toUpperCase()}.png"
-								alt="country flag"
-							/>
-							{regionNames.of(data.user.country.toUpperCase()) ?? 'Unknown'}
+						<div class="flex flex-row md:gap-2">
+							<Popup placement="top">
+								<img
+									class="w-5 md:w-8"
+									src="/flags/{data.user.country.toUpperCase()}.png"
+									alt="country flag"
+								/>
+								<svelte:fragment slot="popup">
+									<div class="card p-2 px-4 rounded-lg variant-filled-surface">
+										{regionNames.of(data.user.country.toUpperCase()) ?? 'Unknown'}
+										<div
+											class="arrow border-r border-b border-gray-700 variant-filled-surface"
+										></div>
+									</div>
+								</svelte:fragment>
+							</Popup>
+							<span class="hidden md:block"
+								>{regionNames.of(data.user.country.toUpperCase()) ?? 'Unknown'}</span
+							>
 						</div>
 					</div>
 				</div>
