@@ -24,7 +24,25 @@ export type LBUser = {
   xh_count: number;
 };
 
-export type UserInfo = {
+export type UserModeStats = {
+  tscore: number;
+  rscore: number;
+  pp: number;
+  plays: number;
+  playtime: number;
+  acc: number;
+  max_combo: number;
+  xh_count: number;
+  x_count: number;
+  sh_count: number;
+  s_count: number;
+  a_count: number;
+  replay_views: number;
+  rank: number;
+  country_rank: number;
+};
+
+export type User = {
   status: "success" | string;
   player?: {
     info: {
@@ -38,6 +56,16 @@ export type UserInfo = {
       country: string;
       preferred_mode: number;
       userpage_content: string;
+    };
+    stats: {
+      0: UserModeStats;
+      1: UserModeStats;
+      2: UserModeStats;
+      3: UserModeStats;
+      4: UserModeStats;
+      5: UserModeStats;
+      6: UserModeStats;
+      8: UserModeStats;
     };
   };
 };
