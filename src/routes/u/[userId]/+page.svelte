@@ -112,7 +112,11 @@
 	{#if data.user?.info.id}
 		<div class="mx-auto card overflow-hidden">
 			<div class="w-full flex flex-col">
-				<div class="p-3 bg-surface-700">
+				<div class="relative p-3 bg-surface-600">
+					<div
+						class="absolute h-full w-full top-0 left-0 bg-no-repeat bg-top blur opacity-10"
+						style="background-image: url('/u/{data.user.info.id}/cover');"
+					></div>
 					<div class="grid md:grid-cols-[auto_auto] gap-2">
 						<div class="w-full justify-center md:justify-start flex rounded-lg">
 							<button
@@ -189,9 +193,13 @@
 				</div>
 				<div
 					class="h-28 md:h-64 bg-center bg-cover bg-no-repeat"
-					style="background-image: url('https://assets.ppy.sh/user-profile-covers/5466785/e205ad5fcedbd036f55781ac7b59af8799f68046e20678d41deeecdd36656ec7.jpeg');"
+					style="background-image: url('/u/{data.user.info.id}/cover');"
 				></div>
-				<div class="relative flex flex-row bg-surface-700 md:px-12 p-2">
+				<div class="relative flex flex-row bg-surface-600 md:px-12 p-2">
+					<div
+						class="absolute h-full w-full top-0 left-0 bg-no-repeat bg-bottom blur opacity-10"
+						style="background-image: url('/u/{data.user.info.id}/cover');"
+					></div>
 					<div
 						class="md:absolute md:-top-[55px] w-14 h-14 md:w-32 md:h-32 bg-surface-600 rounded-[30%] overflow-hidden shadow-[0_2px_5px_1px_rgba(0,0,0,0.4)]"
 					>
@@ -226,14 +234,11 @@
 							>
 						</div>
 					</div>
-				</div>
-				<div class="h-56 bg-surface-800"></div>
-				<div class="flex flex-row-reverse bg-surface-700 p-7 py-2">
-					<div class="flex flex-row items-center gap-5">
+					<div class="ms-auto flex flex-row items-center gap-5">
 						<div class="flex flex-col font-semibold text-xs text-end">
 							<Popup placement="top">
 								<div
-									class="hidden md:block relative h-2 w-52 bg-gray-950 rounded-lg border border-surface-700"
+									class="relative h-2 w-24 lg:w-52 bg-gray-950 rounded-lg border border-surface-700"
 								>
 									<div
 										class="bg-gradient-to-r from-primary-400 to-primary-600 h-full rounded-lg"
@@ -261,6 +266,8 @@
 						</div>
 					</div>
 				</div>
+				<div class="h-56 bg-surface-800"></div>
+				<div class="flex flex-row-reverse bg-surface-700 p-7 py-2"></div>
 			</div>
 		</div>
 	{:else}
