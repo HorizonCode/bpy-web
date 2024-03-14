@@ -8,6 +8,7 @@ import chalk from "chalk";
 export default function viteProgressBar(): PluginOption {
   const { cacheTransformCount, cacheChunkCount } = getCacheData();
 
+  let active = false;
   let progressBar: SingleBar;
   const stream = process.stderr;
   let transformCount = 0;
@@ -28,7 +29,8 @@ export default function viteProgressBar(): PluginOption {
     config(config, { command }) {
       if (command === "build") {
         config.logLevel = "silent";
-
+        active = "mode" in config;
+        if (!active) return;
         progressBar = new SingleBar({
           format: `${chalk.blue("Building source...")} ${chalk.gray("|")} ${
             chalk.red.bold("{bar}")
@@ -80,12 +82,14 @@ export default function viteProgressBar(): PluginOption {
       // go cache
       if (isFileExists) runCachedData();
 
-      progressBar.update(lastPercent * 100, {
-        chunks: chunkCount,
-        totalChunks: cacheChunkCount,
-        transformed: transformCount,
-        totalTransformed: cacheTransformCount,
-      });
+      if (progressBar) {
+        progressBar.update(lastPercent * 100, {
+          chunks: chunkCount,
+          totalChunks: cacheChunkCount,
+          transformed: transformCount,
+          totalTransformed: cacheTransformCount,
+        });
+      }
 
       return {
         code,
@@ -101,12 +105,14 @@ export default function viteProgressBar(): PluginOption {
           ? runCachedData()
           : (lastPercent = +(lastPercent + 0.005).toFixed(4));
       }
-      progressBar.update(lastPercent * 100, {
-        chunks: chunkCount,
-        totalChunks: cacheChunkCount,
-        transformed: transformCount,
-        totalTransformed: cacheTransformCount,
-      });
+      if (progressBar) {
+        progressBar.update(lastPercent * 100, {
+          chunks: chunkCount,
+          totalChunks: cacheChunkCount,
+          transformed: transformCount,
+          totalTransformed: cacheTransformCount,
+        });
+      }
 
       return null;
     },
@@ -118,6 +124,7 @@ export default function viteProgressBar(): PluginOption {
 
     // build completed
     closeBundle() {
+      if (!active) return;
       progressBar.update(100);
       progressBar.stop();
       if (!errInfo) {
@@ -146,5 +153,13 @@ export default function viteProgressBar(): PluginOption {
     percent =
       lastPercent =
         +(transformed / (cacheTransformCount + cacheChunkCount)).toFixed(4);
+    if (progressBar) {
+      progressBar.update(lastPercent * 100, {
+        chunks: chunkCount,
+        totalChunks: cacheChunkCount,
+        transformed: transformCount,
+        totalTransformed: cacheTransformCount,
+      });
+    }
   }
 }

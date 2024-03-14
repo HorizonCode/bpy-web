@@ -33,8 +33,8 @@ const devMiddleware: Plugin = {
 
 export default defineConfig({
   plugins: [
-    devMiddleware,
     progress(),
+    devMiddleware,
     sveltekit(),
     purgeCss({
       content: ["src/**/*.html", "src/**/*.svelte"],
