@@ -1,78 +1,15 @@
 import type { PluginOption } from "vite";
 import colors from "picocolors";
-import progress from "progress";
+import { SingleBar } from "cli-progress";
 import rd from "rd";
 import { getCacheData, isFileExists, setCacheData } from "./cache";
+import chalk from "chalk";
 
-interface PluginOptions {
-  /**
-   * total number of ticks to complete
-   * @default 100
-   */
-  total?: number;
-  /**
-   * The format of the progress bar
-   */
-  format?: string;
-
-  /**
-   * The src directory of the build files
-   */
-  srcDir?: string;
-
-  /**
-   * current completed index
-   */
-  curr?: number | undefined;
-
-  /**
-   * head character defaulting to complete character
-   */
-  head?: string | undefined;
-
-  /**
-   * The displayed width of the progress bar defaulting to total.
-   */
-  width?: number | undefined;
-
-  /**
-   * minimum time between updates in milliseconds defaulting to 16
-   */
-  renderThrottle?: number | undefined;
-
-  /**
-   * The output stream defaulting to stderr.
-   */
-  stream?: NodeJS.WritableStream | undefined;
-
-  /**
-   * Completion character defaulting to "=".
-   */
-  complete?: string | undefined;
-
-  /**
-   * Incomplete character defaulting to "-".
-   */
-  incomplete?: string | undefined;
-
-  /**
-   * Option to clear the bar on completion defaulting to false.
-   */
-  clear?: boolean | undefined;
-
-  /**
-   * Optional function to call when the progress bar completes.
-   */
-  // eslint-disable-next-line @typescript-eslint/ban-types
-  callback?: Function | undefined;
-}
-
-export default function viteProgressBar(options?: PluginOptions): PluginOption {
+export default function viteProgressBar(): PluginOption {
   const { cacheTransformCount, cacheChunkCount } = getCacheData();
 
-  let bar: progress;
-  const stream = options?.stream || process.stderr;
-  let outDir: string;
+  let progressBar: SingleBar;
+  const stream = process.stderr;
   let transformCount = 0;
   let chunkCount = 0;
   let transformed = 0;
@@ -91,39 +28,32 @@ export default function viteProgressBar(options?: PluginOptions): PluginOption {
     config(config, { command }) {
       if (command === "build") {
         config.logLevel = "silent";
-        outDir = config.build?.outDir || "dist";
 
-        options = {
-          width: 40,
-          complete: "\u2588",
-          incomplete: "\u2591",
-          ...options,
-        };
-        options.total = options?.total || 100;
+        progressBar = new SingleBar({
+          format: `${chalk.blue("Building source...")} ${chalk.gray("|")} ${
+            chalk.red.bold("{bar}")
+          } ${chalk.blue(`{percentage}%`)} ${chalk.gray("|")} ${
+            chalk.blue(`{chunks}/{totalChunks} Chunks`)
+          } ${chalk.gray("|")} ${
+            chalk.blue(`{transformed}/{totalTransformed} Transformed`)
+          }`,
+          barCompleteChar: `\u2501`,
+          barIncompleteChar: `\u2501`,
+          barGlue: "\x1b[0m",
+          hideCursor: true,
+        });
 
-        const transforming = isFileExists
-          ? `${colors.magenta("Transforms:")} :transformCur/:transformTotal | `
-          : "";
-        const chunks = isFileExists
-          ? `${colors.magenta("Chunks:")} :chunkCur/:chunkTotal | `
-          : "";
-        const barText = `${colors.cyan(`[:bar]`)}`;
-
-        const barFormat = options.format ||
-          `${
-            colors.green("Building")
-          } ${barText} :percent | ${transforming}${chunks}Time: :elapseds`;
-
-        delete options.format;
-        bar = new progress(
-          barFormat,
-          options as ProgressBar.ProgressBarOptions,
-        );
+        progressBar.start(100, 0, {
+          chunks: chunkCount,
+          totalChunks: cacheChunkCount,
+          transformed: transformCount,
+          totalTransformed: cacheTransformCount,
+        });
 
         // not cache: Loop files in src directory
         if (!isFileExists) {
-          const readDir = rd.readSync(options.srcDir || "src");
-          const reg = /\.(vue|ts|js|jsx|tsx|css|scss||sass|styl|less)$/gi;
+          const readDir = rd.readSync("src");
+          const reg = /\.(vue|svelte|ts|js|jsx|tsx|css|scss|sass|styl|less)$/gi;
           readDir.forEach((item) => reg.test(item) && fileCount++);
         }
       }
@@ -150,11 +80,11 @@ export default function viteProgressBar(options?: PluginOptions): PluginOption {
       // go cache
       if (isFileExists) runCachedData();
 
-      bar.update(lastPercent, {
-        transformTotal: cacheTransformCount,
-        transformCur: transformCount,
-        chunkTotal: cacheChunkCount,
-        chunkCur: 0,
+      progressBar.update(lastPercent * 100, {
+        chunks: chunkCount,
+        totalChunks: cacheChunkCount,
+        transformed: transformCount,
+        totalTransformed: cacheTransformCount,
       });
 
       return {
@@ -171,12 +101,11 @@ export default function viteProgressBar(options?: PluginOptions): PluginOption {
           ? runCachedData()
           : (lastPercent = +(lastPercent + 0.005).toFixed(4));
       }
-
-      bar.update(lastPercent, {
-        transformTotal: cacheTransformCount,
-        transformCur: transformCount,
-        chunkTotal: cacheChunkCount,
-        chunkCur: chunkCount,
+      progressBar.update(lastPercent * 100, {
+        chunks: chunkCount,
+        totalChunks: cacheChunkCount,
+        transformed: transformCount,
+        totalTransformed: cacheTransformCount,
       });
 
       return null;
@@ -189,30 +118,15 @@ export default function viteProgressBar(options?: PluginOptions): PluginOption {
 
     // build completed
     closeBundle() {
+      progressBar.update(100);
+      progressBar.stop();
       if (!errInfo) {
-        // close progress
-        bar.update(1);
-        bar.terminate();
-
         // set cache data
         setCacheData({
           cacheTransformCount: transformCount,
           cacheChunkCount: chunkCount,
         });
-
-        // out successful message
-        stream.write(
-          `${
-            colors.cyan(
-              colors.bold(`Build successful. Please see ${outDir} directory`),
-            )
-          }`,
-        );
-        stream.write("\n");
-        stream.write("\n");
       } else {
-        // out failed message
-        stream.write("\n");
         stream.write(
           `${
             colors.red(
@@ -220,8 +134,6 @@ export default function viteProgressBar(options?: PluginOptions): PluginOption {
             )
           }`,
         );
-        stream.write("\n");
-        stream.write("\n");
       }
     },
   };
@@ -230,17 +142,6 @@ export default function viteProgressBar(options?: PluginOptions): PluginOption {
    * run cache data of progress
    */
   function runCachedData() {
-    if (transformCount === 1) {
-      stream.write("\n");
-
-      bar.tick({
-        transformTotal: cacheTransformCount,
-        transformCur: transformCount,
-        chunkTotal: cacheChunkCount,
-        chunkCur: 0,
-      });
-    }
-
     transformed++;
     percent =
       lastPercent =
