@@ -187,7 +187,7 @@
 	</svelte:fragment>
 	{#key data.url}
 		<div
-			class="mt-20"
+			class="mt-14"
 			in:scale={{ start: 0.99, duration: 200, delay: 200 }}
 			out:scale={{ start: 0.99, duration: 200 }}
 		>
