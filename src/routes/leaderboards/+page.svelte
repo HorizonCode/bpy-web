@@ -79,6 +79,7 @@
 			const leaderboardJSON = await leaderboard.json();
 			hasNextPage = leaderboardJSON.leaderboard.length >= 50;
 			currentLeaderboard = leaderboardJSON.leaderboard;
+			failed = false;
 			firstLoad = false;
 		} catch {
 			failed = true;
@@ -258,53 +259,55 @@
 								</tr>
 							{/each}
 						{:else}
-							{#each currentLeaderboard as user, i}
-								<tr
-									class="bg-surface-800 rounded"
-									on:click={() => goto(`u/${user.player_id}`)}
-									transition:scale={{ start: 0.995, duration: 200, delay: 50 * (i / 2) }}
-								>
-									<td class="text-center">#{i + (currentPage - 1) * 50 + 1}</td>
-									<td>
-										<div class="flex flex-row items-center gap-2">
-											<Popup placement="right">
-												<img
-													src="/flags/{user.country.toUpperCase()}.png"
-													alt="{regionNames.of(user.country) ?? user.country.toUpperCase()} Flag"
-													class="h-5 w-7 shadow-[0_2px_5px_1px_rgba(0,0,0,0.3)] pointer-events-none"
-												/>
-												<svelte:fragment slot="popup">
-													<div class="card p-2 px-4 rounded-lg variant-filled-surface text-sm">
-														{regionNames.of(user.country.toUpperCase()) ??
-															user.country.toUpperCase()}
-														<div
-															class="arrow border-l border-b border-gray-700 variant-filled-surface"
-														></div>
-													</div>
-												</svelte:fragment>
-											</Popup>
-											<div
-												class="h-10 w-10 rounded-[30%] shadow-[0_2px_5px_1px_rgba(0,0,0,0.3)] bg-surface-600 overflow-hidden"
-											>
-												{#key user}
+							{#key failed}
+								{#each currentLeaderboard as user, i}
+									<tr
+										class="bg-surface-800 rounded"
+										on:click={() => goto(`u/${user.player_id}`)}
+										transition:scale={{ start: 0.995, duration: 200, delay: 50 * (i / 2) }}
+									>
+										<td class="text-center">#{i + (currentPage - 1) * 50 + 1}</td>
+										<td>
+											<div class="flex flex-row items-center gap-2">
+												<Popup placement="right">
 													<img
-														class="h-10 w-10"
-														src="{avatarUrl}/{user.player_id}"
-														alt="profilePicture"
+														src="/flags/{user.country.toUpperCase()}.png"
+														alt="{regionNames.of(user.country) ?? user.country.toUpperCase()} Flag"
+														class="h-5 w-7 shadow-[0_2px_5px_1px_rgba(0,0,0,0.3)] pointer-events-none"
 													/>
-												{/key}
+													<svelte:fragment slot="popup">
+														<div class="card p-2 px-4 rounded-lg variant-filled-surface text-sm">
+															{regionNames.of(user.country.toUpperCase()) ??
+																user.country.toUpperCase()}
+															<div
+																class="arrow border-l border-b border-gray-700 variant-filled-surface"
+															></div>
+														</div>
+													</svelte:fragment>
+												</Popup>
+												<div
+													class="h-10 w-10 rounded-[30%] shadow-[0_2px_5px_1px_rgba(0,0,0,0.3)] bg-surface-600 overflow-hidden"
+												>
+													{#key user}
+														<img
+															class="h-10 w-10"
+															src="{avatarUrl}/{user.player_id}"
+															alt="profilePicture"
+														/>
+													{/key}
+												</div>
+												<span class="font-semibold">{user.name}</span>
 											</div>
-											<span class="font-semibold">{user.name}</span>
-										</div>
-									</td>
-									<td class="text-center">{user.acc.toFixed(2)}%</td>
-									<td class="text-center">{user.plays}</td>
-									<td class="text-center">{user.pp.toFixed(0)}</td>
-									<td class="text-center">{user.x_count + user.xh_count}</td>
-									<td class="text-center">{user.s_count + user.sh_count}</td>
-									<td class="text-center">{user.a_count}</td>
-								</tr>
-							{/each}
+										</td>
+										<td class="text-center">{user.acc.toFixed(2)}%</td>
+										<td class="text-center">{user.plays}</td>
+										<td class="text-center">{user.pp.toFixed(0)}</td>
+										<td class="text-center">{user.x_count + user.xh_count}</td>
+										<td class="text-center">{user.s_count + user.sh_count}</td>
+										<td class="text-center">{user.a_count}</td>
+									</tr>
+								{/each}
+							{/key}
 						{/if}
 					</tbody>
 				</table>
