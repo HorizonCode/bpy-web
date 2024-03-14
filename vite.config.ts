@@ -2,6 +2,7 @@ import { purgeCss } from "vite-plugin-tailwind-purgecss";
 import { sveltekit } from "@sveltejs/kit/vite";
 import { defineConfig, type Plugin } from "vite";
 import { prettytime } from "./timeUtil";
+import progress from "./vite/buildProgress";
 
 const devMiddleware: Plugin = {
   name: "log-request-middleware",
@@ -33,10 +34,11 @@ const devMiddleware: Plugin = {
 export default defineConfig({
   plugins: [
     devMiddleware,
+    progress(),
     sveltekit(),
     purgeCss({
+      content: ["src/**/*.html", "src/**/*.svelte"],
       safelist: {
-        // any selectors that begin with "hljs-" will not be purged
         greedy: [/^hljs-/],
       },
     }),
