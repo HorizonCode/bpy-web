@@ -88,12 +88,14 @@
 	};
 
 	const setMode = (mode: string) => {
+		if (currentMode == mode) return;
 		currentPage = 1;
 		currentMode = mode;
 		refreshLeaderboard();
 	};
 
 	const setType = (type: string) => {
+		if (currentType == type) return;
 		currentPage = 1;
 		currentType = type;
 		refreshLeaderboard();
