@@ -33,12 +33,12 @@
 	import { computePosition, autoUpdate, flip, shift, offset, arrow } from '@floating-ui/dom';
 	import { storePopup } from '@skeletonlabs/skeleton';
 	import { goto } from '$app/navigation';
-	import { draw, fade, fly, scale } from 'svelte/transition';
+	import { fade, fly, scale } from 'svelte/transition';
 	import { navigating, page } from '$app/stores';
 	import { userData } from '$lib/storage';
 	import { onMount } from 'svelte';
-	import { appName, avatarUrl } from '$lib/env';
-	import { Menu } from 'svelte-feathers';
+	import { appName, avatarUrl, apiUrl } from '$lib/env';
+	import { Menu, Search } from 'svelte-feathers';
 	import NavItems from '$lib/navItems.svelte';
 
 	storePopup.set({ computePosition, autoUpdate, flip, shift, offset, arrow });
@@ -59,13 +59,37 @@
 		placement: 'bottom-end'
 	};
 
-	const avatarPopup_sticky: PopupSettings = {
-		event: 'click',
-		target: 'avatarPopup_sticky',
-		placement: 'bottom-end'
-	};
-
 	let showStickyNav = false;
+
+	let userSearchResults: { id: number; name: string }[] = [];
+	let userSearchQuery = '';
+	let userSearchTimeout: any;
+
+	const searchUsers = async () => {
+		if (userSearchTimeout) clearTimeout(userSearchTimeout);
+
+		if (userSearchQuery.length <= 2) {
+			userSearchResults = [];
+			return;
+		}
+
+		userSearchTimeout = setTimeout(async () => {
+			try {
+				const url = `${apiUrl}/search_players?q=${userSearchQuery}`;
+				const response = await fetch(url, {
+					method: 'GET'
+				});
+				if (response.ok) {
+					const json = await response.json();
+					userSearchResults = json.result;
+				} else {
+					userSearchResults = [];
+				}
+			} catch {
+				userSearchResults = [];
+			}
+		}, 500);
+	};
 
 	onMount(() => {
 		const pageMain = document.getElementById('page');
@@ -86,9 +110,38 @@
 <Toast />
 
 <Drawer>
-	<div class="flex flex-col gap-2 p-3">
-		<NavItems {drawerStore} />
-	</div>
+	{#if $drawerStore.id == 'nav'}
+		<div class="flex flex-col gap-2 p-3">
+			<NavItems {drawerStore} />
+		</div>
+	{:else if $drawerStore.id == 'search'}
+		<div class="p-3 pb-0 w-full h-full flex flex-col">
+			<input
+				class="input mb-3 rounded-lg"
+				placeholder="Who are you looking for?"
+				bind:value={userSearchQuery}
+				on:input={searchUsers}
+			/>
+			<div class="overflow-y-auto">
+				<div class="flex flex-col gap-2">
+					{#each userSearchResults as user}
+						<!-- svelte-ignore a11y-click-events-have-key-events -->
+						<!-- svelte-ignore a11y-no-static-element-interactions -->
+						<div
+							class="flex items-center gap-2 rounded-lg cursor-pointer bg-surface-900 hover:bg-surface-700 transition-all"
+							on:click={() => {
+								goto(`/u/${user.id}`);
+								drawerStore.close();
+							}}
+						>
+							<img src="{avatarUrl}/{user.id}" alt={user.name} class="w-10 h-10 rounded-lg" />
+							<p>{user.name}</p>
+						</div>
+					{/each}
+				</div>
+			</div>
+		</div>
+	{/if}
 </Drawer>
 
 {#if $navigating}
@@ -128,10 +181,57 @@
 							<NavItems {drawerStore} />
 						</div>
 						<div class="flex flex-row gap-5 items-center">
-							<div use:popup={avatarPopup_sticky}>
+							<button
+								class="btn px-5 variant-ghost-surface"
+								on:click={() =>
+									drawerStore.open({
+										id: 'search',
+										padding: 'pt-16 p-4',
+										bgBackdrop: 'bg-black/50',
+										position: 'top',
+										width: 'mx-auto w-full md:w-[800px]',
+										rounded: 'rounded-lg'
+									})}
+							>
+								<Search class="pointer-events-none" size={18} />
+							</button>
+							<div use:popup={avatarPopup}>
 								<Avatar
 									src="{avatarUrl}/{$userData?.id ?? 0}"
 									class="!w-10 select-none cursor-pointer hover:ring hover:ring-surface-600 transition-all"
+								/>
+							</div>
+							<div class="card p-4 variant-filled-surface" data-popup="avatarPopup">
+								<div class="flex flex-col gap-2">
+									{#if $userData}
+										<button
+											class="w-32 btn variant-filled-surface rounded-lg"
+											on:click={() => goto(`/u/${$userData?.id}`)}>Profile</button
+										>
+										<button
+											class="w-32 btn variant-filled-surface rounded-lg"
+											on:click={() => {
+												toastStore.trigger({
+													message: `Logged out!`,
+													classes: '!bg-surface-800 !text-surface-200 !border-surface-700 !border'
+												});
+												userData.set(undefined);
+												goto('/');
+											}}>Logout</button
+										>
+									{:else}
+										<button
+											class="w-32 btn variant-filled-surface rounded-lg"
+											on:click={() => goto('/login')}>Login</button
+										>
+										<button
+											class="w-32 btn variant-filled-surface rounded-lg"
+											on:click={() => goto('/register')}>Register</button
+										>
+									{/if}
+								</div>
+								<div
+									class="arrow variant-filled-surface border-t border-l border-gray-700 !right-[0px]"
 								/>
 							</div>
 							<div class="md:hidden">
@@ -139,46 +239,14 @@
 									class="btn btn-icon variant-ghost-surface rounded-lg"
 									on:click={() =>
 										drawerStore.open({
+											id: 'nav',
 											padding: 'p-4',
 											rounded: 'rounded-lg'
 										})}
 								>
-									<Menu class="!outline-none !border-none" />
+									<Menu class="pointer-events-none" />
 								</button>
 							</div>
-						</div>
-						<div class="card p-4 variant-filled-surface" data-popup="avatarPopup_sticky">
-							<div class="flex flex-col gap-2">
-								{#if $userData}
-									<button
-										class="w-32 btn variant-filled-surface rounded-lg"
-										on:click={() => goto(`/u/${$userData?.id}`)}>Profile</button
-									>
-									<button
-										class="w-32 btn variant-filled-surface rounded-lg"
-										on:click={() => {
-											toastStore.trigger({
-												message: `Logged out!`,
-												classes: '!bg-surface-800 !text-surface-200 !border-surface-700 !border'
-											});
-											userData.set(undefined);
-											goto('/');
-										}}>Logout</button
-									>
-								{:else}
-									<button
-										class="w-32 btn variant-filled-surface rounded-lg"
-										on:click={() => goto('/login')}>Login</button
-									>
-									<button
-										class="w-32 btn variant-filled-surface rounded-lg"
-										on:click={() => goto('/register')}>Register</button
-									>
-								{/if}
-							</div>
-							<div
-								class="arrow variant-filled-surface border-t border-l border-gray-700 !right-[0px]"
-							/>
 						</div>
 					</div>
 				</div>
