@@ -11,7 +11,7 @@
 			class="w-full flex flex-col lg:divide-x divide-surface-500 lg:flex-row items-center justify-around gap-5 lg:gap-2"
 		>
 			<div class="flex flex-col items-center justify-center">
-				<p class="text-4xl">{errorCode}</p>
+				<p class="text-5xl">{errorCode}</p>
 				<p class="text-xl">{errorMessage}</p>
 				<a class="mx-auto mt-10 btn variant-filled-surface" href="/">Back to Home</a>
 			</div>
