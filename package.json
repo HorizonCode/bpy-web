@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "vite dev",
-    "run": "npm run build && node -r dotenv/config build",
+    "run": "npm run build && dotenvx run -- node build",
     "run-nobuild": "dotenvx run -- node build",
     "build": "vite build",
     "preview": "vite preview",
