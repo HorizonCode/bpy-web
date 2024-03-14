@@ -132,6 +132,8 @@
 							on:click={() => {
 								goto(`/u/${user.id}`);
 								drawerStore.close();
+								userSearchQuery = '';
+								userSearchResults = [];
 							}}
 						>
 							<img src="{avatarUrl}/{user.id}" alt={user.name} class="w-10 h-10 rounded-lg" />
