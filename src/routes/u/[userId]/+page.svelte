@@ -8,6 +8,7 @@
 	import { onMount } from 'svelte';
 	import { cubicInOut } from 'svelte/easing';
 	import { queryParam } from 'sveltekit-search-params';
+	import { Edit2 } from 'svelte-feathers';
 
 	export let data;
 
@@ -192,9 +193,16 @@
 					</div>
 				</div>
 				<div
-					class="h-28 md:h-64 bg-center bg-cover bg-no-repeat"
+					class="relative h-28 md:h-64 bg-center bg-cover bg-no-repeat"
 					style="background-image: url('/u/{data.user.info.id}/cover');"
-				></div>
+				>
+					<a
+						class="btn btn-icon variant-filled-surface absolute flex justify-center items-center bottom-2 right-2 h-10 w-10"
+						href="/settings/cover"
+					>
+						<Edit2 class="pointer-events-none" size={20} />
+					</a>
+				</div>
 				<div class="relative flex flex-row bg-surface-600 md:px-12 p-2">
 					<div
 						class="absolute h-full w-full top-0 left-0 bg-no-repeat bg-bottom blur opacity-10"
