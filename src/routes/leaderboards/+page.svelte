@@ -265,7 +265,8 @@
 								{#each currentLeaderboard as user, i}
 									<tr
 										class="bg-surface-800 rounded"
-										on:click={() => goto(`u/${user.player_id}`)}
+										on:click={() =>
+											goto(`u/${user.player_id}?mode=${currentMode}&type=${currentType}`)}
 										transition:scale={{ start: 0.995, duration: 200, delay: 50 * (i / 2) }}
 									>
 										<td class="text-center">#{i + (currentPage - 1) * 50 + 1}</td>

@@ -58,14 +58,7 @@ export type User = {
       userpage_content: string;
     };
     stats: {
-      0: UserModeStats;
-      1: UserModeStats;
-      2: UserModeStats;
-      3: UserModeStats;
-      4: UserModeStats;
-      5: UserModeStats;
-      6: UserModeStats;
-      8: UserModeStats;
+      [mode: number]: UserModeStats;
     };
   };
 };

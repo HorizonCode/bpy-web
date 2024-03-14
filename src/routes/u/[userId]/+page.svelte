@@ -3,10 +3,97 @@
 	import Popup from '$lib/Popup.svelte';
 	import { appName, appUrl, avatarUrl } from '$lib/env';
 	import { regionNames } from '$lib/stringUtil';
-	import { type User } from '$lib/types';
 	import { getLevelProgress, getLevel } from '$lib/level';
+	import { tweened } from 'svelte/motion';
+	import { onMount } from 'svelte';
+	import { cubicInOut } from 'svelte/easing';
+	import { queryParam } from 'sveltekit-search-params';
 
 	export let data;
+
+	const queryMode = queryParam('mode');
+	const queryType = queryParam('type');
+
+	let loading = false;
+	let failed = false;
+	let currentMode = 'osu';
+	let currentType = 'vanilla';
+	let currentModeInt: number = 0;
+
+	let level = tweened(0, {
+		duration: 500,
+		easing: cubicInOut,
+		interpolate: (a, b) => (t) => Math.trunc(a + (b - a) * t)
+	});
+
+	let levelProgress = tweened(0, {
+		duration: 500,
+		easing: cubicInOut,
+		interpolate: (a, b) => (t) => Math.trunc(a + (b - a) * t)
+	});
+
+	const modes = ['osu', 'taiko', 'catch', 'mania'];
+	const types = ['vanilla', 'relax', 'autopilot'];
+
+	const updateModeInt = () => {
+		if (currentType == 'relax' && currentMode == 'mania') currentMode = 'osu';
+		if (currentType == 'autopilot' && currentMode != 'osu') currentMode = 'osu';
+
+		queryMode.set(currentMode);
+		queryType.set(currentType);
+
+		let mode = 0;
+		switch (currentMode) {
+			case 'taiko':
+				mode += 1;
+				break;
+			case 'catch':
+				mode += 2;
+				break;
+			case 'mania':
+				mode += 3;
+				break;
+		}
+
+		switch (currentType) {
+			case 'relax':
+				mode += 4;
+				break;
+			case 'autopilot':
+				mode += 8;
+				break;
+		}
+
+		currentModeInt = mode;
+
+		if (data.user?.info.id) {
+			level.set(getLevel(data.user.stats[currentModeInt].tscore));
+			levelProgress.set(getLevelProgress(data.user.stats[currentModeInt].tscore));
+		}
+	};
+
+	const setMode = (mode: string) => {
+		if (currentMode == mode) return;
+		currentMode = mode;
+		updateModeInt();
+	};
+
+	const setType = (type: string) => {
+		if (currentType == type) return;
+		currentType = type;
+		updateModeInt();
+	};
+
+	onMount(() => {
+		if (data.user?.info.id) {
+			const selectedMode = $queryMode;
+			const selectedType = $queryType;
+			if (modes.includes(selectedMode!)) currentMode = selectedMode!;
+			if (types.includes(selectedType!)) currentType = selectedType!;
+
+			updateModeInt();
+		}
+	});
 </script>
 
 <svelte:head>
@@ -25,8 +112,83 @@
 	{#if data.user?.info.id}
 		<div class="mx-auto card overflow-hidden">
 			<div class="w-full flex flex-col">
+				<div class="p-3 bg-surface-700">
+					<div class="grid md:grid-cols-[auto_auto] gap-2">
+						<div class="w-full justify-center md:justify-start flex rounded-lg">
+							<button
+								class="w-[100%] md:w-[25%] !scale-100 btn {currentType == 'vanilla'
+									? 'bg-surface-500'
+									: 'bg-surface-600'} rounded-lg rounded-r-none"
+								on:click={() => setType('vanilla')}
+								disabled={loading || failed}
+							>
+								Vanilla
+							</button>
+							<button
+								class="w-[100%] md:w-[25%] !scale-100 btn {currentType == 'relax'
+									? 'bg-surface-500'
+									: 'bg-surface-600'} rounded-none"
+								on:click={() => setType('relax')}
+								disabled={currentMode == 'mania' || loading || failed}
+							>
+								Relax
+							</button>
+							<button
+								class="w-[100%] md:w-[25%] !scale-100 btn {currentType == 'autopilot'
+									? 'bg-surface-500'
+									: 'bg-surface-600'} rounded-lg rounded-l-none"
+								disabled={currentMode == 'taiko' ||
+									currentMode == 'catch' ||
+									currentMode == 'mania' ||
+									loading ||
+									failed}
+								on:click={() => setType('autopilot')}
+							>
+								Autopilot
+							</button>
+						</div>
+						<div class="w-full flex rounded-lg">
+							<button
+								class="w-[25%] !scale-100 btn {currentMode == 'osu'
+									? 'bg-surface-500'
+									: 'bg-surface-600'} rounded-lg rounded-r-none"
+								on:click={() => setMode('osu')}
+								disabled={loading || failed}
+							>
+								osu!
+							</button>
+							<button
+								class="w-[25%] !scale-100 btn {currentMode == 'taiko'
+									? 'bg-surface-500'
+									: 'bg-surface-600'} rounded-none"
+								on:click={() => setMode('taiko')}
+								disabled={currentType == 'autopilot' || loading || failed}
+							>
+								taiko
+							</button>
+							<button
+								class="w-[25%] !scale-100 btn {currentMode == 'catch'
+									? 'bg-surface-500'
+									: 'bg-surface-600'} rounded-none"
+								on:click={() => setMode('catch')}
+								disabled={currentType == 'autopilot' || loading || failed}
+							>
+								catch
+							</button>
+							<button
+								class="w-[25%] !scale-100 btn {currentMode == 'mania'
+									? 'bg-surface-500'
+									: 'bg-surface-600'} rounded-lg rounded-l-none"
+								on:click={() => setMode('mania')}
+								disabled={currentType == 'relax' || currentType == 'autopilot' || loading || failed}
+							>
+								mania
+							</button>
+						</div>
+					</div>
+				</div>
 				<div
-					class="h-28 md:h-64 bg-center bg-cover bg-no-repeat rounded-t-lg"
+					class="h-28 md:h-64 bg-center bg-cover bg-no-repeat"
 					style="background-image: url('https://assets.ppy.sh/user-profile-covers/5466785/e205ad5fcedbd036f55781ac7b59af8799f68046e20678d41deeecdd36656ec7.jpeg');"
 				></div>
 				<div class="relative flex flex-row bg-surface-700 md:px-12 p-2">
@@ -75,10 +237,10 @@
 								>
 									<div
 										class="bg-gradient-to-r from-primary-400 to-primary-600 h-full rounded-lg"
-										style="width: {getLevelProgress(data.user.stats[0].tscore)}%;"
+										style="width: {$levelProgress}%;"
 									></div>
 									<div class="absolute mt-[2px] top-[100%] right-0">
-										{getLevelProgress(data.user.stats[0].tscore).toFixed(0)}%
+										{Math.trunc($levelProgress)}%
 									</div>
 								</div>
 								<svelte:fragment slot="popup">
@@ -95,9 +257,7 @@
 							<div
 								class="absolute w-full h-full level-icon bg-gradient-to-b from-surface-100 to-surface-400"
 							></div>
-							<span class="absolute text-[20px] font-semibold"
-								>{getLevel(data.user.stats[0].tscore)}</span
-							>
+							<span class="absolute text-[20px] font-semibold">{$level}</span>
 						</div>
 					</div>
 				</div>
