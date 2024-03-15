@@ -417,23 +417,12 @@
 												<td>
 													<div class="flex flex-row gap-1">
 														{#each parseModsInt(score.mods) as mod}
-															<Popup>
-																<img
-																	class="w-8"
-																	src="/mods/{mod.short_name.toLowerCase()}.png"
-																	alt={mod.short_name}
-																/>
-																<svelte:fragment slot="popup">
-																	<div
-																		class="card p-2 px-4 rounded-lg variant-filled-surface font-light text-xs"
-																	>
-																		{mod.name}
-																		<div
-																			class="arrow border-r border-b border-gray-700 variant-filled-surface"
-																		></div>
-																	</div>
-																</svelte:fragment>
-															</Popup>
+															<img
+																class="w-8"
+																src="/mods/{mod.short_name.toLowerCase()}.png"
+																alt={mod.short_name}
+																title={mod.name}
+															/>
 														{/each}
 													</div>
 												</td>
