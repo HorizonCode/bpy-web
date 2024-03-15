@@ -275,14 +275,21 @@
 							.set_id}/covers/cover@2x.jpg');"
 					></div>
 					<div class="me-auto ms-auto md:me-0 flex flex-row items-center gap-3 z-10">
-						<button class="btn variant-soft-primary text-sm">
+						<a
+							class="btn variant-soft-primary text-sm"
+							href="https://osu.direct/d/{data.map.set_id}"
+						>
 							<Download class="pointer-events-none mr-2" size={18} />
 							Download
-						</button>
-						<button class="btn variant-soft-secondary text-sm">
+						</a>
+						<a
+							class="btn variant-soft-secondary text-sm"
+							href="https://osu.ppy.sh/b/{data.map.id}"
+							target="_blank"
+						>
 							<ArrowUpRight class="pointer-events-none mr-2" size={18} />
 							Show on osu.ppy.sh
-						</button>
+						</a>
 					</div>
 				</div>
 				<div class="bg-surface-800">
