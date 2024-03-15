@@ -62,3 +62,21 @@ export type User = {
     };
   };
 };
+
+export type Clan = {
+  id: number;
+  name: string;
+  tag: string;
+  members: {
+    id: number;
+    name: string;
+    country: string;
+    rank: string;
+  }[];
+  owner: {
+    id: number;
+    name: string;
+    country: string;
+    rank: string;
+  };
+};

@@ -9,6 +9,7 @@
 	import { apiUrl, appName, avatarUrl } from '$lib/env';
 	import { queryParam } from 'sveltekit-search-params';
 	import { regionNames } from '$lib/stringUtil';
+	import { removeClanTag } from '$lib/regex';
 
 	const modes = ['osu', 'taiko', 'catch', 'mania'];
 	const types = ['vanilla', 'relax', 'autopilot'];
@@ -228,7 +229,7 @@
 			<div class="w-full p-5 overflow-x-auto">
 				<table class="w-full overflow-x-auto">
 					<thead class="text-center">
-						<td></td>
+						<td class="w-14"></td>
 						<td></td>
 						<td class="w-24">Accuracy</td>
 						<td class="w-24">Play Count</td>
@@ -299,7 +300,17 @@
 														/>
 													{/key}
 												</div>
-												<span class="font-semibold">{user.name}</span>
+												{#if user.clan_tag}
+													<a
+														class="chip p-1.5 min-w-7 variant-soft-primary hover:variant-filled-primary"
+														href="/clan/{user.clan_id}"
+													>
+														{user.clan_tag}
+													</a>
+												{/if}
+												<span class="font-semibold truncate text-ellipsis">
+													{removeClanTag(user.name)}
+												</span>
 											</div>
 										</td>
 										<td class="text-center">{user.acc.toFixed(2)}%</td>

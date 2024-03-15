@@ -115,7 +115,7 @@
 			<NavItems {drawerStore} />
 		</div>
 	{:else if $drawerStore.id == 'search'}
-		<div class="p-3 pb-0 w-full h-full flex flex-col">
+		<div class="p-3 pb-0 w-full h-full flex flex-col overflow-hidden">
 			<input
 				class="input mb-3 rounded-lg"
 				placeholder="Who are you looking for?"
