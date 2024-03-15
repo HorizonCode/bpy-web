@@ -16,8 +16,12 @@
 	export let data;
 	let clan: Clan | undefined;
 
-	const queryMode = queryParam('mode');
-	const queryType = queryParam('type');
+	const queryMode = queryParam('mode', undefined, {
+		pushHistory: false
+	});
+	const queryType = queryParam('type', undefined, {
+		pushHistory: false
+	});
 
 	let loading = false;
 	let failed = false;

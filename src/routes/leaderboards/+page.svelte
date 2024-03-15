@@ -20,9 +20,15 @@
 	let loading = false;
 	let failed = false;
 
-	const queryMode = queryParam('mode');
-	const queryType = queryParam('type');
-	const queryPage = queryParam('page');
+	const queryMode = queryParam('mode', undefined, {
+		pushHistory: false
+	});
+	const queryType = queryParam('type', undefined, {
+		pushHistory: false
+	});
+	const queryPage = queryParam('page', undefined, {
+		pushHistory: false
+	});
 
 	let currentType = 'vanilla';
 	let currentMode = 'osu';
