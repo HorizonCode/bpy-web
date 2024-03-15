@@ -9,8 +9,11 @@
 	import { cubicInOut } from 'svelte/easing';
 	import { queryParam } from 'sveltekit-search-params';
 	import { Edit2 } from 'svelte-feathers';
+	import type { Clan } from '$lib/types';
+	import { getClan } from '$lib/request';
 
 	export let data;
+	let clan: Clan | undefined;
 
 	const queryMode = queryParam('mode');
 	const queryType = queryParam('type');
@@ -85,7 +88,7 @@
 		updateModeInt();
 	};
 
-	onMount(() => {
+	onMount(async () => {
 		if (data.user?.info.id) {
 			const selectedMode = $queryMode;
 			const selectedType = $queryType;
@@ -93,6 +96,8 @@
 			if (types.includes(selectedType!)) currentType = selectedType!;
 
 			updateModeInt();
+
+			if (data.user.info.clan_id) clan = await getClan(data.user.info.clan_id);
 		}
 	});
 </script>
@@ -217,8 +222,15 @@
 							alt="playerProfile"
 						/>
 					</div>
-					<div class="flex flex-col my-auto gap-1 md:gap-2 ms-2 md:ms-36">
-						<div class="text-xl md:text-2xl">
+					<div class="flex flex-col my-auto gap-1 md:gap-2 ms-2 md:ms-36 z-10">
+						<div class="flex flex-row items-center gap-1 text-xl md:text-2xl">
+							{#if clan}
+								<a
+									class="chip variant-soft-primary hover:variant-filled-primary"
+									href="/clan/{clan.id}">{clan.tag}</a
+								>
+							{/if}
+
 							{data.user.info.name}
 						</div>
 						<div class="flex flex-row md:gap-2">
@@ -246,7 +258,7 @@
 						<div class="flex flex-col font-semibold text-xs text-end">
 							<Popup placement="top">
 								<div
-									class="relative h-2 w-24 lg:w-52 bg-gray-950 rounded-lg border border-surface-700"
+									class="hidden md:block relative h-2 w-24 lg:w-52 bg-gray-950 rounded-lg border border-surface-700"
 								>
 									<div
 										class="bg-gradient-to-r from-primary-400 to-primary-600 h-full rounded-lg"
