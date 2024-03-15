@@ -32,7 +32,7 @@ export const getBeatmapScores = async (
 ) => {
   try {
     const requestedMapData = await fetch(
-      `${apiUrl}/get_map_scores?md5=${beatmapMd5}&mode=${mode}&scope=${scope}`,
+      `${apiUrl}/get_map_scores?md5=${beatmapMd5}&mode=${mode}&limit=50&scope=${scope}`,
     );
     if (!requestedMapData.ok) return undefined;
     return await requestedMapData.json() as MapScores;
