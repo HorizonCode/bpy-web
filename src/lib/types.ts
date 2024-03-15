@@ -80,3 +80,66 @@ export type Clan = {
     rank: string;
   };
 };
+
+export type MapInfo = {
+  status: "success" | string;
+  map: {
+    md5: string;
+    id: number;
+    set_id: number;
+    artist: string;
+    title: string;
+    version: string;
+    creator: string;
+    last_update: string;
+    total_length: number;
+    max_combo: number;
+    status: number;
+    plays: number;
+    passes: number;
+    mode: number;
+    bpm: number;
+    cs: number;
+    od: number;
+    ar: number;
+    hp: number;
+    diff: number;
+  };
+};
+
+export type Score = {
+  map_md5: string;
+  score: number;
+  pp: number;
+  acc: number;
+  max_combo: number;
+  mods: number;
+  n300: number;
+  n100: number;
+  n50: number;
+  nmiss: number;
+  ngeki: number;
+  nkatu: number;
+  grade: string;
+  status: number;
+  mode: number;
+  play_time: string;
+  time_elapsed: number;
+  userid: number;
+  perfect: number;
+  player_name: string;
+  country: string;
+  clan_id: number;
+  clan_name: string;
+  clan_tag: string;
+};
+
+export type MapScores = {
+  status: "success" | string;
+  scores: Score[];
+};
+
+export type Mod = {
+  name: string;
+  short_name: string;
+};

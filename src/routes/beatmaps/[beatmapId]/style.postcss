@@ -1,0 +1,54 @@
+table {
+	@apply border-separate;
+	border-spacing: 0 5px;
+}
+
+table thead td {
+	@apply text-xs pb-2 text-surface-300;
+}
+
+table tbody tr {
+	@apply hover:scale-[1.005] active:scale-[0.995] transition-transform;
+}
+
+table tbody tr td {
+	@apply p-2;
+	@apply cursor-pointer;
+}
+
+table tbody tr td:first-child {
+	@apply rounded-l-lg;
+	@apply w-[20px];
+}
+
+table tbody tr td:last-child {
+	@apply rounded-r-lg;
+}
+
+.grade {
+	font-size: 1.25rem;
+	@apply text-red-400;
+	@apply shadow;
+}
+
+.grade.grade-sh,
+.grade.grade-xh {
+	@apply text-gray-300;
+}
+
+.grade.grade-s,
+.grade.grade-x {
+	@apply text-yellow-500;
+}
+
+.grade.grade-a {
+	@apply text-green-500;
+}
+
+.grade.grade-b {
+	@apply text-blue-600;
+}
+
+.grade.grade-c {
+	@apply text-purple-500;
+}

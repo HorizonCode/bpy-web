@@ -1,15 +1,9 @@
-import { apiUrl } from "$lib/env.js";
-import type { Clan } from "$lib/types.js";
+import { getClan } from "$lib/request.js";
 
 export async function load({ params }) {
-  const requestedClanId = params.clanId;
-
-  const requestedUserData = await fetch(
-    `${apiUrl}/get_clan?id=${requestedClanId}`,
-  );
-  if (!requestedUserData.ok) return {};
-  const requestedUserDataJson = await requestedUserData.json() as Clan;
+  const clanId = params.clanId;
+  if (!(/^\d.+$/.test(clanId))) return {};
   return {
-    clan: requestedUserDataJson,
+    clan: await getClan(parseInt(clanId)),
   };
 }
