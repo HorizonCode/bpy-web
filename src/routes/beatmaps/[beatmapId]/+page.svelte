@@ -206,8 +206,10 @@
 					<div
 						class="absolute w-full h-full bg-black/70 flex flex-col justify-center items-center md:gap-1"
 					>
-						<p class="text-white text-2xl md:text-3xl">{data.map.title}</p>
-						<p class="text-white md:text-xl">{data.map.artist}</p>
+						<p class="text-white text-2xl md:text-3xl truncate text-ellipsis">
+							{data.map.title} [{data.map.version}]
+						</p>
+						<p class="text-white md:text-xl truncate text-ellipsis">{data.map.artist}</p>
 						<div class="flex flex-row gap-5 items-center bg-black/80 rounded-full p-2 py-1 text-sm">
 							<Popup placement="top">
 								<div class="flex flex-row gap-1 items-center">
