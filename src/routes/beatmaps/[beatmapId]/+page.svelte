@@ -2,7 +2,7 @@
 	import './style.postcss';
 	import { goto } from '$app/navigation';
 	import Popup from '$lib/Popup.svelte';
-	import { apiUrl, appName, appUrl, avatarUrl } from '$lib/env';
+	import { appName, appUrl } from '$lib/env';
 	import { removeClanTag } from '$lib/regex';
 	import { numberHumanReadable, regionNames } from '$lib/stringUtil';
 	import { getFormattedTimeFromSeconds, getTimeSince } from '$lib/time';
@@ -14,6 +14,10 @@
 	import { getBeatmapScores } from '$lib/request.js';
 	import { parseModsInt } from '$lib/mods';
 
+	/*TODO: fix this page, its still very buggy
+	 * - Scores not sorting properly at some times
+	 * - when Mods are in a popup, they are multiply after each mode/type change
+	 */
 	export let data;
 
 	let currentLeaderboard: Score[] = [];
