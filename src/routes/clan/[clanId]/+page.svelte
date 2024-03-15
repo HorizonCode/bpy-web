@@ -28,9 +28,9 @@
 						</div>
 					</div>
 				</div>
-				<div class="w-full flex flex-col items-center justify-center p-3 bg-surface-800">
+				<div class="w-full flex flex-col gap-3 items-center justify-center p-3 bg-surface-800">
 					<div class="w-full text-center">
-						<p class="text-4xl">Clan Owner</p>
+						<p class="text-4xl mb-3">Clan Owner</p>
 						<div
 							class=" mx-auto flex flex-row items-center gap-3 bg-surface-700 w-fit p-3 rounded-lg"
 						>
@@ -51,7 +51,7 @@
 						</div>
 					</div>
 					<div class="w-full text-center">
-						<p class="text-4xl">Clan Members</p>
+						<p class="text-4xl mb-3">Clan Members</p>
 						<div class="mx-auto grid grid-cols-2 gap-2">
 							{#each data.clan.members as member}
 								<div
