@@ -11,6 +11,7 @@
 	import { Edit2 } from 'svelte-feathers';
 	import type { Clan } from '$lib/types';
 	import { getClan } from '$lib/request';
+	import { userData } from '$lib/storage';
 
 	export let data;
 	let clan: Clan | undefined;
@@ -201,12 +202,14 @@
 					class="relative h-28 md:h-64 bg-center bg-cover bg-no-repeat"
 					style="background-image: url('/u/{data.user.info.id}/cover');"
 				>
-					<a
-						class="btn btn-icon variant-filled-surface absolute flex justify-center items-center bottom-2 right-2 h-10 w-10"
-						href="/settings/cover"
-					>
-						<Edit2 class="pointer-events-none" size={20} />
-					</a>
+					{#if $userData?.id == data.user.info.id}
+						<a
+							class="btn btn-icon variant-filled-surface absolute flex justify-center items-center bottom-2 right-2 h-10 w-10"
+							href="/settings/cover"
+						>
+							<Edit2 class="pointer-events-none" size={20} />
+						</a>
+					{/if}
 				</div>
 				<div class="relative flex flex-row bg-surface-600 md:px-12 p-2">
 					<div
