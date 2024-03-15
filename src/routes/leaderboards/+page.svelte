@@ -226,7 +226,7 @@
 				</button>
 			</div>
 		{:else}
-			<div class="w-full p-5 overflow-x-auto">
+			<div class="w-full p-5 overflow-x-auto table-container">
 				<table class="w-full overflow-x-auto">
 					<thead class="text-center">
 						<td class="w-14"></td>
