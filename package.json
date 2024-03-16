@@ -14,7 +14,7 @@
     "format": "prettier --write ."
   },
   "devDependencies": {
-    "@dotenvx/dotenvx": "^0.25.0",
+    "@dotenvx/dotenvx": "^0.14.0",
     "@skeletonlabs/skeleton": "2.8.0",
     "@skeletonlabs/tw-plugin": "0.3.1",
     "@sveltejs/adapter-auto": "^3.0.0",
@@ -57,6 +57,7 @@
   "type": "module",
   "dependencies": {
     "@floating-ui/dom": "1.6.1",
+    "country-list": "^2.3.0",
     "dotenv": "^16.4.5",
     "highlight.js": "11.9.0",
     "knex": "^3.1.0",

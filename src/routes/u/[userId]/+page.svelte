@@ -13,6 +13,8 @@
 	import { getClan } from '$lib/request';
 	import { userData } from '$lib/storage';
 
+	import { getName } from 'country-list'
+
 	export let data;
 	let clan: Clan | undefined;
 
@@ -249,7 +251,7 @@
 								/>
 								<svelte:fragment slot="popup">
 									<div class="card p-2 px-4 rounded-lg variant-filled-surface text-sm">
-										{regionNames.of(data.user.info.country.toUpperCase()) ?? 'Unknown'}
+										{getName(data.user.info.country.toUpperCase())}
 										<div
 											class="arrow border-r border-b border-gray-700 variant-filled-surface"
 										></div>
@@ -257,7 +259,7 @@
 								</svelte:fragment>
 							</Popup>
 							<span class="hidden md:block"
-								>{regionNames.of(data.user.info.country.toUpperCase()) ?? 'Unknown'}</span
+								>{getName(data.user.info.country.toUpperCase())}</span
 							>
 						</div>
 					</div>
