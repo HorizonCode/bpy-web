@@ -14,6 +14,34 @@
 </script>
 
 <div class="w-full flex flex-col flex-wrap gap-1 p-3 overflow-auto">
+    <div
+    class="flex flex-row items-center justify-between gap-2 py-1 px-2 text-sm"
+>
+        <!-- is needed to force the data to update because of the transition -->
+        <div class="flex flex-row items-center gap-2">
+        </div>
+        <div class="flex flex-row-reverse text-center items-center gap-1">
+            <!-- right side of the leaderboard entry-->
+            <div class="min-w-8 text-center font-bold text-xs text-surface-300">
+                A
+            </div>
+            <div class="min-w-8 text-center font-bold text-xs text-surface-300">
+                S
+            </div>
+            <div class="min-w-8 text-center font-bold text-xs text-surface-300">
+                SS
+            </div>
+            <div class="min-w-12 text-center font-bold text-xs text-white">
+                PP
+            </div>
+            <div class="min-w-16 text-center font-bold text-xs text-surface-300">
+                Play Count
+            </div>
+            <div class="min-w-20 text-center font-bold text-xs text-surface-300">
+                Accuracy
+            </div>
+        </div>
+</div>
 	{#each leaderboardData as user, rank}
 		<!-- svelte-ignore a11y-click-events-have-key-events -->
 		<!-- svelte-ignore a11y-no-static-element-interactions -->
@@ -65,8 +93,11 @@
 					<div class="min-w-12 text-center font-bold text-xs text-white">
 						{numberHumanReadable(user.pp)}
 					</div>
-					<div class="min-w-24 text-center font-bold text-xs text-surface-300">
-						{numberHumanReadable(user.rscore)}
+					<div class="min-w-16 text-center font-bold text-xs text-surface-300">
+						{numberHumanReadable(user.plays)}
+					</div>
+                    <div class="min-w-20 text-center font-bold text-xs text-surface-300">
+						{user.acc.toFixed(2)}%
 					</div>
 				</div>
 			{/key}
