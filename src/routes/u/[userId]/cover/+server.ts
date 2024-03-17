@@ -1,5 +1,5 @@
 import path from 'path';
-import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'fs';
+import { existsSync, mkdirSync, writeFileSync } from 'fs';
 import { readFile } from 'fs/promises';
 
 const coversFolder = path.join(process.cwd(), 'covers');
