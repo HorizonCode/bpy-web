@@ -10,8 +10,6 @@ export function makeid(length?: number): string {
   ).join("");
 }
 
-export const regionNames = new Intl.DisplayNames(["en"], { type: "region" });
-
 export const numberHumanReadable = (number: number) => {
   return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 };

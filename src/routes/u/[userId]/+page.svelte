@@ -2,7 +2,6 @@
 	import './style.postcss';
 	import Popup from '$lib/Popup.svelte';
 	import { appName, appUrl, avatarUrl } from '$lib/env';
-	import { regionNames } from '$lib/stringUtil';
 	import { getLevelProgress, getLevel } from '$lib/level';
 	import { tweened } from 'svelte/motion';
 	import { onMount } from 'svelte';
@@ -12,6 +11,7 @@
 	import type { Clan } from '$lib/types';
 	import { getClan } from '$lib/request';
 	import { userData } from '$lib/storage';
+	import { getCountryName } from '$lib/country';
 
 	export let data;
 	let clan: Clan | undefined;
@@ -249,16 +249,14 @@
 								/>
 								<svelte:fragment slot="popup">
 									<div class="card p-2 px-4 rounded-lg variant-filled-surface text-sm">
-										{regionNames.of(data.user.info.country.toUpperCase()) ?? 'Unknown'}
+										{getCountryName(data.user.info.country)}
 										<div
 											class="arrow border-r border-b border-gray-700 variant-filled-surface"
 										></div>
 									</div>
 								</svelte:fragment>
 							</Popup>
-							<span class="hidden md:block"
-								>{regionNames.of(data.user.info.country.toUpperCase()) ?? 'Unknown'}</span
-							>
+							<span class="hidden md:block">{getCountryName(data.user.info.country)}</span>
 						</div>
 					</div>
 					<div class="ms-auto flex flex-row items-center gap-5">

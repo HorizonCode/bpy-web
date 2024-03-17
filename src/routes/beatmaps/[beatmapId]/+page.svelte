@@ -4,7 +4,7 @@
 	import Popup from '$lib/Popup.svelte';
 	import { appName, appUrl } from '$lib/env';
 	import { removeClanTag } from '$lib/regex';
-	import { numberHumanReadable, regionNames } from '$lib/stringUtil';
+	import { numberHumanReadable } from '$lib/stringUtil';
 	import { getFormattedTimeFromSeconds, getTimeSince } from '$lib/time';
 	import { onMount } from 'svelte';
 	import { ArrowUpRight, CheckCircle, Clock, Download, PlayCircle, Star } from 'svelte-feathers';
@@ -13,6 +13,7 @@
 	import { type Score } from '$lib/types';
 	import { getBeatmapScores } from '$lib/request.js';
 	import { parseModsInt } from '$lib/mods';
+	import { getCountryName } from '$lib/country';
 
 	/*TODO: fix this page, its still very buggy
 	 * - Scores not sorting properly at some times
@@ -368,16 +369,14 @@
 														<Popup placement="right">
 															<img
 																src="/flags/{score.country.toUpperCase()}.png"
-																alt="{regionNames.of(score.country) ??
-																	score.country.toUpperCase()} Flag"
+																alt="{getCountryName(score.country)} Flag"
 																class="h-5 w-7 shadow-[0_2px_5px_1px_rgba(0,0,0,0.3)] pointer-events-none"
 															/>
 															<svelte:fragment slot="popup">
 																<div
 																	class="card p-2 px-4 rounded-lg variant-filled-surface text-sm"
 																>
-																	{regionNames.of(score.country.toUpperCase()) ??
-																		score.country.toUpperCase()}
+																	{getCountryName(score.country)}
 																	<div
 																		class="arrow border-l border-b border-gray-700 variant-filled-surface"
 																	></div>

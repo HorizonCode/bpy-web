@@ -8,8 +8,8 @@
 	import Popup from '$lib/Popup.svelte';
 	import { apiUrl, appName, avatarUrl } from '$lib/env';
 	import { queryParam } from 'sveltekit-search-params';
-	import { regionNames } from '$lib/stringUtil';
 	import { removeClanTag } from '$lib/regex';
+	import { getCountryName } from '$lib/country';
 
 	const modes = ['osu', 'taiko', 'catch', 'mania'];
 	const types = ['vanilla', 'relax', 'autopilot'];
@@ -282,13 +282,12 @@
 												<Popup placement="right">
 													<img
 														src="/flags/{user.country.toUpperCase()}.png"
-														alt="{regionNames.of(user.country) ?? user.country.toUpperCase()} Flag"
+														alt="{getCountryName(user.country)} Flag"
 														class="h-5 w-7 shadow-[0_2px_5px_1px_rgba(0,0,0,0.3)] pointer-events-none"
 													/>
 													<svelte:fragment slot="popup">
 														<div class="card p-2 px-4 rounded-lg variant-filled-surface text-sm">
-															{regionNames.of(user.country.toUpperCase()) ??
-																user.country.toUpperCase()}
+															{getCountryName(user.country)}
 															<div
 																class="arrow border-l border-b border-gray-700 variant-filled-surface"
 															></div>
