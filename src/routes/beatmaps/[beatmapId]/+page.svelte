@@ -1,7 +1,7 @@
 <script lang="ts">
 	import './style.postcss';
 	import { goto } from '$app/navigation';
-	import Popup from '$lib/Popup.svelte';
+	import Popup from '$lib/components/Popup.svelte';
 	import { appName, appUrl } from '$lib/env';
 	import { removeClanTag } from '$lib/regex';
 	import { numberHumanReadable } from '$lib/stringUtil';

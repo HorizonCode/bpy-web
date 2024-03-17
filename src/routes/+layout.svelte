@@ -39,7 +39,7 @@
 	import { onMount } from 'svelte';
 	import { appName, avatarUrl, apiUrl } from '$lib/env';
 	import { Menu, Search } from 'svelte-feathers';
-	import NavItems from '$lib/navItems.svelte';
+	import NavItems from '$lib/components/navItems.svelte';
 
 	storePopup.set({ computePosition, autoUpdate, flip, shift, offset, arrow });
 	initializeStores();

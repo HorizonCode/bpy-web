@@ -1,6 +1,6 @@
 <script lang="ts">
 	import './style.postcss';
-	import Popup from '$lib/Popup.svelte';
+	import Popup from '$lib/components/Popup.svelte';
 	import { appName, appUrl, avatarUrl } from '$lib/env';
 	import { getLevelProgress, getLevel } from '$lib/level';
 	import { tweened } from 'svelte/motion';

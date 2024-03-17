@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { Placement } from '@floating-ui/dom';
 	import { popup, type PopupSettings } from '@skeletonlabs/skeleton';
-	import { makeid } from './stringUtil';
+	import { makeid } from '../stringUtil';
 
 	let popupUuid = makeid();
 	export let event: 'hover' | 'click' | 'focus-blur' | 'focus-click' = 'hover';

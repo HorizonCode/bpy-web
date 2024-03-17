@@ -1,20 +1,16 @@
 <script lang="ts">
-	import './style.postcss';
 	import type { LBUser } from '$lib/types';
 	import { onMount } from 'svelte';
 	import { ChevronLeft, ChevronRight } from 'svelte-feathers';
-	import { goto } from '$app/navigation';
-	import { scale } from 'svelte/transition';
-	import Popup from '$lib/Popup.svelte';
-	import { apiUrl, appName, avatarUrl } from '$lib/env';
+	import { apiUrl, appName } from '$lib/env';
 	import { queryParam } from 'sveltekit-search-params';
-	import { removeClanTag } from '$lib/regex';
-	import { getCountryName } from '$lib/country';
+	import Leaderboard from '$lib/components/leaderboard.svelte';
 
 	const modes = ['osu', 'taiko', 'catch', 'mania'];
 	const types = ['vanilla', 'relax', 'autopilot'];
 
 	let currentLeaderboard: LBUser[] = [];
+	const usersPerPage = 50;
 
 	let firstLoad = true;
 	let loading = false;
@@ -79,12 +75,12 @@
 		urlParams.set('mode', mode.toFixed(0));
 
 		urlParams.set('limit', '50');
-		urlParams.set('offset', ((currentPage - 1) * 50).toFixed(0));
+		urlParams.set('offset', ((currentPage - 1) * usersPerPage).toFixed(0));
 
 		try {
 			const leaderboard = await fetch(`${apiUrl}/get_leaderboard?` + urlParams.toString());
 			const leaderboardJSON = await leaderboard.json();
-			hasNextPage = leaderboardJSON.leaderboard.length >= 50;
+			hasNextPage = leaderboardJSON.leaderboard.length >= usersPerPage;
 			currentLeaderboard = leaderboardJSON.leaderboard;
 			failed = false;
 			firstLoad = false;
@@ -133,8 +129,8 @@
 </svelte:head>
 
 <div class="container mx-auto w-full p-5">
-	<div class="bg-surface-700 flex flex-col justify-center gap-4 p-2 rounded-lg">
-		<div class="grid md:grid-cols-[auto_auto] gap-2">
+	<div class="bg-surface-700 flex flex-col justify-center gap-4 rounded-lg">
+		<div class="grid md:grid-cols-[auto_auto] gap-2 p-3">
 			<div class="w-full justify-center md:justify-start flex rounded-lg">
 				<button
 					class="w-[100%] md:w-[25%] !scale-100 btn {currentType == 'vanilla'
@@ -207,147 +203,58 @@
 				</button>
 			</div>
 		</div>
-		<div class="w-full flex flex-row justify-between items-center px-2">
-			<button
-				class="btn variant-filled-surface rounded-lg"
-				on:click={prevPage}
-				disabled={currentPage <= 1 || loading || failed}
-			>
-				<ChevronLeft class="outline-none border-none" />
-			</button>
-			<p class="text-slate-400">Page {currentPage}</p>
-			<button
-				class="btn variant-filled-surface rounded-lg"
-				on:click={nextPage}
-				disabled={loading || failed || !hasNextPage}
-			>
-				<ChevronRight class="outline-none border-none" />
-			</button>
-		</div>
-		{#if failed}
-			<div class="w-full flex flex-col justify-center items-center gap-2">
-				<p class="text-slate-400">Failed to load leaderboard.</p>
-				<button class="btn variant-filled-surface rounded-lg" on:click={refreshLeaderboard}>
-					Refresh
+		<div class="bg-surface-800 p-3 px-0">
+			<div class="w-full flex flex-row justify-between items-center px-2">
+				<button
+					class="btn variant-filled-surface rounded-lg"
+					on:click={prevPage}
+					disabled={currentPage <= 1 || loading || failed}
+				>
+					<ChevronLeft class="outline-none border-none" />
+				</button>
+				<p class="text-slate-400">Page {currentPage}</p>
+				<button
+					class="btn variant-filled-surface rounded-lg"
+					on:click={nextPage}
+					disabled={loading || failed || !hasNextPage}
+				>
+					<ChevronRight class="outline-none border-none" />
 				</button>
 			</div>
-		{:else}
-			<div class="w-full p-5 overflow-x-auto table-container">
-				<table class="w-full overflow-x-auto">
-					<thead class="text-center">
-						<td class="w-14"></td>
-						<td></td>
-						<td class="w-24">Accuracy</td>
-						<td class="w-24">Play Count</td>
-						<td class="w-24">Performance</td>
-						<td class="w-24">SS</td>
-						<td class="w-24">S</td>
-						<td class="w-24">A</td>
-					</thead>
-					<tbody>
-						{#if firstLoad}
-							{#each { length: 50 } as _, i}
-								<tr
-									class="bg-surface-800 rounded animate-pulse"
-									transition:scale={{ duration: 200, delay: 100 * i }}
-								>
-									<td class="text-center">#{i + (currentPage - 1) * 50 + 1}</td>
-									<td>
-										<div class="flex flex-row items-center gap-2">
-											<div class="h-5 w-7 placeholder rounded-lg"></div>
-											<div class="h-10 w-11 placeholder rounded-[30%]"></div>
-											<div class="w-full placeholder"></div>
-										</div>
-									</td>
-									<td class="text-center"><div class="placeholder"></div></td>
-									<td class="text-center"><div class="placeholder"></div></td>
-									<td class="text-center"><div class="placeholder"></div></td>
-									<td class="text-center"><div class="placeholder"></div></td>
-									<td class="text-center"><div class="placeholder"></div></td>
-									<td class="text-center"><div class="placeholder"></div></td>
-								</tr>
-							{/each}
-						{:else}
-							{#key failed}
-								{#each currentLeaderboard as user, i}
-									<tr
-										class="bg-surface-800 rounded"
-										on:click={() =>
-											goto(`/u/${user.player_id}?mode=${currentMode}&type=${currentType}`)}
-										transition:scale={{ start: 0.995, duration: 200, delay: 50 * (i / 2) }}
-									>
-										<td class="text-center">#{i + (currentPage - 1) * 50 + 1}</td>
-										<td>
-											<div class="flex flex-row items-center gap-2">
-												<Popup placement="right">
-													<img
-														src="/flags/{user.country.toUpperCase()}.png"
-														alt="{getCountryName(user.country)} Flag"
-														class="h-5 w-7 shadow-[0_2px_5px_1px_rgba(0,0,0,0.3)] pointer-events-none"
-													/>
-													<svelte:fragment slot="popup">
-														<div class="card p-2 px-4 rounded-lg variant-filled-surface text-sm">
-															{getCountryName(user.country)}
-															<div
-																class="arrow border-l border-b border-gray-700 variant-filled-surface"
-															></div>
-														</div>
-													</svelte:fragment>
-												</Popup>
-												<div
-													class="h-10 w-10 rounded-[30%] shadow-[0_2px_5px_1px_rgba(0,0,0,0.3)] bg-surface-600 overflow-hidden"
-												>
-													{#key user}
-														<img
-															class="h-10 w-10"
-															src="{avatarUrl}/{user.player_id}"
-															alt="profilePicture"
-														/>
-													{/key}
-												</div>
-												{#if user.clan_tag}
-													<a
-														class="chip p-1.5 min-w-7 variant-soft-primary hover:variant-filled-primary"
-														href="/clan/{user.clan_id}"
-													>
-														{user.clan_tag}
-													</a>
-												{/if}
-												<span class="font-semibold truncate text-ellipsis">
-													{removeClanTag(user.name)}
-												</span>
-											</div>
-										</td>
-										<td class="text-center">{user.acc.toFixed(2)}%</td>
-										<td class="text-center">{user.plays}</td>
-										<td class="text-center">{user.pp.toFixed(0)}</td>
-										<td class="text-center">{user.x_count + user.xh_count}</td>
-										<td class="text-center">{user.s_count + user.sh_count}</td>
-										<td class="text-center">{user.a_count}</td>
-									</tr>
-								{/each}
-							{/key}
-						{/if}
-					</tbody>
-				</table>
+			{#if failed}
+				<div class="w-full flex flex-col justify-center items-center gap-2">
+					<p class="text-slate-400">Failed to load leaderboard.</p>
+					<button class="btn variant-filled-surface rounded-lg" on:click={refreshLeaderboard}>
+						Refresh
+					</button>
+				</div>
+			{:else}
+				<Leaderboard
+					leaderboardData={currentLeaderboard}
+					page={currentPage}
+					{usersPerPage}
+					{currentMode}
+					{currentType}
+				/>
+			{/if}
+
+			<div class="w-full flex flex-row justify-between items-center px-2 mb-2">
+				<button
+					class="btn variant-filled-surface rounded-lg"
+					on:click={prevPage}
+					disabled={currentPage <= 1 || loading || failed}
+				>
+					<ChevronLeft class="outline-none border-none" />
+				</button>
+				<p class="text-slate-400">Page {currentPage}</p>
+				<button
+					class="btn variant-filled-surface rounded-lg"
+					on:click={nextPage}
+					disabled={loading || failed || !hasNextPage}
+				>
+					<ChevronRight class="outline-none border-none" />
+				</button>
 			</div>
-		{/if}
-		<div class="w-full flex flex-row justify-between items-center px-2 mb-2">
-			<button
-				class="btn variant-filled-surface rounded-lg"
-				on:click={prevPage}
-				disabled={currentPage <= 1 || loading || failed}
-			>
-				<ChevronLeft class="outline-none border-none" />
-			</button>
-			<p class="text-slate-400">Page {currentPage}</p>
-			<button
-				class="btn variant-filled-surface rounded-lg"
-				on:click={nextPage}
-				disabled={loading || failed || !hasNextPage}
-			>
-				<ChevronRight class="outline-none border-none" />
-			</button>
 		</div>
 	</div>
 </div>
