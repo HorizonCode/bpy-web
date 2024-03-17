@@ -8,6 +8,7 @@
 
 	const modes = ['osu', 'taiko', 'catch', 'mania'];
 	const types = ['vanilla', 'relax', 'autopilot'];
+	const sorts = ['pp', 'acc', 'plays'];
 
 	let currentLeaderboard: LBUser[] = [];
 	const usersPerPage = 50;
@@ -22,19 +23,25 @@
 	const queryType = queryParam('type', undefined, {
 		pushHistory: false
 	});
+	const querySort = queryParam('sort', undefined, {
+		pushHistory: false
+	});
 	const queryPage = queryParam('page', undefined, {
 		pushHistory: false
 	});
 
 	let currentType = 'vanilla';
 	let currentMode = 'osu';
+	let currentSort = 'pp';
 	let currentPage = 1;
 	let hasNextPage = true;
 
 	const selectedMode = $queryMode;
 	const selectedType = $queryType;
+	const selectedSort = $querySort;
 	if (modes.includes(selectedMode!)) currentMode = selectedMode!;
 	if (types.includes(selectedType!)) currentType = selectedType!;
+	if (sorts.includes(selectedSort!)) currentSort = selectedSort!;
 	if (/^\d+$/.test($queryPage!) && parseInt($queryPage!) > 0) currentPage = parseInt($queryPage!);
 
 	const refreshLeaderboard = async () => {
@@ -49,6 +56,7 @@
 
 		queryMode.set(currentMode);
 		queryType.set(currentType);
+		querySort.set(currentSort);
 		queryPage.set(currentPage.toFixed(0));
 
 		switch (currentMode) {
@@ -73,7 +81,7 @@
 		}
 
 		urlParams.set('mode', mode.toFixed(0));
-
+		urlParams.set('sort', currentSort);
 		urlParams.set('limit', '50');
 		urlParams.set('offset', ((currentPage - 1) * usersPerPage).toFixed(0));
 
@@ -104,6 +112,13 @@
 		refreshLeaderboard();
 	};
 
+	const setSort = (sort: string) => {
+		if (currentSort == sort) return;
+		currentPage = 1;
+		currentSort = sort;
+		refreshLeaderboard();
+	};
+
 	const nextPage = () => {
 		currentPage += 1;
 		const pageMain = document.getElementById('page');
@@ -130,8 +145,37 @@
 
 <div class="container mx-auto w-full p-5">
 	<div class="bg-surface-700 flex flex-col justify-center gap-4 rounded-lg">
+		<div class="w-full flex justify-center pt-3 px-3">
+			<button
+				class="w-[100%] !scale-100 btn {currentSort == 'pp'
+					? 'bg-surface-500'
+					: 'bg-surface-600'} rounded-lg rounded-r-none"
+				on:click={() => setSort('pp')}
+				disabled={loading || failed}
+			>
+				Performance
+			</button>
+			<button
+				class="w-[100%] !scale-100 btn {currentSort == 'plays'
+					? 'bg-surface-500'
+					: 'bg-surface-600'} rounded-none"
+				on:click={() => setSort('plays')}
+				disabled={loading || failed}
+			>
+				Plays
+			</button>
+			<button
+				class="w-[100%] !scale-100 btn {currentSort == 'acc'
+					? 'bg-surface-500'
+					: 'bg-surface-600'} rounded-lg rounded-l-none"
+				on:click={() => setSort('acc')}
+				disabled={loading || failed}
+			>
+				Accuracy
+			</button>
+		</div>
 		<div class="grid md:grid-cols-[auto_auto] gap-2 p-3">
-			<div class="w-full justify-center md:justify-start flex rounded-lg">
+			<div class="w-full flex justify-center md:justify-start rounded-lg">
 				<button
 					class="w-[100%] md:w-[25%] !scale-100 btn {currentType == 'vanilla'
 						? 'bg-surface-500'
