@@ -111,18 +111,18 @@ export function getRequiredScoreForLevel(level: number): number {
   return LEVEL_GRAPH[99] + 100000000000 * Math.floor(level - 100);
 }
 
-export function getLevel(score: number): number {
-  if (score <= 0) {
+export function getLevel(totalScore: number): number {
+  if (totalScore <= 0) {
     return 1;
   }
 
-  if (score >= LEVEL_GRAPH[99]) {
-    return 100 + Math.floor((score - LEVEL_GRAPH[99]) / 100000000000);
+  if (totalScore >= LEVEL_GRAPH[99]) {
+    return 100 + Math.floor((totalScore - LEVEL_GRAPH[99]) / 100000000000);
   }
 
   for (let idx = 0; idx < LEVEL_GRAPH.length; idx++) {
     const v = LEVEL_GRAPH[idx];
-    if (v > score) {
+    if (v > totalScore) {
       return idx + 1;
     }
   }
@@ -130,10 +130,10 @@ export function getLevel(score: number): number {
   return 1;
 }
 
-export function getLevelPrecise(score: number): number {
-  const baseLevel = getLevel(score);
+export function getLevelPrecise(totalScore: number): number {
+  const baseLevel = getLevel(totalScore);
   const baseLevelScore = getRequiredScoreForLevel(baseLevel);
-  const scoreProgress = score - baseLevelScore;
+  const scoreProgress = totalScore - baseLevelScore;
   const scoreLevelDifference = getRequiredScoreForLevel(baseLevel + 1) -
     baseLevelScore;
 
@@ -145,6 +145,6 @@ export function getLevelPrecise(score: number): number {
   return res;
 }
 
-export function getLevelProgress(score: number): number {
-  return (getLevel(score) - getLevelPrecise(score)) * 100;
+export function getLevelProgress(totalScore: number): number {
+  return (getLevel(totalScore) - getLevelPrecise(totalScore)) * 100;
 }
