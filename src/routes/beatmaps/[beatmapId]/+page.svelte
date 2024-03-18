@@ -25,7 +25,7 @@
 	let currentLeaderboard: Score[] = [];
 
 	let firstLoad = true;
-	let loading = false;
+	let loading = true;
 	let failed = false;
 
 	const queryMode = queryParam('mode', undefined, {
@@ -42,7 +42,7 @@
 	const types = ['vanilla', 'relax', 'autopilot'];
 
 	const refreshLeaderboard = async () => {
-		if (loading) return;
+		if (loading && !firstLoad) return;
 		loading = true;
 		currentLeaderboard = [];
 		let mode = 0;

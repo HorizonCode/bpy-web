@@ -14,7 +14,7 @@
 	const usersPerPage = 50;
 
 	let firstLoad = true;
-	let loading = false;
+	let loading = true;
 	let failed = false;
 
 	const queryMode = queryParam('mode', undefined, {
@@ -45,7 +45,7 @@
 	if (/^\d+$/.test($queryPage!) && parseInt($queryPage!) > 0) currentPage = parseInt($queryPage!);
 
 	const refreshLeaderboard = async () => {
-		if (loading) return;
+		if (loading && !firstLoad) return;
 		loading = true;
 		currentLeaderboard = [];
 		let mode = 0;
