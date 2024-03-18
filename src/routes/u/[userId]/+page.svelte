@@ -331,7 +331,7 @@
 						class="md:absolute md:-top-[55px] w-14 h-14 md:w-32 md:h-32 bg-surface-600 rounded-[30%] overflow-hidden shadow-[0_2px_5px_1px_rgba(0,0,0,0.4)]"
 					>
 						<img
-							class="w-14 h-14 md:w-32 md:h-32 rounded-[30%]"
+							class="w-14 h-14 md:w-32 md:h-32"
 							src="{avatarUrl}/{data.user.info.id}"
 							alt="playerProfile"
 						/>
