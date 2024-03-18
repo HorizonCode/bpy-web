@@ -9,7 +9,8 @@
 		getToastStore,
 		initializeStores,
 		Drawer,
-		getDrawerStore
+		getDrawerStore,
+		focusTrap
 	} from '@skeletonlabs/skeleton';
 
 	import { BarLoader } from 'svelte-loading-spinners';
@@ -116,12 +117,14 @@
 		</div>
 	{:else if $drawerStore.id == 'search'}
 		<div class="p-3 pb-0 w-full h-full flex flex-col overflow-hidden">
-			<input
-				class="input mb-3 rounded-lg"
-				placeholder="Who are you looking for?"
-				bind:value={userSearchQuery}
-				on:input={searchUsers}
-			/>
+			<div class="w-fullr" use:focusTrap={true}>
+				<input
+					class="input mb-3 rounded-lg w-full"
+					placeholder="Who are you looking for?"
+					bind:value={userSearchQuery}
+					on:input={searchUsers}
+				/>
+			</div>
 			<div class="overflow-y-auto">
 				<div class="flex flex-col gap-2">
 					{#each userSearchResults as user}
