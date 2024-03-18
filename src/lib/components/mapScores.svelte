@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
-	import { avatarUrl } from '$lib/env';
 	import { numberHumanReadable } from '$lib/stringUtil';
 	import type { Score } from '$lib/types';
 	import { scale } from 'svelte/transition';
@@ -8,6 +7,7 @@
 	import { getCountryName } from '$lib/country';
 	import { Frown } from 'svelte-feathers';
 	import { getTimeSince } from '$lib/time';
+	import { parseModsInt } from '$lib/mods';
 
 	export let beatmapScores: Score[];
 	export let loading = false;
@@ -34,7 +34,8 @@
 				<div class="min-w-8 text-center font-bold text-xs text-surface-300">50</div>
 				<div class="min-w-8 text-center font-bold text-xs text-surface-300">Miss</div>
 				<div class="min-w-14 text-center font-bold text-xs text-surface-300">PP</div>
-				<div class="min-w-8 text-center font-bold text-xs text-surface-300">Time</div>
+				<div class="min-w-10 text-center font-bold text-xs text-surface-300">Time</div>
+				<div class="min-w-32 text-start font-bold text-xs text-surface-300">Mods</div>
 			</div>
 		</div>
 	{/if}
@@ -125,10 +126,23 @@
 						{numberHumanReadable(parseFloat(user.pp.toFixed(0)))}
 					</div>
 					<div
-						class="min-w-8 text-center font-bold text-xs text-surface-100"
+						class="min-w-10 text-center font-bold text-xs text-surface-100"
 						title={new Date(user.play_time).toISOString()}
 					>
 						{getTimeSince(new Date(user.play_time))}
+					</div>
+					<div class="min-w-32 text-center font-bold text-xs text-surface-100">
+						<div class="flex flex-row">
+							{#each parseModsInt(user.mods) as mod}
+								<div class="tooltip" aria-label={mod.name}>
+									<img
+										src="/mods/{mod.short_name.toLowerCase()}.png"
+										class="w-7 h-5"
+										alt={mod.name}
+									/>
+								</div>
+							{/each}
+						</div>
 					</div>
 				</div>
 			{/key}
