@@ -14,6 +14,7 @@
 	import { getBeatmapScores } from '$lib/request.js';
 	import { parseModsInt } from '$lib/mods';
 	import { getCountryName } from '$lib/country';
+	import Scores from '$lib/components/scores.svelte';
 
 	/*TODO: fix this page, its still very buggy
 	 * - Scores not sorting properly at some times
@@ -300,142 +301,16 @@
 					</div>
 				</div>
 				<div class="bg-surface-800">
-					<div class="w-full p-5 overflow-x-auto table-container">
-						<table class="w-full overflow-x-auto">
-							<thead class="uppercase text-xs font-semibold text-surface-400">
-								<td class="w-14">Rank</td>
-								<td class="w-16"></td>
-								<td class="w-min">Score</td>
-								<td>Accuracy</td>
-								<td>Player</td>
-								<td>Max Combo</td>
-								<td>300</td>
-								<td>100</td>
-								<td>50</td>
-								<td>Miss</td>
-								<td>PP</td>
-								<td>Time</td>
-								<td>Mods</td>
-							</thead>
-							<tbody class="text-sm font-semibold">
-								{#if firstLoad}
-									{#each { length: 50 } as _, i}
-										<tr
-											class="bg-surface-700 rounded animate-pulse"
-											transition:scale={{ duration: 200, delay: 100 * i }}
-										>
-											<td class="text-center">#{i + 1}</td>
-											<td><div class="placeholder rounded-lg"></div></td>
-											<td><div class="placeholder rounded-lg"></div></td>
-											<td class="text-center"><div class="placeholder"></div></td>
-											<td>
-												<div class="flex flex-row items-center gap-2">
-													<div class="h-5 w-7 placeholder rounded-lg"></div>
-													<div class="w-full placeholder"></div>
-												</div>
-											</td>
-											<td class="text-center"><div class="placeholder"></div></td>
-											<td class="text-center"><div class="placeholder"></div></td>
-											<td class="text-center"><div class="placeholder"></div></td>
-											<td class="text-center"><div class="placeholder"></div></td>
-											<td class="text-center"><div class="placeholder"></div></td>
-											<td class="text-center"><div class="placeholder"></div></td>
-											<td class="text-center"><div class="placeholder"></div></td>
-											<td class="text-center"><div class="placeholder"></div></td>
-										</tr>
-									{/each}
-								{:else}
-									{#key failed}
-										{#each currentLeaderboard as score, i}
-											<tr
-												class="bg-surface-700 rounded"
-												on:click={() =>
-													goto(`/u/${score.userid}?mode=${currentMode}&type=${currentType}`)}
-												transition:scale={{ start: 0.995, duration: 200, delay: 50 * (i / 2) }}
-											>
-												<td class="text-center">#{i + 1}</td>
-												{#key score.grade}
-													<td class="text-center grade grade-{score.grade.toLowerCase()}"
-														>{score.grade
-															.replaceAll('XH', 'SS')
-															.replaceAll('X', 'SS')
-															.replaceAll('SH', 'S')}</td
-													>
-												{/key}
-												<td class="">{numberHumanReadable(score.score)}</td>
-												<td class="">{score.acc.toFixed(2)}%</td>
-												<td>
-													<div class="flex flex-row items-center gap-2">
-														<Popup placement="right">
-															<img
-																src="/flags/{score.country.toUpperCase()}.png"
-																alt="{getCountryName(score.country)} Flag"
-																class="h-5 w-7 shadow-[0_2px_5px_1px_rgba(0,0,0,0.3)] pointer-events-none"
-															/>
-															<svelte:fragment slot="popup">
-																<div
-																	class="card p-2 px-4 rounded-lg variant-filled-surface text-sm"
-																>
-																	{getCountryName(score.country)}
-																	<div
-																		class="arrow border-l border-b border-gray-700 variant-filled-surface"
-																	></div>
-																</div>
-															</svelte:fragment>
-														</Popup>
-														{#if score.clan_tag}
-															<a
-																class="chip p-1.5 min-w-7 variant-soft-primary hover:variant-filled-primary"
-																href="/clan/{score.clan_id}"
-															>
-																{score.clan_tag}
-															</a>
-														{/if}
-														<span class="font-semibold truncate text-ellipsis">
-															{removeClanTag(score.player_name)}
-														</span>
-													</div>
-												</td>
-												<td class="">{score.max_combo}x</td>
-												<td class={score.n300 <= 0 ? 'opacity-50' : ''}>{score.n300}</td>
-												<td class={score.n100 <= 0 ? 'opacity-50' : ''}>{score.n100}</td>
-												<td class={score.n50 <= 0 ? 'opacity-50' : ''}>{score.n50}</td>
-												<td class={score.nmiss <= 0 ? 'opacity-50' : ''}>{score.nmiss}</td>
-												<td>{Math.round(score.pp)}</td>
-												<td>
-													<Popup>
-														{getTimeSince(new Date(score.play_time))}
-														<svelte:fragment slot="popup">
-															<div
-																class="card p-2 px-4 rounded-lg variant-filled-surface font-light text-xs"
-															>
-																{score.play_time}
-																<div
-																	class="arrow border-r border-b border-gray-700 variant-filled-surface"
-																></div>
-															</div>
-														</svelte:fragment>
-													</Popup>
-												</td>
-												<td>
-													<div class="flex flex-row gap-1">
-														{#each parseModsInt(score.mods) as mod}
-															<img
-																class="w-8"
-																src="/mods/{mod.short_name.toLowerCase()}.png"
-																alt={mod.short_name}
-																title={mod.name}
-															/>
-														{/each}
-													</div>
-												</td>
-											</tr>
-										{/each}
-									{/key}
-								{/if}
-							</tbody>
-						</table>
-					</div>
+					{#if failed}
+						<div class="w-full flex flex-col justify-center items-center gap-2">
+							<p class="text-slate-400">Failed to load leaderboard.</p>
+							<button class="btn variant-filled-surface rounded-lg" on:click={refreshLeaderboard}>
+								Refresh
+							</button>
+						</div>
+					{:else}
+						<Scores beatmapScores={currentLeaderboard} {currentMode} {currentType} {loading} />
+					{/if}
 				</div>
 				<div class="flex flex-row-reverse bg-surface-700 p-7 py-2"></div>
 			</div>
