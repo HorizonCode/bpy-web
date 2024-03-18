@@ -24,3 +24,36 @@ export const getTimeSince = (date: Date) => {
   if (minutes > 0) return minutes + "m";
   return "now";
 };
+
+export const getTimeAgo = (date: Date) => {
+  const now = new Date();
+  const timeDiff = now.getTime() - date.getTime();
+  const daysDiff = Math.floor(timeDiff / (1000 * 3600 * 24)); // Convert milliseconds to days
+
+  if (daysDiff === 0) {
+    return "today";
+  } else if (daysDiff < 7) {
+    return daysDiff + (daysDiff === 1 ? " day ago" : " days ago");
+  }
+  if (daysDiff < 30) {
+    const weeks = Math.floor(daysDiff / 7);
+    return weeks + (weeks === 1 ? " week ago" : " weeks ago");
+  }
+  if (daysDiff < 365) {
+    const months = Math.floor(daysDiff / 30);
+    return months + (months === 1 ? " month ago" : " months ago");
+  }
+
+  const years = Math.floor(daysDiff / 365);
+  return years + (years === 1 ? " year ago" : " years ago");
+};
+
+export const secondsToDHM = (seconds: number) => {
+  const days = Math.floor(seconds / (3600 * 24));
+  seconds %= 3600 * 24;
+  const hours = Math.floor(seconds / 3600);
+  seconds %= 3600;
+  const minutes = Math.floor(seconds / 60);
+
+  return `${days}d ${hours}h ${minutes}m`;
+};

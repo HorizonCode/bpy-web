@@ -153,12 +153,12 @@
 {#if $navigating}
 	<div
 		class="fixed top-0 right-0 w-screen h-screen z-50 pointer-events-none"
-		in:fade={{ delay: 1000 }}
+		in:fade={{ delay: 1500 }}
 		out:fade={{ duration: 500 }}
 	>
 		<div class="h-full flex flex-col justify-center items-center gap-2 bg-surface-900/80">
 			<BarLoader size="60" color="#fff" unit="px" duration="1s" />
-			<p class="text-xs font-light">Taking longer than expected...</p>
+			<p class="text-xs font-light">This is taking longer than expected...</p>
 		</div>
 	</div>
 {/if}

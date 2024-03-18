@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { appName, appUrl, avatarUrl } from '$lib/env.js';
-	import { Calendar } from 'svelte-feathers';
+	import { getTimeAgo } from '$lib/time';
+	import { Calendar, LogIn } from 'svelte-feathers';
 
 	export let data;
 </script>
@@ -32,7 +33,7 @@
 					<div class="w-full text-center">
 						<p class="text-4xl mb-3">Clan Owner</p>
 						<div
-							class=" mx-auto flex flex-row items-center gap-3 bg-surface-700 w-fit p-3 rounded-lg"
+							class=" mx-auto w-[50%] flex flex-row items-center gap-3 bg-surface-700 p-3 rounded-lg"
 						>
 							<img
 								class="w-10 h-10 md:w-16 md:h-16 rounded-[30%]"

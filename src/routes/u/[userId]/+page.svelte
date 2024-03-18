@@ -12,6 +12,8 @@
 	import { getClan } from '$lib/request';
 	import { userData } from '$lib/storage';
 	import { getCountryName } from '$lib/country';
+	import { numberHumanReadable } from '$lib/stringUtil';
+	import { getTimeAgo, getTimeSince, secondsToDHM } from '$lib/time';
 
 	export let data;
 	let clan: Clan | undefined;
@@ -29,6 +31,7 @@
 	let currentType = 'vanilla';
 	let currentModeInt: number = 0;
 
+	// NOTE: this is so cursed, please kill me
 	let level = tweened(0, {
 		duration: 500,
 		easing: cubicInOut,
@@ -36,6 +39,95 @@
 	});
 
 	let levelProgress = tweened(0, {
+		duration: 500,
+		easing: cubicInOut,
+		interpolate: (a, b) => (t) => Math.trunc(a + (b - a) * t)
+	});
+
+	let globalRank = tweened(0, {
+		duration: 500,
+		easing: cubicInOut,
+		interpolate: (a, b) => (t) => Math.trunc(a + (b - a) * t)
+	});
+
+	let countryRank = tweened(0, {
+		duration: 500,
+		easing: cubicInOut,
+		interpolate: (a, b) => (t) => Math.trunc(a + (b - a) * t)
+	});
+
+	let totalScore = tweened(0, {
+		duration: 500,
+		easing: cubicInOut,
+		interpolate: (a, b) => (t) => Math.trunc(a + (b - a) * t)
+	});
+
+	let rankedScore = tweened(0, {
+		duration: 500,
+		easing: cubicInOut,
+		interpolate: (a, b) => (t) => Math.trunc(a + (b - a) * t)
+	});
+
+	let hitAccuracy = tweened(0, {
+		duration: 500,
+		easing: cubicInOut
+	});
+
+	let playCount = tweened(0, {
+		duration: 500,
+		easing: cubicInOut,
+		interpolate: (a, b) => (t) => Math.trunc(a + (b - a) * t)
+	});
+
+	let maxCombo = tweened(0, {
+		duration: 500,
+		easing: cubicInOut,
+		interpolate: (a, b) => (t) => Math.trunc(a + (b - a) * t)
+	});
+
+	let replayViews = tweened(0, {
+		duration: 500,
+		easing: cubicInOut,
+		interpolate: (a, b) => (t) => Math.trunc(a + (b - a) * t)
+	});
+
+	let performancePoints = tweened(0, {
+		duration: 500,
+		easing: cubicInOut,
+		interpolate: (a, b) => (t) => Math.trunc(a + (b - a) * t)
+	});
+
+	let playTime = tweened(0, {
+		duration: 500,
+		easing: cubicInOut,
+		interpolate: (a, b) => (t) => Math.trunc(a + (b - a) * t)
+	});
+
+	let xhGrade = tweened(0, {
+		duration: 500,
+		easing: cubicInOut,
+		interpolate: (a, b) => (t) => Math.trunc(a + (b - a) * t)
+	});
+
+	let xGrade = tweened(0, {
+		duration: 500,
+		easing: cubicInOut,
+		interpolate: (a, b) => (t) => Math.trunc(a + (b - a) * t)
+	});
+
+	let shGrade = tweened(0, {
+		duration: 500,
+		easing: cubicInOut,
+		interpolate: (a, b) => (t) => Math.trunc(a + (b - a) * t)
+	});
+
+	let sGrade = tweened(0, {
+		duration: 500,
+		easing: cubicInOut,
+		interpolate: (a, b) => (t) => Math.trunc(a + (b - a) * t)
+	});
+
+	let aGrade = tweened(0, {
 		duration: 500,
 		easing: cubicInOut,
 		interpolate: (a, b) => (t) => Math.trunc(a + (b - a) * t)
@@ -78,6 +170,21 @@
 		if (data.user?.info.id) {
 			level.set(getLevel(data.user.stats[currentModeInt].tscore));
 			levelProgress.set(getLevelProgress(data.user.stats[currentModeInt].tscore));
+			globalRank.set(data.user.stats[currentModeInt].rank);
+			countryRank.set(data.user.stats[currentModeInt].country_rank);
+			rankedScore.set(data.user.stats[currentModeInt].rscore);
+			totalScore.set(data.user.stats[currentModeInt].tscore);
+			hitAccuracy.set(data.user.stats[currentModeInt].acc);
+			playCount.set(data.user.stats[currentModeInt].plays);
+			maxCombo.set(data.user.stats[currentModeInt].max_combo);
+			replayViews.set(data.user.stats[currentModeInt].replay_views);
+			performancePoints.set(data.user.stats[currentModeInt].pp);
+			playTime.set(data.user.stats[currentModeInt].playtime);
+			xhGrade.set(data.user.stats[currentModeInt].xh_count);
+			xGrade.set(data.user.stats[currentModeInt].x_count);
+			shGrade.set(data.user.stats[currentModeInt].sh_count);
+			sGrade.set(data.user.stats[currentModeInt].s_count);
+			aGrade.set(data.user.stats[currentModeInt].a_count);
 		}
 	};
 
@@ -291,7 +398,110 @@
 						</div>
 					</div>
 				</div>
-				<div class="h-56 bg-surface-800"></div>
+				<div class="p-3 md:p-0 bg-surface-800">
+					<div class="flex flex-col md:flex-row justify-between gap-10">
+						<!-- left side -->
+						<div class="w-full flex md:ms-12 flex-col justify-around gap-1">
+							<div class="w-full flex flex-row justify-around md:justify-normal gap-10">
+								<div class="flex flex-col w-[50%] md:w-fit">
+									<span class="text-xs">Global Ranking</span>
+									<span class="text-xl md:text-3xl font-semibold text-primary-200"
+										>#{$globalRank}</span
+									>
+								</div>
+								<div class="flex flex-col w-[50%] md:w-fit">
+									<span class="text-xs">Country Ranking</span>
+									<span class="text-xl md:text-3xl font-semibold text-primary-200"
+										>#{$countryRank}</span
+									>
+								</div>
+							</div>
+
+							<div
+								class="w-full flex flex-col md:flex-row justify-around items-center md:items-end md:justify-normal gap-10"
+							>
+								<div class="w-full flex flex-row justify-around md:justify-normal gap-10">
+									<div class="flex flex-col w-[50%] md:w-fit">
+										<span class="text-xs">Performance Points</span>
+										<span class="text-normal font-semibold text-primary-200"
+											>{numberHumanReadable($performancePoints)}</span
+										>
+									</div>
+									<div class="flex flex-col w-[50%] md:w-fit">
+										<span class="text-xs">Total Play Time</span>
+										<span class="text-normal font-semibold text-primary-200"
+											>{secondsToDHM($playTime)}</span
+										>
+									</div>
+								</div>
+								<div class="flex flex-row gap-8 md:ms-auto">
+									<div class="flex flex-col items-center justify-center">
+										<span class="text-2xl font-semibold grade grade-xh">SS</span>
+										<span class="text-xs">{numberHumanReadable($xhGrade)}</span>
+									</div>
+									<div class="flex flex-col items-center justify-center">
+										<span class="text-2xl font-semibold grade grade-x">S</span>
+										<span class="text-xs">{numberHumanReadable($xGrade)}</span>
+									</div>
+									<div class="flex flex-col items-center justify-center">
+										<span class="text-2xl font-semibold grade grade-sh">SS</span>
+										<span class="text-xs">{numberHumanReadable($shGrade)}</span>
+									</div>
+									<div class="flex flex-col items-center justify-center">
+										<span class="text-2xl font-semibold grade grade-a">A</span>
+										<span class="text-xs">{numberHumanReadable($aGrade)}</span>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<!-- right side -->
+						<div class="p-3 md:mr-6 grid grid-cols-2 gap-[4px_100px] text-xs font-semibold">
+							<dl class="contents drop-shadow-[0_0_2px_rgba(0,0,0,1)]">
+								<dt class="w-max">Joined</dt>
+								<dd
+									class="tooltip"
+									aria-label={new Date(data.user.info.creation_time * 1000).toLocaleString()}
+								>
+									{getTimeAgo(new Date(data.user.info.creation_time * 1000))}
+								</dd>
+							</dl>
+							<dl class="contents drop-shadow-[0_0_2px_rgba(0,0,0,1)]">
+								<dt class="w-max">Latest Activity</dt>
+								<dd
+									class="tooltip"
+									aria-label={new Date(data.user.info.latest_activity * 1000).toLocaleString()}
+								>
+									{getTimeAgo(new Date(data.user.info.latest_activity * 1000))}
+								</dd>
+							</dl>
+							<dl class="contents drop-shadow-[0_0_2px_rgba(0,0,0,1)]">
+								<dt class="w-max">Ranked Score</dt>
+								<dd>{numberHumanReadable($rankedScore)}</dd>
+							</dl>
+							<dl class="contents">
+								<dt class="w-max">Hit Accuracy</dt>
+								<dd>{parseFloat($hitAccuracy.toFixed(2))}%</dd>
+							</dl>
+							<dl class="contents">
+								<dt class="w-max">Play Count</dt>
+								<dd>{$playCount}</dd>
+							</dl>
+							<dl class="contents">
+								<dt class="w-max">Total Score</dt>
+								<dd>{numberHumanReadable($totalScore)}</dd>
+							</dl>
+							<dl class="contents">
+								<dt class="w-max">Maximum Combo</dt>
+								<dd>{numberHumanReadable($maxCombo)}</dd>
+							</dl>
+							<dl class="contents">
+								<dt class="w-max">Replays Watched by Others</dt>
+								<dd>{numberHumanReadable($replayViews)}</dd>
+							</dl>
+						</div>
+					</div>
+				</div>
 				<div class="flex flex-row-reverse bg-surface-700 p-7 py-2"></div>
 			</div>
 		</div>
