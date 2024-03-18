@@ -1,20 +1,14 @@
 <script lang="ts">
 	import './style.postcss';
-	import { goto } from '$app/navigation';
 	import Popup from '$lib/components/Popup.svelte';
 	import { appName, appUrl } from '$lib/env';
-	import { removeClanTag } from '$lib/regex';
-	import { numberHumanReadable } from '$lib/stringUtil';
 	import { getFormattedTimeFromSeconds, getTimeSince } from '$lib/time';
 	import { onMount } from 'svelte';
 	import { ArrowUpRight, CheckCircle, Clock, Download, PlayCircle, Star } from 'svelte-feathers';
-	import { scale } from 'svelte/transition';
 	import { queryParam } from 'sveltekit-search-params';
 	import { type Score } from '$lib/types';
 	import { getBeatmapScores } from '$lib/request.js';
-	import { parseModsInt } from '$lib/mods';
-	import { getCountryName } from '$lib/country';
-	import Scores from '$lib/components/scores.svelte';
+	import MapScores from '$lib/components/mapScores.svelte';
 
 	/*TODO: fix this page, its still very buggy
 	 * - Scores not sorting properly at some times
@@ -309,7 +303,7 @@
 							</button>
 						</div>
 					{:else}
-						<Scores beatmapScores={currentLeaderboard} {currentMode} {currentType} {loading} />
+						<MapScores beatmapScores={currentLeaderboard} {currentMode} {currentType} {loading} />
 					{/if}
 				</div>
 				<div class="flex flex-row-reverse bg-surface-700 p-7 py-2"></div>
