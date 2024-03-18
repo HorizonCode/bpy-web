@@ -53,7 +53,7 @@
 					<!-- left side of the leaderboard entry-->
 					<div class="min-w-10 text-center">#{rank + 1}</div>
 					<div class="min-w-10 text-center font-semibold grade grade-{user.grade.toLowerCase()}">
-						{user.grade}
+						{user.grade.replaceAll('XH', 'SS').replaceAll('X', 'SS').replaceAll('SH', 'S')}
 					</div>
 					<div class="min-w-20 text-xs{rank >= 1 ? ' font-normal' : ' font-bold'}">
 						{numberHumanReadable(user.score)}
