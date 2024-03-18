@@ -129,6 +129,7 @@
 						<!-- svelte-ignore a11y-no-static-element-interactions -->
 						<div
 							class="flex items-center gap-2 rounded-lg cursor-pointer bg-surface-900 hover:bg-surface-700 transition-all"
+							transition:scale={{ start: 0.99, duration: 200 }}
 							on:click={() => {
 								goto(`/u/${user.id}`);
 								drawerStore.close();
