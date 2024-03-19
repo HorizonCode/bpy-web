@@ -107,7 +107,7 @@ export type MapInfo = {
   };
 };
 
-export type Score = {
+export type MapScore = {
   map_md5: string;
   score: number;
   pp: number;
@@ -134,9 +134,66 @@ export type Score = {
   clan_tag: string;
 };
 
+export type PlayerScore = {
+  id: number;
+  score: number;
+  pp: number;
+  acc: number;
+  max_combo: number;
+  mods: number;
+  n300: number;
+  n100: number;
+  n50: number;
+  nmiss: number;
+  ngeki: number;
+  nkatu: number;
+  grade: string;
+  status: number;
+  mode: number;
+  play_time: string;
+  time_elapsed: number;
+  perfect: number;
+  beatmap: {
+    md5: string;
+    id: number;
+    set_id: number;
+    artist: string;
+    title: string;
+    version: string;
+    creator: string;
+    last_update: string;
+    total_length: number;
+    max_combo: number;
+    status: number;
+    plays: number;
+    passes: number;
+    mode: number;
+    bpm: number;
+    cs: number;
+    od: number;
+    ar: number;
+    hp: number;
+    diff: number;
+  };
+};
+
 export type MapScores = {
   status: "success" | string;
-  scores: Score[];
+  scores: MapScore[];
+};
+
+export type PlayerScores = {
+  status: "success" | string;
+  scores: PlayerScore[];
+  player: {
+    id: number;
+    name: string;
+    clan: {
+      id: number;
+      name: string;
+      tag: string;
+    };
+  };
 };
 
 export type Mod = {

@@ -1,5 +1,5 @@
 import { apiUrl } from "./env";
-import type { Clan, MapInfo, MapScores } from "./types";
+import type { Clan, MapInfo, MapScores, PlayerScores } from "./types";
 
 export const getClan = async (clanId: number) => {
   try {
@@ -36,6 +36,28 @@ export const getBeatmapScores = async (
     );
     if (!requestedMapData.ok) return undefined;
     return await requestedMapData.json() as MapScores;
+  } catch {
+    return undefined;
+  }
+};
+
+export const getPlayerScores = async (opts: {
+  userId: number;
+  mode: number;
+  limit: number;
+  offset: number;
+  includeLoved?: boolean;
+  includeFailed?: boolean;
+  scope: "best" | "recent";
+}) => {
+  try {
+    const requestedMapData = await fetch(
+      `${apiUrl}/get_player_scores?id=${opts.userId}&mode=${opts.mode}&limit=${opts.limit}&offset=${opts.offset}&include_failed=${
+        opts.includeFailed ?? false
+      }&include_loved=${opts.includeLoved ?? false}&scope=${opts.scope}`,
+    );
+    if (!requestedMapData.ok) return undefined;
+    return await requestedMapData.json() as PlayerScores;
   } catch {
     return undefined;
   }
