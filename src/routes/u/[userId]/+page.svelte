@@ -461,7 +461,7 @@
 								<dt class="w-max">Joined</dt>
 								<dd
 									class="tooltip"
-									aria-label={new Date(data.user.info.creation_time * 1000).toLocaleString()}
+									aria-label={new Date(data.user.info.creation_time * 1000).toUTCString()}
 								>
 									{getTimeAgo(new Date(data.user.info.creation_time * 1000))}
 								</dd>
@@ -470,7 +470,7 @@
 								<dt class="w-max">Latest Activity</dt>
 								<dd
 									class="tooltip"
-									aria-label={new Date(data.user.info.latest_activity * 1000).toLocaleString()}
+									aria-label={new Date(data.user.info.latest_activity * 1000).toUTCString()}
 								>
 									{getTimeAgo(new Date(data.user.info.latest_activity * 1000))}
 								</dd>

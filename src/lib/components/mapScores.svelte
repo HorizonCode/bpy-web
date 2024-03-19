@@ -126,8 +126,8 @@
 						{numberHumanReadable(parseFloat(user.pp.toFixed(0)))}
 					</div>
 					<div
-						class="min-w-10 text-center font-bold text-xs text-surface-100"
-						title={new Date(user.play_time).toISOString()}
+						class="min-w-10 text-center font-bold text-xs text-surface-100 tooltip"
+						aria-label={new Date(user.play_time).toUTCString()}
 					>
 						{getTimeSince(new Date(user.play_time))}
 					</div>
