@@ -177,7 +177,7 @@
 				<div
 					class="mx-auto border {showStickyNav
 						? 'mt-2 w-[85%] bg-surface-700/95 rounded-lg border-surface-500'
-						: 'w-[100%] bg-surface-700 border-surface-700'}  transition-all duration-700"
+						: 'w-[100%] bg-surface-700 border-surface-700'}  transition-all duration-700 z-[9999]"
 				>
 					<div class="flex p-2 px-4 flex-row justify-between items-center gap-2">
 						<a class="text-xl uppercase cursor-pointer mr-12" on:click={() => goto('/')}
