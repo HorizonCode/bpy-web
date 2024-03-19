@@ -8,7 +8,7 @@
 
 	const modes = ['osu', 'taiko', 'catch', 'mania'];
 	const types = ['vanilla', 'relax', 'autopilot'];
-	const sorts = ['pp', 'acc', 'plays'];
+	const sorts = ['pp', 'tscore', 'acc', 'plays'];
 
 	let currentLeaderboard: LBUser[] = [];
 	const usersPerPage = 50;
@@ -155,6 +155,15 @@
 					disabled={loading || failed}
 				>
 					Performance
+				</button>
+				<button
+					class="w-[100%] !scale-100 btn {currentSort == 'tscore'
+						? 'bg-surface-500'
+						: 'bg-surface-600'} rounded-lg rounded-l-none"
+					on:click={() => setSort('tscore')}
+					disabled={loading || failed}
+				>
+					Total Score
 				</button>
 				<button
 					class="w-[100%] !scale-100 btn {currentSort == 'plays'
