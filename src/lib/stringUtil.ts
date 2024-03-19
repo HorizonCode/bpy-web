@@ -13,3 +13,16 @@ export function makeid(length?: number): string {
 export const numberHumanReadable = (number: number) => {
   return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 };
+
+export const abbreviateNumber = (number: number, decimals?: number) => {
+  const abbreviations = ["", "K", "M", "B", "T"];
+  const tier = Math.log10(Math.abs(number)) / 3 | 0;
+
+  if (tier === 0) return String(number);
+
+  const suffix = abbreviations[tier];
+  const scale = Math.pow(10, tier * 3);
+  const scaledNumber = number / scale;
+
+  return scaledNumber.toFixed(decimals ?? 2) + suffix;
+};
