@@ -4,7 +4,7 @@
 	import { numberHumanReadable } from '$lib/stringUtil';
 	import type { LBUser } from '$lib/types';
 	import { scale } from 'svelte/transition';
-	import { removeClanTag } from '$lib/regex';
+	import { removeClanTag, removeTrailingZeroes } from '$lib/regex';
 	import { getCountryName } from '$lib/country';
 
 	export let leaderboardData: LBUser[];
@@ -20,6 +20,7 @@
 		<div class="flex flex-row items-center gap-2"></div>
 		<div class="flex flex-row text-center items-center gap-1">
 			<!-- right side of the leaderboard entry-->
+			<div class="min-w-36 text-start font-bold text-xs text-surface-300">Total Score</div>
 			<div class="min-w-20 text-center font-bold text-xs text-surface-300">Accuracy</div>
 			<div class="min-w-16 text-center font-bold text-xs text-surface-300">Play Count</div>
 			<div class="min-w-12 text-center font-bold text-xs text-white">PP</div>
@@ -67,8 +68,11 @@
 				</div>
 				<div class="flex flex-row items-center gap-1">
 					<!-- right side of the leaderboard entry-->
+					<div class="min-w-36 text-start font-bold text-xs text-surface-300">
+						{numberHumanReadable(user.tscore)}
+					</div>
 					<div class="min-w-20 text-center font-bold text-xs text-surface-300">
-						{user.acc.toFixed(2)}%
+						{removeTrailingZeroes(user.acc)}%
 					</div>
 					<div class="min-w-16 text-center font-bold text-xs text-surface-300">
 						{numberHumanReadable(user.plays)}

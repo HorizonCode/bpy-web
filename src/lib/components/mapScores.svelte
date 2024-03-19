@@ -3,7 +3,7 @@
 	import { numberHumanReadable } from '$lib/stringUtil';
 	import type { MapScore } from '$lib/types';
 	import { scale } from 'svelte/transition';
-	import { removeClanTag } from '$lib/regex';
+	import { removeClanTag, removeTrailingZeroes } from '$lib/regex';
 	import { getCountryName } from '$lib/country';
 	import { Frown } from 'svelte-feathers';
 	import { getTimeSince } from '$lib/time';
@@ -59,7 +59,7 @@
 						{numberHumanReadable(user.score)}
 					</div>
 					<div class="min-w-14 text-xs font-semibold {user.acc >= 100 ? ' text-green-300' : ''}">
-						{parseFloat(user.acc.toFixed(2))}%
+						{removeTrailingZeroes(user.acc)}%
 					</div>
 					<div
 						class="flex text-xs flex-row gap-2 items-center min-w-56 text-primary-400 hover:text-primary-200 font-semibold transition-colors cursor-pointer"

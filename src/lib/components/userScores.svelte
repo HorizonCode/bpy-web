@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import { parseModsInt } from '$lib/mods';
+	import { removeTrailingZeroes } from '$lib/regex';
 	import { getTimeAgo } from '$lib/time';
 	import { type PlayerScores } from '$lib/types';
 
@@ -54,7 +55,9 @@
 				</div>
 				<div class="flex flex-col items-center md:items-start ms-3">
 					<div class="flex flex-row gap-3">
-						<span class="min-w-12 text-sm font-bold text-yellow-500">{score.acc.toFixed(2)}%</span>
+						<span class="min-w-12 text-sm font-bold text-yellow-500"
+							>{removeTrailingZeroes(score.acc)}%</span
+						>
 						<span class="min-w-12 text-sm font-bold"
 							>{Math.round(score.pp * Math.pow(0.95, idx))}pp</span
 						>

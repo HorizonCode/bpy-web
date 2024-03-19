@@ -17,6 +17,7 @@
 	import { getTimeAgo, secondsToDHM } from '$lib/time';
 	import UserScores from '$lib/components/userScores.svelte';
 	import { ProgressRadial } from '@skeletonlabs/skeleton';
+	import { removeTrailingZeroes } from '$lib/regex';
 
 	export let data;
 	let clan: Clan | undefined;
@@ -544,7 +545,7 @@
 							</dl>
 							<dl class="contents">
 								<dt class="w-max">Hit Accuracy</dt>
-								<dd>{parseFloat($hitAccuracy.toFixed(2))}%</dd>
+								<dd>{removeTrailingZeroes($hitAccuracy)}%</dd>
 							</dl>
 							<dl class="contents">
 								<dt class="w-max">Play Count</dt>
