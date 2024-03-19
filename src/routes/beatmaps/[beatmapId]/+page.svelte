@@ -4,11 +4,24 @@
 	import { appName, appUrl } from '$lib/env';
 	import { getFormattedTimeFromSeconds, getTimeSince } from '$lib/time';
 	import { onMount } from 'svelte';
-	import { ArrowUpRight, CheckCircle, Clock, Download, PlayCircle, Star } from 'svelte-feathers';
+	import {
+		ArrowUpRight,
+		Check,
+		CheckCircle,
+		ChevronsUp,
+		Clock,
+		Download,
+		Heart,
+		HelpCircle,
+		PlayCircle,
+		Star,
+		Trash
+	} from 'svelte-feathers';
 	import { queryParam } from 'sveltekit-search-params';
 	import { type MapScore } from '$lib/types';
 	import { getBeatmapScores } from '$lib/request.js';
 	import MapScores from '$lib/components/mapScores.svelte';
+	import { statusIntToString } from '$lib/beatmapStatus';
 
 	/*TODO: fix this page, its still very buggy
 	 * - Scores not sorting properly at some times
@@ -270,12 +283,33 @@
 						</div>
 					</div>
 				</div>
-				<div class="relative flex flex-row bg-surface-600 md:px-12 p-2">
+				<div class="relative flex flex-row items-center bg-surface-600 md:px-12 p-2">
 					<div
 						class="absolute h-full w-full top-0 left-0 bg-no-repeat bg-bottom blur opacity-10"
 						style="background-image: url('https://assets.ppy.sh/beatmaps/{data.map
 							.set_id}/covers/cover@2x.jpg');"
 					></div>
+					<div
+						class="flex flex-row justify-start items-center gap-2 bg-black/50 rounded-lg p-1 px-3 z-10 tooltip"
+						aria-label={statusIntToString(data.map.status)}
+					>
+						<div>
+							{#if data.map.status == 4}
+								<Heart class="pointer-events-none text-red-400" />
+							{:else if data.map.status == 3 || data.map.status == 2}
+								<Check class="pointer-events-none text-green-400" />
+							{:else if data.map.status == 1}
+								<ChevronsUp class="pointer-events-none text-blue-400" />
+							{:else if data.map.status == -2}
+								<Trash class="pointer-events-none text-gray-400" />
+							{:else}
+								<HelpCircle class="pointer-events-none text-gray-400" />
+							{/if}
+						</div>
+						<div class="hidden md:block text-sm font-semibold">
+							{statusIntToString(data.map.status)}
+						</div>
+					</div>
 					<div class="me-auto ms-auto md:me-0 flex flex-row items-center gap-3 z-10">
 						<a
 							class="btn variant-soft-primary text-sm"
