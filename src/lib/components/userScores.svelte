@@ -8,8 +8,6 @@
 	export let scores: PlayerScores | undefined;
 	export let currentMode: string;
 	export let currentType: string;
-
-
 </script>
 
 {#if scores}
@@ -71,7 +69,7 @@
 					>
 				</div>
 				<div
-					class="min-w-[80px] flex flex-row items-center justify-center text-primary-400 py-1 font-bold bg-black/50 rounded-full"
+					class="min-w-[80px] flex flex-row items-center justify-center text-primary-400 py-1 font-bold bg-black/50 rounded-lg"
 				>
 					{Math.round(score.pp)}<span class="text-primary-300 text-xs">pp</span>
 				</div>
