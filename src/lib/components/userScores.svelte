@@ -23,14 +23,16 @@
 				style="background-image: url('https://assets.ppy.sh/beatmaps/{score.beatmap
 					.set_id}/covers/cover@2x.jpg');"
 			></div>
-			<div class="flex flex-row gap-2 items-center justify-start">
-				<div class="w-8 text-center !text-2xl font-bold grade grade-{score.grade.toLowerCase()}">
+			<div class="flex flex-row gap-2 items-center justify-start z-10 truncate">
+				<div
+					class="w-10 md:w-8 text-center !text-4xl md:!text-2xl font-bold grade grade-{score.grade.toLowerCase()}"
+				>
 					{score.grade.replaceAll('XH', 'SS').replaceAll('X', 'SS').replaceAll('SH', 'S')}
 				</div>
 				<div class="flex flex-col">
-					<div>
-						<span class="text-sm font-bold">{score.beatmap.title}</span>
-						<span class="text-xs font-semibold">by {score.beatmap.artist}</span>
+					<div class="flex flex-col md:flex-row md:items-center md:gap-1 mb-1">
+						<div class="text-sm font-bold">{score.beatmap.title}</div>
+						<div class="text-xs font-semibold">by {score.beatmap.artist}</div>
 					</div>
 					<div class="flex flex-row gap-4">
 						<span class="text-xs font-semibold text-yellow-600">{score.beatmap.version}</span>
