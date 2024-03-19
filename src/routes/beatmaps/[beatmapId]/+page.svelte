@@ -6,7 +6,7 @@
 	import { onMount } from 'svelte';
 	import { ArrowUpRight, CheckCircle, Clock, Download, PlayCircle, Star } from 'svelte-feathers';
 	import { queryParam } from 'sveltekit-search-params';
-	import { type Score } from '$lib/types';
+	import { type MapScore } from '$lib/types';
 	import { getBeatmapScores } from '$lib/request.js';
 	import MapScores from '$lib/components/mapScores.svelte';
 
@@ -16,7 +16,7 @@
 	 */
 	export let data;
 
-	let currentLeaderboard: Score[] = [];
+	let currentLeaderboard: MapScore[] = [];
 
 	let firstLoad = true;
 	let loading = true;
