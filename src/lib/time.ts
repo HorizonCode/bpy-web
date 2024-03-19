@@ -17,11 +17,11 @@ export const getTimeSince = (date: Date) => {
   const years = Math.floor(days / 365);
 
   if (years > 0) return years + "y";
-  if (months > 0) return months + "M";
+  if (months > 0) return months + "m";
   if (weeks > 0) return weeks + "w";
   if (days > 0) return days + "d";
   if (hours > 0) return hours + "h";
-  if (minutes > 0) return minutes + "m";
+  if (minutes > 0) return minutes + "min";
   return "now";
 };
 
