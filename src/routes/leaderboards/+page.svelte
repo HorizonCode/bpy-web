@@ -144,110 +144,112 @@
 </svelte:head>
 
 <div class="container mx-auto w-full p-5">
-	<div class="bg-surface-700 flex flex-col justify-center gap-4 rounded-lg">
-		<div class="w-full flex justify-center pt-3 px-3">
-			<button
-				class="w-[100%] !scale-100 btn {currentSort == 'pp'
-					? 'bg-surface-500'
-					: 'bg-surface-600'} rounded-lg rounded-r-none"
-				on:click={() => setSort('pp')}
-				disabled={loading || failed}
-			>
-				Performance
-			</button>
-			<button
-				class="w-[100%] !scale-100 btn {currentSort == 'plays'
-					? 'bg-surface-500'
-					: 'bg-surface-600'} rounded-none"
-				on:click={() => setSort('plays')}
-				disabled={loading || failed}
-			>
-				Plays
-			</button>
-			<button
-				class="w-[100%] !scale-100 btn {currentSort == 'acc'
-					? 'bg-surface-500'
-					: 'bg-surface-600'} rounded-lg rounded-l-none"
-				on:click={() => setSort('acc')}
-				disabled={loading || failed}
-			>
-				Accuracy
-			</button>
-		</div>
-		<div class="grid md:grid-cols-[auto_auto] gap-2 p-3">
-			<div class="w-full flex justify-center md:justify-start rounded-lg">
+	<div class=" flex flex-col justify-center">
+		<div class="bg-surface-700 rounded-t-lg">
+			<div class="bg-surface-700w-full flex justify-center pt-3 px-3">
 				<button
-					class="w-[100%] md:w-[25%] !scale-100 btn {currentType == 'vanilla'
+					class="w-[100%] !scale-100 btn {currentSort == 'pp'
 						? 'bg-surface-500'
 						: 'bg-surface-600'} rounded-lg rounded-r-none"
-					on:click={() => setType('vanilla')}
+					on:click={() => setSort('pp')}
 					disabled={loading || failed}
 				>
-					Vanilla
+					Performance
 				</button>
 				<button
-					class="w-[100%] md:w-[25%] !scale-100 btn {currentType == 'relax'
+					class="w-[100%] !scale-100 btn {currentSort == 'plays'
 						? 'bg-surface-500'
 						: 'bg-surface-600'} rounded-none"
-					on:click={() => setType('relax')}
-					disabled={currentMode == 'mania' || loading || failed}
+					on:click={() => setSort('plays')}
+					disabled={loading || failed}
 				>
-					Relax
+					Plays
 				</button>
 				<button
-					class="w-[100%] md:w-[25%] !scale-100 btn {currentType == 'autopilot'
+					class="w-[100%] !scale-100 btn {currentSort == 'acc'
 						? 'bg-surface-500'
 						: 'bg-surface-600'} rounded-lg rounded-l-none"
-					disabled={currentMode == 'taiko' ||
-						currentMode == 'catch' ||
-						currentMode == 'mania' ||
-						loading ||
-						failed}
-					on:click={() => setType('autopilot')}
+					on:click={() => setSort('acc')}
+					disabled={loading || failed}
 				>
-					Autopilot
+					Accuracy
 				</button>
 			</div>
-			<div class="w-full flex rounded-lg">
-				<button
-					class="w-[25%] !scale-100 btn {currentMode == 'osu'
-						? 'bg-surface-500'
-						: 'bg-surface-600'} rounded-lg rounded-r-none"
-					on:click={() => setMode('osu')}
-					disabled={loading || failed}
-				>
-					osu!
-				</button>
-				<button
-					class="w-[25%] !scale-100 btn {currentMode == 'taiko'
-						? 'bg-surface-500'
-						: 'bg-surface-600'} rounded-none"
-					on:click={() => setMode('taiko')}
-					disabled={currentType == 'autopilot' || loading || failed}
-				>
-					taiko
-				</button>
-				<button
-					class="w-[25%] !scale-100 btn {currentMode == 'catch'
-						? 'bg-surface-500'
-						: 'bg-surface-600'} rounded-none"
-					on:click={() => setMode('catch')}
-					disabled={currentType == 'autopilot' || loading || failed}
-				>
-					catch
-				</button>
-				<button
-					class="w-[25%] !scale-100 btn {currentMode == 'mania'
-						? 'bg-surface-500'
-						: 'bg-surface-600'} rounded-lg rounded-l-none"
-					on:click={() => setMode('mania')}
-					disabled={currentType == 'relax' || currentType == 'autopilot' || loading || failed}
-				>
-					mania
-				</button>
+			<div class="grid md:grid-cols-[auto_auto] gap-2 p-3">
+				<div class="w-full flex justify-center md:justify-start rounded-lg">
+					<button
+						class="w-[100%] md:w-[25%] !scale-100 btn {currentType == 'vanilla'
+							? 'bg-surface-500'
+							: 'bg-surface-600'} rounded-lg rounded-r-none"
+						on:click={() => setType('vanilla')}
+						disabled={loading || failed}
+					>
+						Vanilla
+					</button>
+					<button
+						class="w-[100%] md:w-[25%] !scale-100 btn {currentType == 'relax'
+							? 'bg-surface-500'
+							: 'bg-surface-600'} rounded-none"
+						on:click={() => setType('relax')}
+						disabled={currentMode == 'mania' || loading || failed}
+					>
+						Relax
+					</button>
+					<button
+						class="w-[100%] md:w-[25%] !scale-100 btn {currentType == 'autopilot'
+							? 'bg-surface-500'
+							: 'bg-surface-600'} rounded-lg rounded-l-none"
+						disabled={currentMode == 'taiko' ||
+							currentMode == 'catch' ||
+							currentMode == 'mania' ||
+							loading ||
+							failed}
+						on:click={() => setType('autopilot')}
+					>
+						Autopilot
+					</button>
+				</div>
+				<div class="w-full flex rounded-lg">
+					<button
+						class="w-[25%] !scale-100 btn {currentMode == 'osu'
+							? 'bg-surface-500'
+							: 'bg-surface-600'} rounded-lg rounded-r-none"
+						on:click={() => setMode('osu')}
+						disabled={loading || failed}
+					>
+						osu!
+					</button>
+					<button
+						class="w-[25%] !scale-100 btn {currentMode == 'taiko'
+							? 'bg-surface-500'
+							: 'bg-surface-600'} rounded-none"
+						on:click={() => setMode('taiko')}
+						disabled={currentType == 'autopilot' || loading || failed}
+					>
+						taiko
+					</button>
+					<button
+						class="w-[25%] !scale-100 btn {currentMode == 'catch'
+							? 'bg-surface-500'
+							: 'bg-surface-600'} rounded-none"
+						on:click={() => setMode('catch')}
+						disabled={currentType == 'autopilot' || loading || failed}
+					>
+						catch
+					</button>
+					<button
+						class="w-[25%] !scale-100 btn {currentMode == 'mania'
+							? 'bg-surface-500'
+							: 'bg-surface-600'} rounded-lg rounded-l-none"
+						on:click={() => setMode('mania')}
+						disabled={currentType == 'relax' || currentType == 'autopilot' || loading || failed}
+					>
+						mania
+					</button>
+				</div>
 			</div>
 		</div>
-		<div class="bg-surface-800 p-3 px-0">
+		<div class="bg-surface-800 p-3 pb-0 px-0">
 			<div class="w-full flex flex-row justify-between items-center px-2">
 				<button
 					class="btn variant-filled-surface rounded-lg"
@@ -300,5 +302,6 @@
 				</button>
 			</div>
 		</div>
+		<div class="bg-surface-700 p-2 rounded-b-lg"></div>
 	</div>
 </div>
