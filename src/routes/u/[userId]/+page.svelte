@@ -581,10 +581,14 @@
 									>
 										Best Performance
 									</p>
-									<div
-										class="flex flex-col gap-1 transition-all{loading ? ' blur-sm' : ' blur-none'}"
-									>
-										<UserScores scores={bestScores} {currentMode} {currentType} />
+									<div class="flex flex-col gap-1">
+										<div
+											class="flex flex-col gap-1 transition-all{loading
+												? ' blur-sm'
+												: ' blur-none'}"
+										>
+											<UserScores scores={bestScores} {currentMode} {currentType} />
+										</div>
 										<button
 											class="flex flex-row text-center justify-center items-center btn w-48 mx-auto variant-filled-surface px-4 py-1 mt-2 text-[0.7rem] leading-5"
 											on:click={loadMoreBestScores}
@@ -609,10 +613,14 @@
 									>
 										Recent
 									</p>
-									<div
-										class="flex flex-col gap-1 transition-all{loading ? ' blur-sm' : ' blur-none'}"
-									>
-										<UserScores scores={recentScores} {currentMode} {currentType} />
+									<div class="flex flex-col gap-1">
+										<div
+											class="flex flex-col gap-1 transition-all{loading
+												? ' blur-sm'
+												: ' blur-none'}"
+										>
+											<UserScores scores={recentScores} {currentMode} {currentType} />
+										</div>
 										<button
 											class="flex flex-row text-center justify-center items-center btn w-48 mx-auto variant-filled-surface px-4 py-1 mt-2 text-[0.7rem] leading-5"
 											on:click={loadMoreRecentScores}
