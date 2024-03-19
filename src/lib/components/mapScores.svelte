@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import { numberHumanReadable } from '$lib/stringUtil';
-	import type { Score } from '$lib/types';
+	import type { MapScore } from '$lib/types';
 	import { scale } from 'svelte/transition';
 	import { removeClanTag } from '$lib/regex';
 	import { getCountryName } from '$lib/country';
@@ -9,7 +9,7 @@
 	import { getTimeSince } from '$lib/time';
 	import { parseModsInt } from '$lib/mods';
 
-	export let beatmapScores: Score[];
+	export let beatmapScores: MapScore[];
 	export let loading = false;
 	export let currentMode: string;
 	export let currentType: string;
