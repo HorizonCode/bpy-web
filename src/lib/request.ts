@@ -53,7 +53,7 @@ export const getPlayerScores = async (opts: {
   try {
     const requestedMapData = await fetch(
       `${apiUrl}/get_player_scores?id=${opts.userId}&mode=${opts.mode}&limit=${opts.limit}&offset=${opts.offset}&include_failed=${
-        opts.includeFailed ?? false
+        opts.includeFailed ?? true
       }&include_loved=${opts.includeLoved ?? false}&scope=${opts.scope}`,
     );
     if (!requestedMapData.ok) return undefined;
