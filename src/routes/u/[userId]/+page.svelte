@@ -3,20 +3,28 @@
 	import Popup from '$lib/components/Popup.svelte';
 	import { appName, appUrl, avatarUrl } from '$lib/env';
 	import { getLevelProgress, getLevel } from '$lib/level';
+	import { getPlayerScores } from '$lib/request';
 	import { tweened } from 'svelte/motion';
 	import { onMount } from 'svelte';
 	import { cubicInOut } from 'svelte/easing';
 	import { queryParam } from 'sveltekit-search-params';
-	import { Edit2 } from 'svelte-feathers';
-	import type { Clan } from '$lib/types';
+	import { ChevronDown, Edit2 } from 'svelte-feathers';
+	import type { Clan, PlayerScores } from '$lib/types';
 	import { getClan } from '$lib/request';
 	import { userData } from '$lib/storage';
 	import { getCountryName } from '$lib/country';
 	import { numberHumanReadable } from '$lib/stringUtil';
-	import { getTimeAgo, getTimeSince, secondsToDHM } from '$lib/time';
+	import { getTimeAgo, secondsToDHM } from '$lib/time';
+	import UserScores from '$lib/components/userScores.svelte';
+	import { ProgressRadial } from '@skeletonlabs/skeleton';
 
 	export let data;
 	let clan: Clan | undefined;
+	let bestScores: PlayerScores | undefined;
+	let recentScores: PlayerScores | undefined;
+
+	let amountBestScores = 5;
+	let amountRecentScores = 5;
 
 	const queryMode = queryParam('mode', undefined, {
 		pushHistory: false
@@ -136,9 +144,47 @@
 	const modes = ['osu', 'taiko', 'catch', 'mania'];
 	const types = ['vanilla', 'relax', 'autopilot'];
 
-	const updateModeInt = () => {
+	const loadBestScores = async (resetLoading?: boolean) => {
+		loading = true;
+		if (data.user?.info.id) {
+			const bestScoresRequest = await getPlayerScores({
+				userId: data.user.info.id,
+				limit: amountBestScores,
+				offset: 0,
+				mode: currentModeInt,
+				scope: 'best'
+			});
+			if (bestScoresRequest) {
+				bestScores = bestScoresRequest;
+			}
+		}
+		if (resetLoading) loading = false;
+	};
+
+	const loadRecentScores = async (resetLoading?: boolean) => {
+		loading = true;
+		if (data.user?.info.id) {
+			const recentScoresRequest = await getPlayerScores({
+				userId: data.user.info.id,
+				limit: amountRecentScores,
+				offset: 0,
+				mode: currentModeInt,
+				scope: 'recent'
+			});
+			if (recentScoresRequest) {
+				recentScores = recentScoresRequest;
+			}
+		}
+		if (resetLoading) loading = false;
+	};
+
+	const updateModeInt = async () => {
+		loading = true;
 		if (currentType == 'relax' && currentMode == 'mania') currentMode = 'osu';
 		if (currentType == 'autopilot' && currentMode != 'osu') currentMode = 'osu';
+
+		amountBestScores = 5;
+		amountRecentScores = 5;
 
 		queryMode.set(currentMode);
 		queryType.set(currentType);
@@ -164,7 +210,6 @@
 				mode += 8;
 				break;
 		}
-
 		currentModeInt = mode;
 
 		if (data.user?.info.id) {
@@ -185,19 +230,37 @@
 			shGrade.set(data.user.stats[currentModeInt].sh_count);
 			sGrade.set(data.user.stats[currentModeInt].s_count);
 			aGrade.set(data.user.stats[currentModeInt].a_count);
+
+			//TODO: rework this, maybe a own component for that?
+			// fetch best and recent scores from current selected mode
+			await loadBestScores();
+			await loadRecentScores();
 		}
+		loading = false;
 	};
 
-	const setMode = (mode: string) => {
+	const setMode = async (mode: string) => {
 		if (currentMode == mode) return;
 		currentMode = mode;
-		updateModeInt();
+		await updateModeInt();
 	};
 
-	const setType = (type: string) => {
+	const setType = async (type: string) => {
 		if (currentType == type) return;
 		currentType = type;
-		updateModeInt();
+		await updateModeInt();
+	};
+
+	const loadMoreBestScores = async () => {
+		if (loading) return;
+		amountBestScores += 5;
+		await loadBestScores(true);
+	};
+
+	const loadMoreRecentScores = async () => {
+		if (loading) return;
+		amountRecentScores += 5;
+		await loadRecentScores(true);
 	};
 
 	onMount(async () => {
@@ -207,7 +270,7 @@
 			if (modes.includes(selectedMode!)) currentMode = selectedMode!;
 			if (types.includes(selectedType!)) currentType = selectedType!;
 
-			updateModeInt();
+			await updateModeInt();
 
 			if (data.user.info.clan_id) clan = await getClan(data.user.info.clan_id);
 		}
@@ -336,7 +399,7 @@
 							alt="playerProfile"
 						/>
 					</div>
-					<div class="flex flex-col my-auto gap-1 md:gap-2 ms-2 md:ms-36 z-10">
+					<div class="flex flex-col my-auto gap-1 md:gap-2 ms-2 md:ms-36 z-[5]">
 						<div class="flex flex-row items-center gap-1 text-xl md:text-2xl">
 							{#if clan}
 								<a
@@ -502,7 +565,70 @@
 						</div>
 					</div>
 				</div>
-				<div class="flex flex-row-reverse bg-surface-700 p-7 py-2"></div>
+				<div class="flex flex-row-reverse bg-surface-800 p-7 py-2">
+					<div class="card !bg-surface-700 w-full py-3 p-6">
+						<div class="flex flex-col gap-5">
+							<p
+								class="text-lg font-bold underline underline-offset-4 decoration-2 decoration-primary-400"
+							>
+								Ranks
+							</p>
+							<div class="relative flex flex-col gap-5">
+								<div class="relative flex flex-col gap-1">
+									<p
+										class="text-sm font-bold w-max ms-2 before:-ms-2 before:content-[''] before:h-[.65em] before:mt-[.45em] before:absolute before:w-[3px] before:rounded-lg before:bg-primary-400"
+									>
+										Best Performance
+									</p>
+									<div class="flex flex-col gap-1">
+										<UserScores scores={bestScores} {currentMode} {currentType} />
+										<button
+											class="flex flex-row text-center justify-center items-center btn w-48 mx-auto variant-filled-surface px-4 py-1 mt-2 text-[0.7rem] leading-5"
+											on:click={loadMoreBestScores}
+											disabled={loading || !bestScores}
+										>
+											{#if loading || !bestScores}
+												<div>
+													<ProgressRadial width="w-5" />
+												</div>
+											{:else}
+												<ChevronDown class="pointer-events-none text-surface-400" size={16} />
+												<span class="uppercase font-semibold">show more</span>
+												<ChevronDown class="pointer-events-none text-surface-400" size={16} />
+											{/if}
+										</button>
+									</div>
+								</div>
+
+								<div class="relative flex flex-col gap-1">
+									<p
+										class="text-sm font-bold w-max ms-2 before:-ms-2 before:content-[''] before:h-[.65em] before:mt-[.45em] before:absolute before:w-[3px] before:rounded-lg before:bg-primary-400"
+									>
+										Recent
+									</p>
+									<div class="flex flex-col gap-1">
+										<UserScores scores={recentScores} {currentMode} {currentType} />
+										<button
+											class="flex flex-row text-center justify-center items-center btn w-48 mx-auto variant-filled-surface px-4 py-1 mt-2 text-[0.7rem] leading-5"
+											on:click={loadMoreRecentScores}
+											disabled={loading || !recentScores}
+										>
+											{#if loading || !recentScores}
+												<div>
+													<ProgressRadial width="w-5" />
+												</div>
+											{:else}
+												<ChevronDown class="pointer-events-none text-surface-400" size={16} />
+												<span class="uppercase font-semibold">show more</span>
+												<ChevronDown class="pointer-events-none text-surface-400" size={16} />
+											{/if}
+										</button>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
 	{:else}
