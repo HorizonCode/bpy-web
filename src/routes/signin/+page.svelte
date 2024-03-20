@@ -24,17 +24,32 @@
 
 	const performLogin = async () => {
 		loading = true;
-		await new Promise((resolve) => setTimeout(resolve, 3000));
-		userData.set({
-			id: 1001,
-			username: 'Quetzalcoatl'
+		const loginRequest = await fetch(window.location.href, {
+			method: 'POST',
+			body: JSON.stringify(loginData),
+			headers: {
+				'Content-Type': 'application/json'
+			}
 		});
-		const t: ToastSettings = {
-			message: `Welcome back, ${$userData?.username}`,
-			classes: '!bg-surface-800 !text-surface-200 !border-surface-700 !border'
-		};
-		toastStore.trigger(t);
-		goto('/');
+		const loginResponse = await loginRequest.json();
+		if (loginRequest.ok) {
+			userData.set(loginResponse.user);
+			const t: ToastSettings = {
+				message: `Welcome back, ${$userData?.username}`,
+				classes: '!bg-surface-800 !text-surface-200 !border-surface-700 !border'
+			};
+			toastStore.trigger(t);
+			goto('/');
+		} else {
+			const t: ToastSettings = {
+				message: loginResponse.message,
+				classes: '!bg-red-700 !text-surface-100 !border-red-600 !border'
+			};
+			toastStore.trigger(t);
+			loading = false;
+			errored = true;
+			passwordMask = false;
+		}
 	};
 </script>
 
@@ -59,6 +74,7 @@
 					<p class="mb-20">Use your bpy-web Account</p>
 				</div>
 				<input
+					id="username"
 					type="text"
 					placeholder="Email or Username"
 					on:input={() => (errored = false)}
@@ -112,6 +128,7 @@
 					{loginData.username}
 				</p>
 				<input
+					id="password"
 					type="password"
 					placeholder="Password"
 					class="border border-surface-700 !ring-pink-700 focus:!border-pink-700 bg-surface-900 rounded-lg p-4 text-[17px] w-full mb-2"
