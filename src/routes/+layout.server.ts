@@ -4,7 +4,6 @@ import { getMySQLDatabase, getRedisClient } from '../hooks.server.js';
 export async function load({ url, cookies }) {
   const sessionToken = cookies.get("sessionToken") ?? undefined;
   if (sessionToken) {
-    console.log(sessionToken);
     const redisClient = await getRedisClient();
     const mySQLDatabase = await getMySQLDatabase();
     const userId = await redisClient.get(`user:session:${sessionToken}`);
