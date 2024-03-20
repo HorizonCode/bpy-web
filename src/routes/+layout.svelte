@@ -41,6 +41,7 @@
 	import { appName, avatarUrl, apiUrl } from '$lib/env';
 	import { Menu, Search } from 'svelte-feathers';
 	import NavItems from '$lib/components/navItems.svelte';
+	import type { UserData } from '$lib/types';
 
 	storePopup.set({ computePosition, autoUpdate, flip, shift, offset, arrow });
 	initializeStores();
@@ -50,8 +51,8 @@
 
 	export let data;
 
-	if (data.currentUser) {
-		userData.set(data.currentUser);
+	if ("currentUser" in data) {
+		userData.set(data.currentUser as UserData);
 	}
 
 	const avatarPopup: PopupSettings = {
@@ -168,7 +169,7 @@
 <!-- svelte-ignore a11y-missing-attribute -->
 <AppShell>
 	<svelte:fragment slot="header">
-		{#if $page.data.url != '/login'}
+		{#if $page.data.url != '/signin' && $page.data.url != '/signup'}
 			<div
 				class="fixed w-full"
 				in:fly={{ y: -15, duration: 200, delay: 200 }}
@@ -228,11 +229,11 @@
 									{:else}
 										<button
 											class="w-32 btn variant-filled-surface rounded-lg"
-											on:click={() => goto('/login')}>Login</button
+											on:click={() => goto('/signin')}>Sign In</button
 										>
 										<button
 											class="w-32 btn variant-filled-surface rounded-lg"
-											on:click={() => goto('/register')}>Register</button
+											on:click={() => goto('/signup')}>Sign up</button
 										>
 									{/if}
 								</div>
