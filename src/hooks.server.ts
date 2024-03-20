@@ -4,15 +4,45 @@ import knex_pkg from "knex";
 import redis from "redis";
 const { knex } = knex_pkg;
 
-export let mysqlDatabase: knex_pkg.Knex;
-export let redisClient: redis.RedisClientType<
+let mysqlDatabase: knex_pkg.Knex | undefined;
+let redisClient: redis.RedisClientType<
   redis.RedisDefaultModules & redis.RedisModules,
   redis.RedisFunctions,
   redis.RedisScripts
->;
+> | undefined;
 
-(async () => {
-  return;
+export const getMySQLDatabase = async (): Promise<knex_pkg.Knex> => {
+  if (mysqlDatabase) return mysqlDatabase;
+  try {
+    console.log(chalk.gray("Connecting to MySQL database..."));
+    const tempMysqlDatabase = knex({
+      client: "mysql2",
+      connection: {
+        host: env.MYSQL_HOST,
+        user: env.MYSQL_USER,
+        password: env.MYSQL_PASSWORD,
+        database: env.MYSQL_DATABASE,
+      },
+    });
+    await tempMysqlDatabase.raw("SELECT 1 + 1 as connection_test;");
+    console.log(chalk.green("Connected to MySQL database!"));
+    return mysqlDatabase = tempMysqlDatabase;
+  } catch {
+    console.log(
+      chalk.red(
+        "Could not connect to database, check your environment variables!",
+      ),
+    );
+    process.exit(1);
+  }
+}
+
+export const getRedisClient = async (): Promise<redis.RedisClientType<
+  redis.RedisDefaultModules & redis.RedisModules,
+  redis.RedisFunctions,
+  redis.RedisScripts
+>> => {
+  if (redisClient) return redisClient;
   const redisUser = env.REDIS_USER ?? undefined;
   const redisPassword = env.REDIS_PASSWORD ?? undefined;
   const redisHost = env.REDIS_HOST ?? "127.0.0.1";
@@ -35,7 +65,7 @@ export let redisClient: redis.RedisClientType<
 
   try {
     console.log(chalk.gray("Connecting to Redis..."));
-    redisClient = await redis.createClient({
+    const tempRedisClient = await redis.createClient({
       url: redisUrl,
       database: parseInt(redisDb),
     }).on("error", (error) => {
@@ -50,25 +80,14 @@ export let redisClient: redis.RedisClientType<
       .connect();
 
     try {
-      await redisClient.ping();
+      await tempRedisClient.ping();
       console.log(chalk.green("Connected to Redis!"));
+      return redisClient = tempRedisClient;
     } catch {
       console.log(chalk.red("Could not connect to Redis!"));
       process.exit(1);
     }
 
-    console.log(chalk.gray("Connecting to MySQL database..."));
-    mysqlDatabase = knex({
-      client: "mysql2",
-      connection: {
-        host: env.MYSQL_HOST,
-        user: env.MYSQL_USER,
-        password: env.MYSQL_PASSWORD,
-        database: env.MYSQL_DATABASE,
-      },
-    });
-    await mysqlDatabase.raw("SELECT 1 + 1 as connection_test;");
-    console.log(chalk.green("Connected to MySQL database!"));
   } catch {
     console.log(
       chalk.red(
@@ -77,7 +96,14 @@ export let redisClient: redis.RedisClientType<
     );
     process.exit(1);
   }
+}
+
+(async () => {
+  await getMySQLDatabase();
+  await getRedisClient();
 })();
+
+
 
 export function handleError(error: Error): void {
   console.log(chalk.red(JSON.stringify(error, null, 2)));
