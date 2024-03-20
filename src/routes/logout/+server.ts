@@ -1,6 +1,5 @@
-import { error, json, redirect } from '@sveltejs/kit'
+import { error, json } from '@sveltejs/kit'
 import { getRedisClient } from '../../hooks.server.js';
-import { userData } from '$lib/storage.js';
 
 export const POST = async ({ cookies }) => {
   if (cookies.get("sessionToken") !== undefined) {

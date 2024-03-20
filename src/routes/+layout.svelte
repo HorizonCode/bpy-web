@@ -6,7 +6,6 @@
 		type PopupSettings,
 		popup,
 		Toast,
-		getToastStore,
 		initializeStores,
 		Drawer,
 		getDrawerStore,
