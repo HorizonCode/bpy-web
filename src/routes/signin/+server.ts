@@ -16,7 +16,7 @@ export const POST = async ({ cookies, request }) => {
     EX: 86400,
   });
 
-  console.log(result);
+  if (result !== "OK") return error(500, "Failed to create session");
 
   cookies.set("sessionToken", sessionToken, {
     path: "/",
