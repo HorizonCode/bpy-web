@@ -16,7 +16,7 @@ export async function comparePasswords(plainPassword: string, hashed_pw: string)
 export const login = async (opts: { username: string, password: string }): Promise<DBUser | undefined> => {
   const { username, password } = opts;
   const mysqlDatabase = await getMySQLDatabase();
-  const userResult = await mysqlDatabase<DBUser>("users").select("*").where(function () {
+  const userResult = await mysqlDatabase<DBUser>("users").where(function () {
     if (username.includes("@")) this.where("email", username)
     else this.where("name", username)
   }).limit(1).first();
