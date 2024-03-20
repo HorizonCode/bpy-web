@@ -3,6 +3,28 @@ export type UserData = {
   username: string;
 };
 
+export type UserLoginData = {
+  username: string;
+  password: string;
+}
+
+export type DBUser = {
+  id: number;
+  name: string;
+  safe_name: string;
+  email: string;
+  priv: number;
+  pw_bcrypt: string;
+  country: string;
+  silence_end: number;
+  donor_end: number;
+  creation_time: number;
+  latest_activity: number;
+  clan_id: number;
+  clan_priv: number;
+  userpage_content: string;
+}
+
 export type LBUser = {
   a_count: number;
   acc: number;
