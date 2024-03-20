@@ -1,4 +1,4 @@
-import { getMySQLDatabase } from "../hooks.server";
+import { getMySQLDatabase, getRedisClient } from "../hooks.server";
 import crypto from "crypto";
 import bcrypt from "bcrypt";
 import type { DBUser } from "./types";
@@ -25,4 +25,13 @@ export const login = async (opts: { username: string, password: string }): Promi
   const isPasswordCorrect = await comparePasswords(password, hashedPassword);
   if (!isPasswordCorrect) return undefined;
   return userResult;
+}
+
+export const getUserFromSession = async (sessionToken: string): Promise<DBUser | undefined> => {
+  const redisClient = await getRedisClient();
+  const userId = await redisClient.get(`user:session:${sessionToken}`);
+  if (!userId) return undefined;
+  const mysqlDatabase = await getMySQLDatabase();
+  const user = await mysqlDatabase<DBUser>("users").where("id", userId).first();
+  return user;
 }

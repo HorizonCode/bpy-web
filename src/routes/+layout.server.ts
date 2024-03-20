@@ -1,14 +1,12 @@
-import { type DBUser } from '$lib/types.js';
-import { getMySQLDatabase, getRedisClient } from '../hooks.server.js';
+import { getUserFromSession } from '$lib/user.js';
+import { getRedisClient } from '../hooks.server.js';
 
 export async function load({ url, cookies }) {
   const sessionToken = cookies.get("sessionToken") ?? undefined;
   if (sessionToken) {
-    const redisClient = await getRedisClient();
-    const mySQLDatabase = await getMySQLDatabase();
-    const userId = await redisClient.get(`user:session:${sessionToken}`);
-    const user = await mySQLDatabase<DBUser>("users").where("id", userId).first();
+    const user = await getUserFromSession(sessionToken);
     if (user) {
+      const redisClient = await getRedisClient();
       // NOTE: refresh cookie and session token
       await redisClient.set(`user:session:${sessionToken}`, user.id, {
         EX: 86400,

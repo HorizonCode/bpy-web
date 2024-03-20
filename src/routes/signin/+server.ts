@@ -1,4 +1,4 @@
-import { login as getUser } from '$lib/user.js';
+import { login } from '$lib/user.js';
 import { error, json } from '@sveltejs/kit'
 import { getRedisClient } from '../../hooks.server.js';
 import { makeid } from '$lib/stringUtil.js';
@@ -6,7 +6,7 @@ import { makeid } from '$lib/stringUtil.js';
 export const POST = async ({ cookies, request }) => {
   if (request.headers.get("content-type") !== "application/json") return error(400, "Invalid content type");
   const bodyData: { username: string; password: string; } = JSON.parse(Buffer.from(await request.arrayBuffer()).toString("utf-8"));
-  const user = await getUser({ username: bodyData.username, password: bodyData.password });
+  const user = await login({ username: bodyData.username, password: bodyData.password });
   if (!user) return error(400, "Invalid login credentials");
 
   const redisClient = await getRedisClient();
