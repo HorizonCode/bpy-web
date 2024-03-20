@@ -46,12 +46,11 @@
 	storePopup.set({ computePosition, autoUpdate, flip, shift, offset, arrow });
 	initializeStores();
 
-	const toastStore = getToastStore();
 	const drawerStore = getDrawerStore();
 
 	export let data;
 
-	if ("currentUser" in data) {
+	if ('currentUser' in data) {
 		userData.set(data.currentUser as UserData);
 	}
 
@@ -215,17 +214,7 @@
 											class="w-32 btn variant-filled-surface rounded-lg"
 											on:click={() => goto(`/u/${$userData?.id}`)}>Profile</button
 										>
-										<button
-											class="w-32 btn variant-filled-surface rounded-lg"
-											on:click={() => {
-												toastStore.trigger({
-													message: `Logged out!`,
-													classes: '!bg-surface-800 !text-surface-200 !border-surface-700 !border'
-												});
-												userData.set(undefined);
-												goto('/');
-											}}>Logout</button
-										>
+										<a class="w-32 btn variant-filled-surface rounded-lg" href="/logout">Logout</a>
 									{:else}
 										<button
 											class="w-32 btn variant-filled-surface rounded-lg"
