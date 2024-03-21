@@ -68,7 +68,10 @@
 				</div>
 				<div class="flex flex-row items-center gap-1">
 					<!-- right side of the leaderboard entry-->
-					<div class="min-w-20 text-center font-bold text-xs text-surface-300">
+					<div
+						class="min-w-20 text-center font-bold text-xs text-surface-300 tooltip"
+						aria-label={numberHumanReadable(user.tscore)}
+					>
 						{abbreviateNumber(user.tscore)}
 					</div>
 					<div class="min-w-20 text-center font-bold text-xs text-surface-300">
