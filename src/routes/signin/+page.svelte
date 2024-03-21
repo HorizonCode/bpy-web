@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
+	import { env } from '$env/dynamic/public';
 	import { appName } from '$lib/env';
 	import { userData } from '$lib/storage';
 	import {
@@ -9,20 +10,36 @@
 		focusTrap
 	} from '@skeletonlabs/skeleton';
 	import { User, Key } from 'svelte-feathers';
+	import { Turnstile } from 'svelte-turnstile';
 	import { fly, scale } from 'svelte/transition';
+
+	const turnstileSiteKey = env.PUBLIC_TURNSTILE_SITE_KEY;
 
 	const toastStore = getToastStore();
 
 	const loginData = {
 		username: '',
-		password: ''
+		password: '',
+		captchaToken: ''
 	};
 	let errored = false;
 	let passwordMask = false;
+	let resetCaptcha: () => void | undefined;
 
 	let loading = false;
 
+	const handleCaptcha = (event: CustomEvent<{ token: string }>) => {
+		loginData.captchaToken = event.detail.token;
+	};
+
 	const performLogin = async () => {
+		if (turnstileSiteKey && loginData.captchaToken.length <= 0) {
+			toastStore.trigger({
+				message: 'Please complete the captcha!',
+				classes: '!bg-red-700 !text-surface-100 !border-red-600 !border'
+			});
+			return;
+		}
 		loading = true;
 		const loginRequest = await fetch(window.location.href, {
 			method: 'POST',
@@ -49,6 +66,7 @@
 			loading = false;
 			errored = true;
 			passwordMask = false;
+			resetCaptcha?.();
 		}
 	};
 </script>
@@ -139,6 +157,15 @@
 							performLogin();
 						}
 					}}
+				/>
+				<Turnstile
+					theme="dark"
+					siteKey={turnstileSiteKey}
+					on:turnstile-callback={handleCaptcha}
+					on:turnstile-error={resetCaptcha}
+					on:turnstile-expired={resetCaptcha}
+					on:turnstile-timeout={resetCaptcha}
+					bind:reset={resetCaptcha}
 				/>
 				<a href="/login" class="text-pink-700 me-auto mb-7">Forgot password?</a>
 				<div class="w-full flex flex-row justify-between mt-auto">
