@@ -98,13 +98,6 @@ export const getRedisClient = async (): Promise<redis.RedisClientType<
   }
 }
 
-(async () => {
-  await getMySQLDatabase();
-  await getRedisClient();
-})();
-
-
-
 export function handleError(error: Error): void {
   console.log(chalk.red(JSON.stringify(error, null, 2)));
 }
