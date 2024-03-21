@@ -146,5 +146,5 @@ export function getLevelPrecise(totalScore: number): number {
 }
 
 export function getLevelProgress(totalScore: number): number {
-  return (getLevel(totalScore) - getLevelPrecise(totalScore)) * 100;
+  return Math.abs((getLevel(totalScore) - getLevelPrecise(totalScore)) * 100);
 }
