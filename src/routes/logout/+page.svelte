@@ -2,10 +2,11 @@
 	import { goto } from '$app/navigation';
 	import { userData } from '$lib/storage';
 	import { getToastStore } from '@skeletonlabs/skeleton';
+	import { onMount } from 'svelte';
 
 	const toastStore = getToastStore();
 
-	(async () => {
+	onMount(async () => {
 		const result = await fetch('/logout', {
 			method: 'POST'
 		});
@@ -17,5 +18,5 @@
 			});
 			userData.set(undefined);
 		}
-	})();
+	});
 </script>

@@ -1,5 +1,4 @@
 <script>
-	import { goto } from '$app/navigation';
 	import { appName } from '$lib/env';
 </script>
 
@@ -18,10 +17,8 @@
 				</h4>
 			</div>
 			<div class="flex flex-row gap-3">
-				<button class="btn variant-filled-surface rounded-lg" on:click={() => goto('/register')}>
-					Sign Up
-				</button>
-				<button class="btn bg-pink-600 rounded-lg" on:click={() => goto('/login')}> Login </button>
+				<a class="btn variant-filled-surface rounded-lg" href="/signup"> Sign Up </a>
+				<a class="btn bg-pink-600 rounded-lg" href="/signin"> Login </a>
 			</div>
 		</div>
 	</div>

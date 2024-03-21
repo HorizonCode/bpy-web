@@ -1,4 +1,4 @@
-import { getBeatmap } from "$lib/request.js";
+import { getBeatmap } from "$lib/api";
 
 export async function load({ params }) {
   const beatmapId = params.beatmapId;

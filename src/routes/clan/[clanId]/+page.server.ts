@@ -1,4 +1,4 @@
-import { getClan } from "$lib/request.js";
+import { getClan } from "$lib/api";
 
 export async function load({ params }) {
   const clanId = params.clanId;

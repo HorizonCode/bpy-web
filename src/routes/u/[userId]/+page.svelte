@@ -3,14 +3,14 @@
 	import Popup from '$lib/components/Popup.svelte';
 	import { appName, appUrl, avatarUrl } from '$lib/env';
 	import { getLevelProgress, getLevel } from '$lib/level';
-	import { getPlayerScores } from '$lib/request';
+	import { getPlayerScores } from '$lib/api';
 	import { tweened } from 'svelte/motion';
 	import { onMount } from 'svelte';
 	import { cubicInOut } from 'svelte/easing';
 	import { queryParam } from 'sveltekit-search-params';
 	import { ChevronDown, Edit2 } from 'svelte-feathers';
 	import type { Clan, PlayerScores } from '$lib/types';
-	import { getClan } from '$lib/request';
+	import { getClan } from '$lib/api';
 	import { userData } from '$lib/storage';
 	import { getCountryName } from '$lib/country';
 	import { numberHumanReadable } from '$lib/stringUtil';

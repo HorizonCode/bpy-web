@@ -11,7 +11,6 @@
 		getDrawerStore,
 		focusTrap
 	} from '@skeletonlabs/skeleton';
-
 	import { BarLoader } from 'svelte-loading-spinners';
 
 	// Highlight JS

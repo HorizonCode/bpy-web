@@ -2,7 +2,7 @@
 	import './style.postcss';
 	import Popup from '$lib/components/Popup.svelte';
 	import { appName, appUrl } from '$lib/env';
-	import { getFormattedTimeFromSeconds, getTimeSince } from '$lib/time';
+	import { getFormattedTimeFromSeconds } from '$lib/time';
 	import { onMount } from 'svelte';
 	import {
 		ArrowUpRight,
@@ -19,7 +19,7 @@
 	} from 'svelte-feathers';
 	import { queryParam } from 'sveltekit-search-params';
 	import { type MapScore } from '$lib/types';
-	import { getBeatmapScores } from '$lib/request.js';
+	import { getBeatmapScores } from '$lib/api';
 	import MapScores from '$lib/components/mapScores.svelte';
 	import { statusIntToString } from '$lib/beatmapStatus';
 
