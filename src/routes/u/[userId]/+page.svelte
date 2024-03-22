@@ -3,29 +3,22 @@
 	import Popup from '$lib/components/Popup.svelte';
 	import { appName, appUrl, avatarUrl } from '$lib/env';
 	import { getLevelProgress, getLevel } from '$lib/level';
-	import { getPlayerScores } from '$lib/api';
 	import { tweened } from 'svelte/motion';
 	import { onMount } from 'svelte';
 	import { cubicInOut } from 'svelte/easing';
 	import { queryParam } from 'sveltekit-search-params';
-	import { ChevronDown, Edit2 } from 'svelte-feathers';
-	import type { Clan, PlayerScores } from '$lib/types';
+	import { Edit2 } from 'svelte-feathers';
+	import type { Clan } from '$lib/types';
 	import { getClan } from '$lib/api';
 	import { userData } from '$lib/storage';
 	import { getCountryName } from '$lib/country';
 	import { numberHumanReadable } from '$lib/stringUtil';
 	import { getTimeAgo, secondsToDHM } from '$lib/time';
 	import UserScores from '$lib/components/userScores.svelte';
-	import { ProgressRadial } from '@skeletonlabs/skeleton';
 	import { removeTrailingZeroes } from '$lib/regex';
 
 	export let data;
 	let clan: Clan | undefined;
-	let bestScores: PlayerScores | undefined;
-	let recentScores: PlayerScores | undefined;
-
-	let amountBestScores = 5;
-	let amountRecentScores = 5;
 
 	const queryMode = queryParam('mode', undefined, {
 		pushHistory: false
@@ -145,47 +138,10 @@
 	const modes = ['osu', 'taiko', 'catch', 'mania'];
 	const types = ['vanilla', 'relax', 'autopilot'];
 
-	const loadBestScores = async (resetLoading?: boolean) => {
-		loading = true;
-		if (data.user?.info.id) {
-			const bestScoresRequest = await getPlayerScores({
-				userId: data.user.info.id,
-				limit: amountBestScores,
-				offset: 0,
-				mode: currentModeInt,
-				scope: 'best'
-			});
-			if (bestScoresRequest) {
-				bestScores = bestScoresRequest;
-			}
-		}
-		if (resetLoading) loading = false;
-	};
-
-	const loadRecentScores = async (resetLoading?: boolean) => {
-		loading = true;
-		if (data.user?.info.id) {
-			const recentScoresRequest = await getPlayerScores({
-				userId: data.user.info.id,
-				limit: amountRecentScores,
-				offset: 0,
-				mode: currentModeInt,
-				scope: 'recent'
-			});
-			if (recentScoresRequest) {
-				recentScores = recentScoresRequest;
-			}
-		}
-		if (resetLoading) loading = false;
-	};
-
 	const updateModeInt = async () => {
 		loading = true;
 		if (currentType == 'relax' && currentMode == 'mania') currentMode = 'osu';
 		if (currentType == 'autopilot' && currentMode != 'osu') currentMode = 'osu';
-
-		amountBestScores = 5;
-		amountRecentScores = 5;
 
 		queryMode.set(currentMode);
 		queryType.set(currentType);
@@ -231,11 +187,6 @@
 			shGrade.set(data.user.stats[currentModeInt].sh_count);
 			sGrade.set(data.user.stats[currentModeInt].s_count);
 			aGrade.set(data.user.stats[currentModeInt].a_count);
-
-			//TODO: rework this, maybe a own component for that?
-			// fetch best and recent scores from current selected mode
-			await loadBestScores();
-			await loadRecentScores();
 		}
 		loading = false;
 	};
@@ -250,18 +201,6 @@
 		if (currentType == type) return;
 		currentType = type;
 		await updateModeInt();
-	};
-
-	const loadMoreBestScores = async () => {
-		if (loading) return;
-		amountBestScores += 5;
-		await loadBestScores(true);
-	};
-
-	const loadMoreRecentScores = async () => {
-		if (loading) return;
-		amountRecentScores += 5;
-		await loadRecentScores(true);
 	};
 
 	onMount(async () => {
@@ -575,69 +514,25 @@
 								Ranks
 							</p>
 							<div class="relative flex flex-col gap-5">
-								<div class="relative flex flex-col gap-1">
-									<p
-										class="text-sm font-bold w-max ms-2 before:-ms-2 before:content-[''] before:h-[.65em] before:mt-[.45em] before:absolute before:w-[3px] before:rounded-lg before:bg-primary-400"
-									>
-										Best Performance
-									</p>
-									<div class="flex flex-col gap-1">
-										<div
-											class="flex flex-col gap-1 transition-all{loading
-												? ' blur-sm'
-												: ' blur-none'}"
-										>
-											<UserScores scores={bestScores} {currentMode} {currentType} />
-										</div>
-										<button
-											class="flex flex-row text-center justify-center items-center btn w-48 mx-auto variant-filled-surface px-4 py-1 mt-2 text-[0.7rem] leading-5"
-											on:click={loadMoreBestScores}
-											disabled={loading || !bestScores}
-										>
-											{#if loading || !bestScores}
-												<div>
-													<ProgressRadial width="w-5" />
-												</div>
-											{:else}
-												<ChevronDown class="pointer-events-none text-surface-400" size={16} />
-												<span class="uppercase font-semibold">show more</span>
-												<ChevronDown class="pointer-events-none text-surface-400" size={16} />
-											{/if}
-										</button>
-									</div>
-								</div>
+								{#key currentModeInt}
+									<UserScores
+										title="Best Performance"
+										{currentMode}
+										{currentType}
+										userId={data.user.info.id}
+										scoreAmount={5}
+										scoresType="best"
+									/>
 
-								<div class="relative flex flex-col gap-1">
-									<p
-										class="text-sm font-bold w-max ms-2 before:-ms-2 before:content-[''] before:h-[.65em] before:mt-[.45em] before:absolute before:w-[3px] before:rounded-lg before:bg-primary-400"
-									>
-										Recent
-									</p>
-									<div class="flex flex-col gap-1">
-										<div
-											class="flex flex-col gap-1 transition-all{loading
-												? ' blur-sm'
-												: ' blur-none'}"
-										>
-											<UserScores scores={recentScores} {currentMode} {currentType} />
-										</div>
-										<button
-											class="flex flex-row text-center justify-center items-center btn w-48 mx-auto variant-filled-surface px-4 py-1 mt-2 text-[0.7rem] leading-5"
-											on:click={loadMoreRecentScores}
-											disabled={loading || !recentScores}
-										>
-											{#if loading || !recentScores}
-												<div>
-													<ProgressRadial width="w-5" />
-												</div>
-											{:else}
-												<ChevronDown class="pointer-events-none text-surface-400" size={16} />
-												<span class="uppercase font-semibold">show more</span>
-												<ChevronDown class="pointer-events-none text-surface-400" size={16} />
-											{/if}
-										</button>
-									</div>
-								</div>
+									<UserScores
+										title="Recent"
+										{currentMode}
+										{currentType}
+										userId={data.user.info.id}
+										scoreAmount={5}
+										scoresType="recent"
+									/>
+								{/key}
 							</div>
 						</div>
 					</div>
