@@ -19,8 +19,8 @@
 				</h4>
 			</div>
 			<div class="flex flex-row gap-3">
-				<a class="btn variant-filled-surface rounded-lg" href="/signup"> Sign Up </a>
-				<a class="btn bg-pink-600 rounded-lg" href="/signin"> Login </a>
+				<a class="btn variant-filled-surface rounded-lg font-semibold" href="/signup"> Sign Up </a>
+				<a class="btn variant-filled-tertiary rounded-lg" href="/signin"> Login </a>
 			</div>
 			<div class="flex flex-row gap-3">
 				<p class="bg-black/50 rounded-full py-1 px-6">
