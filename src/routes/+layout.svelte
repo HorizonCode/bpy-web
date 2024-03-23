@@ -249,7 +249,7 @@
 	</svelte:fragment>
 	{#key data.url}
 		<div
-			class="mt-14"
+			class="mt-14 h-[calc(100vh-3.5rem)]"
 			in:scale={{ start: 0.99, duration: 200, delay: 200 }}
 			out:scale={{ start: 0.99, duration: 200 }}
 		>
