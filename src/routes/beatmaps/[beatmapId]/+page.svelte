@@ -294,13 +294,13 @@
 						aria-label={statusIntToString(data.map.status)}
 					>
 						<div>
-							{#if data.map.status == 4}
+							{#if data.map.status == 5}
 								<Heart class="pointer-events-none text-red-400" />
-							{:else if data.map.status == 3 || data.map.status == 2}
+							{:else if data.map.status == 3 || data.map.status == 4}
 								<Check class="pointer-events-none text-green-400" />
-							{:else if data.map.status == 1}
+							{:else if data.map.status == 2}
 								<ChevronsUp class="pointer-events-none text-blue-400" />
-							{:else if data.map.status == -2}
+							{:else if data.map.status == -1}
 								<Trash class="pointer-events-none text-gray-400" />
 							{:else}
 								<HelpCircle class="pointer-events-none text-gray-400" />
