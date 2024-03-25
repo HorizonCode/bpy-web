@@ -49,4 +49,6 @@ export const phrases = {
   "Back": "Zurück",
   "Login": "Einloggen",
   "Back to Home": "Zurück zur Startseite",
+  "English": "Englisch",
+  "German": "Deutsch",
 };

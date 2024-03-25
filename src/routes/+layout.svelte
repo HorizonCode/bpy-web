@@ -202,11 +202,13 @@
 									<div class="flex flex-col gap-2 card variant-filled-surface p-2 rounded-lg">
 										{#each supportedLanguages as lang}
 											<button
-												class="flex flex-row items-center bg-surface-600 hover:bg-surface-700 hover:scale-[1.005] active:scale-[0.995] transition-all px-6 py-2 rounded-lg cursor-pointer"
+												class="flex flex-row items-center {$userLanguage == lang
+													? 'bg-primary-600/30'
+													: 'bg-surface-600 hover:bg-surface-700'} hover:scale-[1.005] active:scale-[0.995] transition-all px-6 py-2 rounded-lg cursor-pointer"
 												on:click={() => userLanguage.set(lang)}
 											>
 												<img width="30" src="/flags/{lang}.png" class="mr-2" />
-												{languageNames[lang]}
+												{__(languageNames[lang], $userLanguage)}
 											</button>
 										{/each}
 									</div>
