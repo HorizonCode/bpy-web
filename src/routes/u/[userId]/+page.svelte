@@ -17,7 +17,6 @@
 	import { getTimeAgo, secondsToDHM, secondsToHours } from '$lib/time';
 	import UserScores from '$lib/components/userScores.svelte';
 	import { removeTrailingZeroes } from '$lib/regex';
-	import { statusIntToColor, statusIntToString } from '$lib/status';
 
 	export let data;
 	let clan: Clan | undefined;
@@ -338,13 +337,15 @@
 					<div class="md:absolute md:-top-[55px] w-14 h-14 md:w-56 md:h-32">
 						{#if playerStatus && playerStatus.player_status.online}
 							<div
-								class="top-0 left-24 hidden md:block absolute badge status-badge opacity-95"
-								style="--statusBg: {statusIntToColor(
-									playerStatus.player_status.status?.action ?? 0
-								)};"
-							>
-								{statusIntToString(playerStatus.player_status.status?.action ?? 0)}
-							</div>
+								class="top-0 left-[6.75rem] w-6 h-6 hidden md:block absolute badge bg-green-500 shadow"
+							></div>
+							<div
+								class="top-0 left-[6.75rem] w-6 h-6 animate-ping hidden md:block absolute badge bg-green-500"
+							></div>
+						{:else}
+							<div
+								class="top-0 left-[6.75rem] w-6 h-6 hidden md:block absolute badge bg-gray-700"
+							></div>
 						{/if}
 						<img
 							class="w-14 h-14 md:w-32 md:h-32 bg-surface-600 rounded-[30%] shadow-[0_2px_5px_1px_rgba(0,0,0,0.4)]"
