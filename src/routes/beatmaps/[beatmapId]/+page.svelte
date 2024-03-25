@@ -82,7 +82,11 @@
 		}
 
 		try {
-			const leaderboard = await getBeatmapScores(data.map!.md5, mode, 'best');
+			const leaderboard = await getBeatmapScores({
+				beatmapMd5: data.map!.md5,
+				mode,
+				scope: 'best'
+			});
 			currentLeaderboard = leaderboard?.scores ?? [];
 			failed = false;
 			firstLoad = false;

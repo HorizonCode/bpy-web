@@ -9,14 +9,15 @@
 	import { cubicInOut } from 'svelte/easing';
 	import { queryParam } from 'sveltekit-search-params';
 	import { Edit2 } from 'svelte-feathers';
-	import type { Clan } from '$lib/types';
-	import { getClan } from '$lib/api';
+	import type { Clan, PlayerStatus } from '$lib/types';
+	import { getClan, getPlayerStatus } from '$lib/api';
 	import { userData } from '$lib/storage';
 	import { getCountryName } from '$lib/country';
 	import { numberHumanReadable } from '$lib/stringUtil';
 	import { getTimeAgo, secondsToDHM, secondsToHours } from '$lib/time';
 	import UserScores from '$lib/components/userScores.svelte';
 	import { removeTrailingZeroes } from '$lib/regex';
+	import { statusIntToString } from '$lib/status';
 
 	export let data;
 	let clan: Clan | undefined;
@@ -33,6 +34,7 @@
 	let currentMode = 'osu';
 	let currentType = 'vanilla';
 	let currentModeInt: number = 0;
+	let playerStatus: PlayerStatus | undefined;
 
 	// NOTE: this is so cursed, please kill me
 	let level = tweened(0, {
@@ -214,6 +216,8 @@
 			await updateModeInt();
 
 			if (data.user.info.clan_id) clan = await getClan(data.user.info.clan_id);
+
+			playerStatus = await getPlayerStatus(data.user.info.id);
 		}
 	});
 </script>
@@ -331,11 +335,16 @@
 						class="absolute h-full w-full top-0 left-0 bg-no-repeat bg-bottom blur opacity-10"
 						style="background-image: url('/u/{data.user.info.id}/cover');"
 					></div>
-					<div
-						class="md:absolute md:-top-[55px] w-14 h-14 md:w-32 md:h-32 bg-surface-600 rounded-[30%] overflow-hidden shadow-[0_2px_5px_1px_rgba(0,0,0,0.4)]"
-					>
+					<div class="md:absolute md:-top-[55px] w-14 h-14 md:w-56 md:h-32">
+						{#if playerStatus && playerStatus.player_status.online}
+							<div
+								class="top-0 left-24 hidden md:block absolute badge variant-filled-surface opacity-95"
+							>
+								{statusIntToString(playerStatus.player_status.status?.action ?? 0)}
+							</div>
+						{/if}
 						<img
-							class="w-14 h-14 md:w-32 md:h-32"
+							class="w-14 h-14 md:w-32 md:h-32 bg-surface-600 rounded-[30%] shadow-[0_2px_5px_1px_rgba(0,0,0,0.4)]"
 							src="{avatarUrl}/{data.user.info.id}"
 							alt="playerProfile"
 						/>
