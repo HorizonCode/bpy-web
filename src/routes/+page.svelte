@@ -9,7 +9,7 @@
 </svelte:head>
 
 <div class="h-full w-screen">
-	<div class="bg-pink-800/40 w-screen h-full">
+	<div class="bg-primary-500/30 w-screen h-full">
 		<div class="h-full flex flex-col justify-center items-center text-center gap-5">
 			<div class="flex flex-col gap-10">
 				<h1 class="h1 font-bold">{appName}</h1>
@@ -33,5 +33,4 @@
 			</div>
 		</div>
 	</div>
-	<div class="w-screen"></div>
 </div>
