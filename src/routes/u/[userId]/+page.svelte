@@ -235,84 +235,89 @@
 </svelte:head>
 <div class="container mx-auto w-full p-5">
 	{#if data.user?.info.id}
-		<div class="mx-auto card overflow-hidden">
+		<div class="mx-auto card">
 			<div class="w-full flex flex-col">
-				<div class="relative p-3 bg-surface-600">
-					<div
-						class="absolute h-full w-full top-0 left-0 bg-no-repeat bg-top blur opacity-10"
-						style="background-image: url('/u/{data.user.info.id}/cover');"
-					></div>
-					<div class="grid md:grid-cols-[auto_auto] gap-2">
-						<div class="w-full justify-center md:justify-start flex rounded-lg">
-							<button
-								class="w-[100%] md:w-[25%] !scale-100 btn {currentType == 'vanilla'
-									? 'bg-surface-500'
-									: 'bg-surface-600'} rounded-lg rounded-r-none"
-								on:click={() => setType('vanilla')}
-								disabled={loading || failed}
-							>
-								Vanilla
-							</button>
-							<button
-								class="w-[100%] md:w-[25%] !scale-100 btn {currentType == 'relax'
-									? 'bg-surface-500'
-									: 'bg-surface-600'} rounded-none"
-								on:click={() => setType('relax')}
-								disabled={currentMode == 'mania' || loading || failed}
-							>
-								Relax
-							</button>
-							<button
-								class="w-[100%] md:w-[25%] !scale-100 btn {currentType == 'autopilot'
-									? 'bg-surface-500'
-									: 'bg-surface-600'} rounded-lg rounded-l-none"
-								disabled={currentMode == 'taiko' ||
-									currentMode == 'catch' ||
-									currentMode == 'mania' ||
-									loading ||
-									failed}
-								on:click={() => setType('autopilot')}
-							>
-								Autopilot
-							</button>
-						</div>
-						<div class="w-full flex rounded-lg">
-							<button
-								class="w-[25%] !scale-100 btn {currentMode == 'osu'
-									? 'bg-surface-500'
-									: 'bg-surface-600'} rounded-lg rounded-r-none"
-								on:click={() => setMode('osu')}
-								disabled={loading || failed}
-							>
-								osu!
-							</button>
-							<button
-								class="w-[25%] !scale-100 btn {currentMode == 'taiko'
-									? 'bg-surface-500'
-									: 'bg-surface-600'} rounded-none"
-								on:click={() => setMode('taiko')}
-								disabled={currentType == 'autopilot' || loading || failed}
-							>
-								taiko
-							</button>
-							<button
-								class="w-[25%] !scale-100 btn {currentMode == 'catch'
-									? 'bg-surface-500'
-									: 'bg-surface-600'} rounded-none"
-								on:click={() => setMode('catch')}
-								disabled={currentType == 'autopilot' || loading || failed}
-							>
-								catch
-							</button>
-							<button
-								class="w-[25%] !scale-100 btn {currentMode == 'mania'
-									? 'bg-surface-500'
-									: 'bg-surface-600'} rounded-lg rounded-l-none"
-								on:click={() => setMode('mania')}
-								disabled={currentType == 'relax' || currentType == 'autopilot' || loading || failed}
-							>
-								mania
-							</button>
+				<div class="overflow-hidden rounded-lg">
+					<div class="relative p-3 bg-surface-600">
+						<div
+							class="absolute h-full w-full top-0 left-0 bg-no-repeat bg-top blur opacity-10"
+							style="background-image: url('/u/{data.user.info.id}/cover');"
+						></div>
+						<div class="grid md:grid-cols-[auto_auto] gap-2">
+							<div class="w-full justify-center md:justify-start flex rounded-lg">
+								<button
+									class="w-[100%] md:w-[25%] !scale-100 btn {currentType == 'vanilla'
+										? 'bg-surface-500'
+										: 'bg-surface-600'} rounded-lg rounded-r-none"
+									on:click={() => setType('vanilla')}
+									disabled={loading || failed}
+								>
+									Vanilla
+								</button>
+								<button
+									class="w-[100%] md:w-[25%] !scale-100 btn {currentType == 'relax'
+										? 'bg-surface-500'
+										: 'bg-surface-600'} rounded-none"
+									on:click={() => setType('relax')}
+									disabled={currentMode == 'mania' || loading || failed}
+								>
+									Relax
+								</button>
+								<button
+									class="w-[100%] md:w-[25%] !scale-100 btn {currentType == 'autopilot'
+										? 'bg-surface-500'
+										: 'bg-surface-600'} rounded-lg rounded-l-none"
+									disabled={currentMode == 'taiko' ||
+										currentMode == 'catch' ||
+										currentMode == 'mania' ||
+										loading ||
+										failed}
+									on:click={() => setType('autopilot')}
+								>
+									Autopilot
+								</button>
+							</div>
+							<div class="w-full flex rounded-lg">
+								<button
+									class="w-[25%] !scale-100 btn {currentMode == 'osu'
+										? 'bg-surface-500'
+										: 'bg-surface-600'} rounded-lg rounded-r-none"
+									on:click={() => setMode('osu')}
+									disabled={loading || failed}
+								>
+									osu!
+								</button>
+								<button
+									class="w-[25%] !scale-100 btn {currentMode == 'taiko'
+										? 'bg-surface-500'
+										: 'bg-surface-600'} rounded-none"
+									on:click={() => setMode('taiko')}
+									disabled={currentType == 'autopilot' || loading || failed}
+								>
+									taiko
+								</button>
+								<button
+									class="w-[25%] !scale-100 btn {currentMode == 'catch'
+										? 'bg-surface-500'
+										: 'bg-surface-600'} rounded-none"
+									on:click={() => setMode('catch')}
+									disabled={currentType == 'autopilot' || loading || failed}
+								>
+									catch
+								</button>
+								<button
+									class="w-[25%] !scale-100 btn {currentMode == 'mania'
+										? 'bg-surface-500'
+										: 'bg-surface-600'} rounded-lg rounded-l-none"
+									on:click={() => setMode('mania')}
+									disabled={currentType == 'relax' ||
+										currentType == 'autopilot' ||
+										loading ||
+										failed}
+								>
+									mania
+								</button>
+							</div>
 						</div>
 					</div>
 				</div>
