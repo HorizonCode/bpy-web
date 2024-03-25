@@ -6,6 +6,8 @@
 	import { scale } from 'svelte/transition';
 	import { removeClanTag, removeTrailingZeroes } from '$lib/regex';
 	import { getCountryName } from '$lib/country';
+	import { __ } from '$lib/language';
+	import { userLanguage } from '$lib/storage';
 
 	export let leaderboardData: LBUser[];
 	export let page: number;
@@ -20,9 +22,15 @@
 		<div class="flex flex-row items-center gap-2"></div>
 		<div class="flex flex-row text-center items-center gap-1">
 			<!-- right side of the leaderboard entry-->
-			<div class="min-w-20 text-center font-bold text-xs text-surface-300">Total Score</div>
-			<div class="min-w-20 text-center font-bold text-xs text-surface-300">Accuracy</div>
-			<div class="min-w-16 text-center font-bold text-xs text-surface-300">Play Count</div>
+			<div class="min-w-20 text-center font-bold text-xs text-surface-300">
+				{__('Total Score', $userLanguage)}
+			</div>
+			<div class="min-w-20 text-center font-bold text-xs text-surface-300">
+				{__('Accuracy', $userLanguage)}
+			</div>
+			<div class="min-w-16 text-center font-bold text-xs text-surface-300">
+				{__('Play Count', $userLanguage)}
+			</div>
 			<div class="min-w-12 text-center font-bold text-xs text-white">PP</div>
 			<div class="min-w-8 text-center font-bold text-xs text-surface-300">SS</div>
 			<div class="min-w-8 text-center font-bold text-xs text-surface-300">S</div>

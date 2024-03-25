@@ -10,6 +10,9 @@
 	import { ChevronDown, Download, MoreVertical } from 'svelte-feathers';
 	import Popup from './Popup.svelte';
 	import { apiUrl } from '$lib/env';
+	import { __ } from '$lib/language';
+	import { userLanguage } from '$lib/storage';
+	import TimeAgo from './TimeAgo.svelte';
 
 	export let title: string;
 	export let userId: number;
@@ -107,7 +110,7 @@
 											class="text-xs font-semibold text-surface-400 tooltip"
 											aria-label={new Date(score.play_time).toUTCString()}
 										>
-											{getTimeAgo(new Date(score.play_time))}
+											<TimeAgo language={$userLanguage} date={new Date(score.play_time)} />
 										</div>
 									</div>
 								</div>
@@ -136,8 +139,10 @@
 										>
 									</div>
 									<span class="text-xs font-semibold">
-										weighted {Math.round(Math.pow(0.95, idx) * 100)}%</span
-									>
+										{__('weighted {{val}}%', $userLanguage, {
+											val: Math.round(Math.pow(0.95, idx) * 100)
+										})}
+									</span>
 								</div>
 								<div
 									class="min-w-[80px] flex flex-row items-center justify-center text-primary-400 py-1 font-bold bg-black/50 rounded-lg"
@@ -162,7 +167,7 @@
 											href="{apiUrl}/get_replay?id={score.id}"
 										>
 											<Download class="pointer-events-none mr-2" size={16} />
-											Download Replay
+											{__('Download Replay', $userLanguage)}
 										</a>
 									</div>
 								{/if}
@@ -183,7 +188,7 @@
 				</div>
 			{:else}
 				<ChevronDown class="pointer-events-none text-surface-400" size={16} />
-				<span class="uppercase font-semibold">show more</span>
+				<span class="uppercase font-semibold">{__('show more', $userLanguage)}</span>
 				<ChevronDown class="pointer-events-none text-surface-400" size={16} />
 			{/if}
 		</button>

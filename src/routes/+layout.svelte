@@ -34,12 +34,14 @@
 	import { goto } from '$app/navigation';
 	import { fade, fly, scale } from 'svelte/transition';
 	import { navigating, page } from '$app/stores';
-	import { userData } from '$lib/storage';
+	import { userData, userLanguage } from '$lib/storage';
 	import { onMount } from 'svelte';
 	import { appName, avatarUrl, apiUrl } from '$lib/env';
 	import { Menu, Search } from 'svelte-feathers';
 	import NavItems from '$lib/components/navItems.svelte';
 	import type { UserData } from '$lib/types';
+	import Popup from '$lib/components/Popup.svelte';
+	import { __, languageNames, supportedLanguages } from '$lib/language';
 
 	storePopup.set({ computePosition, autoUpdate, flip, shift, offset, arrow });
 	initializeStores();
@@ -118,7 +120,7 @@
 			<div class="w-fullr" use:focusTrap={true}>
 				<input
 					class="input mb-3 rounded-lg w-full"
-					placeholder="Who are you looking for?"
+					placeholder={__('Who are you looking for?', $userLanguage)}
 					bind:value={userSearchQuery}
 					on:input={searchUsers}
 				/>
@@ -156,7 +158,9 @@
 	>
 		<div class="h-full flex flex-col justify-center items-center gap-2 bg-surface-900/80">
 			<BarLoader size="60" color="#fff" unit="px" duration="1s" />
-			<p class="text-xs font-light">This is taking longer than expected...</p>
+			<p class="text-xs font-light">
+				{__('This is taking longer than expected...', $userLanguage)}
+			</p>
 		</div>
 	</div>
 {/if}
@@ -185,6 +189,29 @@
 							<NavItems {drawerStore} />
 						</div>
 						<div class="flex flex-row gap-5 items-center">
+							<Popup event="click" placement="bottom">
+								<button class="btn px-2 py-2 rounded-lg variant-ghost-surface">
+									<img
+										width="30"
+										class="pointer-events-none"
+										src="/flags/{$userLanguage}.png"
+										alt="language"
+									/>
+								</button>
+								<svelte:fragment slot="popup">
+									<div class="flex flex-col gap-2 card variant-filled-surface p-2 rounded-lg">
+										{#each supportedLanguages as lang}
+											<button
+												class="flex flex-row items-center bg-surface-600 hover:bg-surface-700 hover:scale-[1.005] active:scale-[0.995] transition-all px-6 py-2 rounded-lg cursor-pointer"
+												on:click={() => userLanguage.set(lang)}
+											>
+												<img width="30" src="/flags/{lang}.png" class="mr-2" />
+												{languageNames[lang]}
+											</button>
+										{/each}
+									</div>
+								</svelte:fragment>
+							</Popup>
 							<button
 								class="btn px-5 variant-ghost-surface"
 								on:click={() =>
@@ -210,17 +237,20 @@
 									{#if $userData}
 										<button
 											class="w-32 btn variant-filled-surface rounded-lg"
-											on:click={() => goto(`/u/${$userData?.id}`)}>Profile</button
+											on:click={() => goto(`/u/${$userData?.id}`)}
+											>{__('Profile', $userLanguage)}</button
 										>
-										<a class="w-32 btn variant-filled-surface rounded-lg" href="/logout">Logout</a>
+										<a class="w-32 btn variant-filled-surface rounded-lg" href="/logout"
+											>{__('Logout', $userLanguage)}</a
+										>
 									{:else}
 										<button
 											class="w-32 btn variant-filled-surface rounded-lg"
-											on:click={() => goto('/signin')}>Sign In</button
+											on:click={() => goto('/signin')}>{__('Sign In', $userLanguage)}</button
 										>
 										<button
 											class="w-32 btn variant-filled-surface rounded-lg"
-											on:click={() => goto('/signup')}>Sign up</button
+											on:click={() => goto('/signup')}>{__('Sign Up', $userLanguage)}</button
 										>
 									{/if}
 								</div>
@@ -249,7 +279,9 @@
 	</svelte:fragment>
 	{#key data.url}
 		<div
-			class="mt-14 h-[calc(100vh-3.5rem)]"
+			class={$page.data.url != '/signin' && $page.data.url != '/signup'
+				? 'mt-14 h-[calc(100vh-3.5rem)]'
+				: ''}
 			in:scale={{ start: 0.99, duration: 200, delay: 200 }}
 			out:scale={{ start: 0.99, duration: 200 }}
 		>

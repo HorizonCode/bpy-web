@@ -1,5 +1,7 @@
 <script>
 	import { appName } from '$lib/env';
+	import { __ } from '$lib/language';
+	import { userLanguage } from '$lib/storage';
 
 	export let data;
 </script>
@@ -19,16 +21,21 @@
 				</h4>
 			</div>
 			<div class="flex flex-row gap-3">
-				<a class="btn variant-filled-surface rounded-lg font-semibold" href="/signup"> Sign Up </a>
-				<a class="btn variant-filled-tertiary rounded-lg" href="/signin"> Login </a>
+				<a class="btn variant-filled-surface rounded-lg font-semibold" href="/signup">
+					{__('Sign Up', $userLanguage)}
+				</a>
+				<a class="btn variant-filled-tertiary rounded-lg" href="/signin">
+					{__('Sign In', $userLanguage)}
+				</a>
 			</div>
 			<div class="flex flex-row gap-3">
 				<p class="bg-black/50 rounded-full py-1 px-6">
-					<span class="font-bold text-green-400">{data.userCounts?.counts.online}</span> online users
+					<span class="font-bold text-green-400">{data.userCounts?.counts.online}</span>
+					{__('online users', $userLanguage)}
 				</p>
 				<p class="bg-black/50 rounded-full py-1 px-6">
-					<span class="font-bold text-primary-400">{data.userCounts?.counts.total}</span> registered
-					users
+					<span class="font-bold text-primary-400">{data.userCounts?.counts.total}</span>
+					{__('registered users', $userLanguage)}
 				</p>
 			</div>
 		</div>

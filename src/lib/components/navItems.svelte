@@ -1,5 +1,7 @@
 <script lang="ts">
 	import { page } from '$app/stores';
+	import { __ } from '$lib/language';
+	import { userLanguage } from '$lib/storage';
 	import type { DrawerStore } from '@skeletonlabs/skeleton';
 
 	export let drawerStore: DrawerStore;
@@ -12,7 +14,7 @@
 		: 'hover:variant-outline-surface '}rounded-lg"
 	on:click={() => drawerStore.close()}
 >
-	Leaderboards
+	{__('Leaderboards', $userLanguage)}
 </a>
 <a
 	href="/donate"
@@ -21,5 +23,5 @@
 		: 'hover:variant-outline-surface '}rounded-lg"
 	on:click={() => drawerStore.close()}
 >
-	Donate
+	{__('Donate', $userLanguage)}
 </a>

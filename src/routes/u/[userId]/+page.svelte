@@ -11,12 +11,14 @@
 	import { Edit2 } from 'svelte-feathers';
 	import type { Clan, PlayerStatus } from '$lib/types';
 	import { getClan, getPlayerStatus } from '$lib/api';
-	import { userData } from '$lib/storage';
+	import { userData, userLanguage } from '$lib/storage';
 	import { getCountryName } from '$lib/country';
 	import { numberHumanReadable } from '$lib/stringUtil';
 	import { getTimeAgo, secondsToDHM, secondsToHours } from '$lib/time';
 	import UserScores from '$lib/components/userScores.svelte';
 	import { removeTrailingZeroes } from '$lib/regex';
+	import { __ } from '$lib/language';
+	import TimeAgo from '$lib/components/TimeAgo.svelte';
 
 	export let data;
 	let clan: Clan | undefined;
@@ -424,13 +426,13 @@
 						<div class="w-full flex md:ms-12 flex-col justify-around gap-1">
 							<div class="w-full flex flex-row justify-around md:justify-normal gap-10">
 								<div class="flex flex-col w-[50%] md:w-fit">
-									<span class="text-xs">Global Ranking</span>
+									<span class="text-xs">{__('Global Ranking', $userLanguage)}</span>
 									<span class="text-xl md:text-3xl font-semibold text-primary-200"
 										>#{$globalRank}</span
 									>
 								</div>
 								<div class="flex flex-col w-[50%] md:w-fit">
-									<span class="text-xs">Country Ranking</span>
+									<span class="text-xs">{__('Country Ranking', $userLanguage)}</span>
 									<span class="text-xl md:text-3xl font-semibold text-primary-200"
 										>#{$countryRank}</span
 									>
@@ -442,16 +444,17 @@
 							>
 								<div class="w-full flex flex-row justify-around md:justify-normal gap-10">
 									<div class="flex flex-col w-[50%] md:w-fit">
-										<span class="text-xs">Performance Points</span>
+										<span class="text-xs">{__('Performance Points', $userLanguage)}</span>
 										<span class="text-normal font-semibold text-primary-200"
 											>{numberHumanReadable($performancePoints)}</span
 										>
 									</div>
 									<div class="flex flex-col w-[50%] md:w-fit">
-										<span class="text-xs">Total Play Time</span>
+										<span class="text-xs">{__('Total Play Time', $userLanguage)}</span>
 										<span
 											class="text-normal font-semibold text-primary-200 tooltip"
-											aria-label={secondsToHours($playTime)}>{secondsToDHM($playTime)}</span
+											aria-label={secondsToHours($playTime, $userLanguage)}
+											>{secondsToDHM($playTime)}</span
 										>
 									</div>
 								</div>
@@ -479,45 +482,51 @@
 						<!-- right side -->
 						<div class="p-3 md:mr-6 grid grid-cols-2 gap-[4px_100px] text-xs font-semibold">
 							<dl class="contents drop-shadow-[0_0_2px_rgba(0,0,0,1)]">
-								<dt class="w-max">Joined</dt>
+								<dt class="w-max">{__('Joined', $userLanguage)}</dt>
 								<dd
 									class="tooltip"
 									aria-label={new Date(data.user.info.creation_time * 1000).toUTCString()}
 								>
-									{getTimeAgo(new Date(data.user.info.creation_time * 1000))}
+									<TimeAgo
+										language={$userLanguage}
+										date={new Date(data.user.info.creation_time * 1000)}
+									/>
 								</dd>
 							</dl>
 							<dl class="contents drop-shadow-[0_0_2px_rgba(0,0,0,1)]">
-								<dt class="w-max">Latest Activity</dt>
+								<dt class="w-max">{__('Latest Activity', $userLanguage)}</dt>
 								<dd
 									class="tooltip"
 									aria-label={new Date(data.user.info.latest_activity * 1000).toUTCString()}
 								>
-									{getTimeAgo(new Date(data.user.info.latest_activity * 1000))}
+									<TimeAgo
+										language={$userLanguage}
+										date={new Date(data.user.info.latest_activity * 1000)}
+									/>
 								</dd>
 							</dl>
 							<dl class="contents drop-shadow-[0_0_2px_rgba(0,0,0,1)]">
-								<dt class="w-max">Ranked Score</dt>
+								<dt class="w-max">{__('Ranked Score', $userLanguage)}</dt>
 								<dd>{numberHumanReadable($rankedScore)}</dd>
 							</dl>
 							<dl class="contents">
-								<dt class="w-max">Hit Accuracy</dt>
+								<dt class="w-max">{__('Hit Accuracy', $userLanguage)}</dt>
 								<dd>{removeTrailingZeroes($hitAccuracy)}%</dd>
 							</dl>
 							<dl class="contents">
-								<dt class="w-max">Play Count</dt>
+								<dt class="w-max">{__('Play Count', $userLanguage)}</dt>
 								<dd>{$playCount}</dd>
 							</dl>
 							<dl class="contents">
-								<dt class="w-max">Total Score</dt>
+								<dt class="w-max">{__('Total Score', $userLanguage)}</dt>
 								<dd>{numberHumanReadable($totalScore)}</dd>
 							</dl>
 							<dl class="contents">
-								<dt class="w-max">Maximum Combo</dt>
+								<dt class="w-max">{__('Maximum Combo', $userLanguage)}</dt>
 								<dd>{numberHumanReadable($maxCombo)}</dd>
 							</dl>
 							<dl class="contents">
-								<dt class="w-max">Replays Watched by Others</dt>
+								<dt class="w-max">{__('Replays Watched by Others', $userLanguage)}</dt>
 								<dd>{numberHumanReadable($replayViews)}</dd>
 							</dl>
 						</div>
@@ -530,7 +539,7 @@
 								<p
 									class="text-lg font-bold underline underline-offset-4 decoration-2 decoration-primary-400"
 								>
-									me!
+									{__('me!', $userLanguage)}
 								</p>
 								<div class="w-full text-center userpage">{@html data.userpage}</div>
 							</div>
@@ -541,7 +550,7 @@
 							<p
 								class="text-lg font-bold underline underline-offset-4 decoration-2 decoration-primary-400"
 							>
-								Ranks
+								{__('Ranks', $userLanguage)}
 							</p>
 							<div class="relative flex flex-col gap-5">
 								{#key currentModeInt}

@@ -1,3 +1,5 @@
+import { __ } from "./language";
+
 export const getFormattedTimeFromSeconds = (sec: number) => {
   const date = new Date(0);
   date.setSeconds(sec);
@@ -25,27 +27,43 @@ export const getTimeSince = (date: Date) => {
   return "now";
 };
 
-export const getTimeAgo = (date: Date) => {
+export const getTimeAgo = (date: Date, language: string) => {
   const now = new Date();
   const timeDiff = now.getTime() - date.getTime();
   const daysDiff = Math.floor(timeDiff / (1000 * 3600 * 24)); // Convert milliseconds to days
 
   if (daysDiff === 0) {
-    return "today";
+    return __("today", language);
   } else if (daysDiff < 7) {
-    return daysDiff + (daysDiff === 1 ? " day ago" : " days ago");
+    return __(
+      daysDiff === 1 ? "{{val}} day ago" : "{{val}} days ago",
+      language,
+      { val: daysDiff },
+    );
   }
   if (daysDiff < 30) {
     const weeks = Math.floor(daysDiff / 7);
-    return weeks + (weeks === 1 ? " week ago" : " weeks ago");
+    return __(
+      weeks === 1 ? "{{val}} week ago" : "{{val}} weeks ago",
+      language,
+      { val: weeks },
+    );
   }
   if (daysDiff < 365) {
     const months = Math.floor(daysDiff / 30);
-    return months + (months === 1 ? " month ago" : " months ago");
+    return __(
+      months === 1 ? "{{val}} month ago" : "{{val}} months ago",
+      language,
+      { val: months },
+    );
   }
 
   const years = Math.floor(daysDiff / 365);
-  return years + (years === 1 ? " year ago" : " years ago");
+  return __(
+    years === 1 ? "{{val}} year ago" : "{{val}} years ago",
+    language,
+    { val: years },
+  );
 };
 
 export const secondsToDHM = (seconds: number) => {
@@ -58,7 +76,8 @@ export const secondsToDHM = (seconds: number) => {
   return `${days}d ${hours}h ${minutes}m`;
 };
 
-export const secondsToHours = (seconds: number) => {
+export const secondsToHours = (seconds: number, language?: string) => {
+  if (!language) language = "US";
   const hours = Math.trunc(seconds / 3600);
-  return `${hours} hour${hours === 1 ? "" : "s"}`;
+  return __(`{{val}} hour${hours === 1 ? "" : "s"}`, language, { val: hours });
 };

@@ -5,6 +5,8 @@
 	import { apiUrl, appName } from '$lib/env';
 	import { queryParam } from 'sveltekit-search-params';
 	import Leaderboard from '$lib/components/leaderboard.svelte';
+	import { __ } from '$lib/language';
+	import { userLanguage } from '$lib/storage';
 
 	const modes = ['osu', 'taiko', 'catch', 'mania'];
 	const types = ['vanilla', 'relax', 'autopilot'];
@@ -154,7 +156,7 @@
 					on:click={() => setSort('pp')}
 					disabled={loading || failed}
 				>
-					Performance
+					{__('Performance', $userLanguage)}
 				</button>
 				<button
 					class="w-[100%] !scale-100 btn {currentSort == 'tscore'
@@ -163,7 +165,7 @@
 					on:click={() => setSort('tscore')}
 					disabled={loading || failed}
 				>
-					Total Score
+					{__('Total Score', $userLanguage)}
 				</button>
 				<button
 					class="w-[100%] !scale-100 btn {currentSort == 'plays'
@@ -172,7 +174,7 @@
 					on:click={() => setSort('plays')}
 					disabled={loading || failed}
 				>
-					Plays
+					{__('Play Count', $userLanguage)}
 				</button>
 				<button
 					class="w-[100%] !scale-100 btn {currentSort == 'acc'
@@ -181,7 +183,7 @@
 					on:click={() => setSort('acc')}
 					disabled={loading || failed}
 				>
-					Accuracy
+					{__('Accuracy', $userLanguage)}
 				</button>
 			</div>
 			<div class="grid md:grid-cols-[auto_auto] gap-2 p-3">

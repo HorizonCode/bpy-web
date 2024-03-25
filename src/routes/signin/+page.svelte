@@ -2,7 +2,8 @@
 	import { goto } from '$app/navigation';
 	import { env } from '$env/dynamic/public';
 	import { appName } from '$lib/env';
-	import { userData } from '$lib/storage';
+	import { __ } from '$lib/language';
+	import { userData, userLanguage } from '$lib/storage';
 	import {
 		ProgressRadial,
 		getToastStore,
@@ -95,13 +96,13 @@
 						<User size={45} class="!outline-none !border-none" />
 					</div>
 					<div class="text-center">
-						<p class="text-2xl font-normal">Sign in</p>
-						<p class="mb-20">Use your bpy-web Account</p>
+						<p class="text-2xl font-normal">{__('Sign In', $userLanguage)}</p>
+						<p class="mb-20">{__('Use your {{val}} Account', $userLanguage, { val: appName })}</p>
 					</div>
 					<input
 						id="username"
 						type="text"
-						placeholder="Email or Username"
+						placeholder={__('Email or Username', $userLanguage)}
 						on:input={() => (errored = false)}
 						on:keypress={(e) => {
 							if (e.key === 'Enter') {
@@ -117,11 +118,13 @@
 							: ''}"
 						bind:value={loginData.username}
 					/>
-					<a href="/login" class="text-pink-700 me-auto mb-7">Forgot email?</a>
+					<a href="/login" class="text-pink-700 me-auto mb-7"
+						>{__('Forgot email?', $userLanguage)}</a
+					>
 					<div class="w-full flex flex-row justify-between mt-auto">
 						<button
 							class="btn variant-ghost-tertiary !bg-transparent hover:!bg-surface-100/5 ring-0"
-							on:click={() => goto('/register')}>Create account</button
+							on:click={() => goto('/register')}>{__('Create account', $userLanguage)}</button
 						>
 						<button
 							class="btn bg-pink-700"
@@ -131,7 +134,7 @@
 									return;
 								}
 								passwordMask = true;
-							}}>Next</button
+							}}>{__('Next', $userLanguage)}</button
 						>
 					</div>
 				</div>
@@ -145,7 +148,7 @@
 					<div in:scale={{ start: 0.9, delay: 200, duration: 400 }}>
 						<Key size={45} />
 					</div>
-					<p class="text-2xl font-normal">Welcome</p>
+					<p class="text-2xl font-normal">{__('Welcome', $userLanguage)}</p>
 					<p
 						class="flex flex-row justify-center items-center gap-2 mt-2 mb-8 rounded-full !border-[1px] p-1 px-2 border-surface-700"
 					>
@@ -155,7 +158,7 @@
 					<input
 						id="password"
 						type="password"
-						placeholder="Password"
+						placeholder={__('Password', $userLanguage)}
 						class="border border-surface-700 !ring-pink-700 focus:!border-pink-700 bg-surface-900 rounded-lg p-4 text-[17px] w-full mb-2"
 						bind:value={loginData.password}
 						disabled={loading}
@@ -165,29 +168,33 @@
 							}
 						}}
 					/>
-					<Turnstile
-						theme="dark"
-						siteKey={turnstileSiteKey}
-						on:turnstile-callback={handleCaptcha}
-						on:turnstile-error={resetCaptcha}
-						on:turnstile-expired={resetCaptcha}
-						on:turnstile-timeout={resetCaptcha}
-						bind:reset={resetCaptcha}
-					/>
-					<a href="/login" class="text-pink-700 me-auto mb-7">Forgot password?</a>
+					{#if turnstileSiteKey}
+						<Turnstile
+							theme="dark"
+							siteKey={turnstileSiteKey}
+							on:turnstile-callback={handleCaptcha}
+							on:turnstile-error={resetCaptcha}
+							on:turnstile-expired={resetCaptcha}
+							on:turnstile-timeout={resetCaptcha}
+							bind:reset={resetCaptcha}
+						/>
+					{/if}
+					<a href="/login" class="text-pink-700 me-auto mb-7"
+						>{__('Forgot password?', $userLanguage)}</a
+					>
 					<div class="w-full flex flex-row justify-between mt-auto">
 						<button
 							class="btn variant-ghost-tertiary !bg-transparent hover:!bg-surface-100/5 ring-0"
 							disabled={loading}
 							on:click={() => (passwordMask = false)}
 						>
-							Back
+							{__('Back', $userLanguage)}
 						</button>
 						<button class="btn bg-pink-700" on:click={performLogin} disabled={loading}>
 							{#if loading}
 								<ProgressRadial class="h-5 w-5" />
 							{:else}
-								Login
+								{__('Login', $userLanguage)}
 							{/if}
 						</button>
 					</div>
