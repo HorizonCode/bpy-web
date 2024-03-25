@@ -515,16 +515,18 @@
 					</div>
 				</div>
 				<div class="flex flex-col gap-2 bg-surface-800 p-7 py-2">
-					<div class="card !bg-surface-700 w-full py-3 p-6">
-						<div class="flex flex-col gap-5">
-							<p
-								class="text-lg font-bold underline underline-offset-4 decoration-2 decoration-primary-400"
-							>
-								me!
-							</p>
-							<div class="w-full text-center userpage">{@html data.userpage}</div>
+					{#if data.userpage.length > 0}
+						<div class="card !bg-surface-700 w-full py-3 p-6">
+							<div class="flex flex-col gap-5">
+								<p
+									class="text-lg font-bold underline underline-offset-4 decoration-2 decoration-primary-400"
+								>
+									me!
+								</p>
+								<div class="w-full text-center userpage">{@html data.userpage}</div>
+							</div>
 						</div>
-					</div>
+					{/if}
 					<div class="card !bg-surface-700 w-full py-3 p-6">
 						<div class="flex flex-col gap-5">
 							<p
