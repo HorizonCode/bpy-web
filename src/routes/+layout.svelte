@@ -129,7 +129,7 @@
 						<!-- svelte-ignore a11y-click-events-have-key-events -->
 						<!-- svelte-ignore a11y-no-static-element-interactions -->
 						<div
-							class="flex items-center gap-2 rounded-lg cursor-pointer bg-surface-900 hover:bg-surface-700 transition-all"
+							class="flex items-center gap-2 p-1 rounded-lg cursor-pointer bg-surface-900 hover:bg-surface-700 transition-all"
 							transition:scale={{ start: 0.99, duration: 200 }}
 							on:click={() => {
 								goto(`/u/${user.id}`);
@@ -249,7 +249,7 @@
 	</svelte:fragment>
 	{#key data.url}
 		<div
-			class="mt-14"
+			class="mt-14 h-[calc(100vh-3.5rem)]"
 			in:scale={{ start: 0.99, duration: 200, delay: 200 }}
 			out:scale={{ start: 0.99, duration: 200 }}
 		>
