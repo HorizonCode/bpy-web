@@ -17,7 +17,7 @@
 	import { getTimeAgo, secondsToDHM, secondsToHours } from '$lib/time';
 	import UserScores from '$lib/components/userScores.svelte';
 	import { removeTrailingZeroes } from '$lib/regex';
-	import { statusIntToString } from '$lib/status';
+	import { statusIntToColor, statusIntToString } from '$lib/status';
 
 	export let data;
 	let clan: Clan | undefined;
@@ -338,7 +338,10 @@
 					<div class="md:absolute md:-top-[55px] w-14 h-14 md:w-56 md:h-32">
 						{#if playerStatus && playerStatus.player_status.online}
 							<div
-								class="top-0 left-24 hidden md:block absolute badge variant-filled-surface opacity-95"
+								class="top-0 left-24 hidden md:block absolute badge status-badge opacity-95"
+								style="--statusBg: {statusIntToColor(
+									playerStatus.player_status.status?.action ?? 0
+								)};"
 							>
 								{statusIntToString(playerStatus.player_status.status?.action ?? 0)}
 							</div>
