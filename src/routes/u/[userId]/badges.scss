@@ -1,47 +1,45 @@
+.level {
+	@apply bg-gradient-to-b from-[#f8e929] to-[#ee7efc];
+}
+
 @for $i from 0 through 19 {
 	.level-#{$i} {
-		@apply bg-gradient-to-b from-surface-400 to-surface-400;
+		@apply bg-gradient-to-b from-[#bbb5ac] to-[#bbb5ac];
 	}
 }
 
 @for $i from 20 through 39 {
 	.level-#{$i} {
-		@apply bg-gradient-to-b from-amber-600 to-amber-900;
+		@apply bg-gradient-to-b from-[#b1927b] to-[#84604a];
 	}
 }
 
 @for $i from 40 through 59 {
 	.level-#{$i} {
-		@apply bg-gradient-to-b from-gray-300 to-gray-500;
+		@apply bg-gradient-to-b from-[#dbe2ea] to-[#a8a3c4];
 	}
 }
 
 @for $i from 60 through 79 {
 	.level-#{$i} {
-		@apply bg-gradient-to-b from-yellow-200 to-yellow-600;
+		@apply bg-gradient-to-b from-[#eae7a4] to-[#ddce5b];
 	}
 }
 
 @for $i from 80 through 99 {
 	.level-#{$i} {
-		@apply bg-gradient-to-b from-cyan-300 to-cyan-500;
+		@apply bg-gradient-to-b from-[#abefee] to-[#5fe2dd];
 	}
 }
 
 @for $i from 100 through 104 {
 	.level-#{$i} {
-		@apply bg-gradient-to-b from-emerald-200 to-emerald-300;
+		@apply bg-gradient-to-b from-[#d6fad1] to-[#9fd297];
 	}
 }
 
 @for $i from 105 through 109 {
 	.level-#{$i} {
-		@apply bg-gradient-to-b from-cyan-200 to-violet-500;
-	}
-}
-
-@for $i from 110 through 150 {
-	.level-#{$i} {
-		@apply bg-gradient-to-b from-yellow-400 to-violet-500;
+		@apply bg-gradient-to-b from-[#a2d7fe] to-[#ee7efc];
 	}
 }

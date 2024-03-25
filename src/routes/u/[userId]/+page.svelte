@@ -395,7 +395,7 @@
 							</Popup>
 						</div>
 						<div class="relative inline-flex items-center justify-center h-[50px] w-[50px]">
-							<div class="absolute w-full h-full level-icon level-{$level}"></div>
+							<div class="absolute w-full h-full level-icon level level-{$level}"></div>
 							<span class="absolute text-[20px] font-semibold">{$level}</span>
 						</div>
 					</div>
