@@ -14,7 +14,7 @@
 	import { userData } from '$lib/storage';
 	import { getCountryName } from '$lib/country';
 	import { numberHumanReadable } from '$lib/stringUtil';
-	import { getTimeAgo, secondsToDHM } from '$lib/time';
+	import { getTimeAgo, secondsToDHM, secondsToHours } from '$lib/time';
 	import UserScores from '$lib/components/userScores.svelte';
 	import { removeTrailingZeroes } from '$lib/regex';
 
@@ -431,8 +431,9 @@
 									</div>
 									<div class="flex flex-col w-[50%] md:w-fit">
 										<span class="text-xs">Total Play Time</span>
-										<span class="text-normal font-semibold text-primary-200"
-											>{secondsToDHM($playTime)}</span
+										<span
+											class="text-normal font-semibold text-primary-200 tooltip"
+											aria-label={secondsToHours($playTime)}>{secondsToDHM($playTime)}</span
 										>
 									</div>
 								</div>

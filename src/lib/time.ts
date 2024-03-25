@@ -57,3 +57,8 @@ export const secondsToDHM = (seconds: number) => {
 
   return `${days}d ${hours}h ${minutes}m`;
 };
+
+export const secondsToHours = (seconds: number) => {
+  const hours = Math.trunc(seconds / 3600);
+  return `${hours} hour${hours === 1 ? "" : "s"}`;
+};
