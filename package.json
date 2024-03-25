@@ -59,6 +59,7 @@
     "bcrypt": "^5.1.1",
     "highlight.js": "11.9.0",
     "knex": "^3.1.0",
+    "marked": "^12.0.1",
     "mysql2": "^3.9.2",
     "redis": "^4.6.13",
     "svelte-turnstile": "^0.5.0"

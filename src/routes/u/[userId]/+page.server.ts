@@ -1,5 +1,7 @@
 import { apiUrl } from "$lib/env.js";
+import { sanitizeHtml } from "$lib/html.js";
 import type { User } from "$lib/types.js";
+import { parse } from "marked";
 
 export async function load({ params }) {
   const requestedUserId = params.userId;
@@ -9,7 +11,16 @@ export async function load({ params }) {
   );
   if (!requestedUserData.ok) return {};
   const requestedUserDataJson = await requestedUserData.json() as User;
+  const userpageData = requestedUserDataJson.player?.info.userpage_content ??
+    "";
+  const sanitizedUserPage = sanitizeHtml(userpageData);
+  const parsedUserPage = await parse(sanitizedUserPage, {
+    async: true,
+    gfm: true,
+  });
+
   return {
     user: requestedUserDataJson.player,
+    userpage: parsedUserPage,
   };
 }
