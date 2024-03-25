@@ -344,7 +344,7 @@
 							></div>
 						{:else}
 							<div
-								class="top-0 left-[6.75rem] w-6 h-6 hidden md:block absolute badge bg-gray-700"
+								class="top-0 left-[6.75rem] w-6 h-6 hidden md:block absolute badge bg-gray-400"
 							></div>
 						{/if}
 						<img
