@@ -170,7 +170,7 @@
 <!-- svelte-ignore a11y-missing-attribute -->
 <AppShell>
 	<svelte:fragment slot="header">
-		{#if $page.data.url != '/signin' && $page.data.url != '/signup'}
+		{#if ($page.data.url != '/signin' && $page.data.url != '/signup') || $page.status != 200}
 			<div
 				class="fixed w-full"
 				in:fly={{ y: -15, duration: 200, delay: 200 }}
@@ -279,7 +279,7 @@
 	</svelte:fragment>
 	{#key data.url}
 		<div
-			class={$page.data.url != '/signin' && $page.data.url != '/signup'
+			class={($page.data.url != '/signin' && $page.data.url != '/signup') || $page.status != 200
 				? 'mt-14 h-[calc(100vh-3.5rem)]'
 				: ''}
 			in:scale={{ start: 0.99, duration: 200, delay: 200 }}

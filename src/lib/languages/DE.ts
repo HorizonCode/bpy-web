@@ -48,4 +48,5 @@ export const phrases = {
   "Forgot password?": "Passwort vergessen?",
   "Back": "Zurück",
   "Login": "Einloggen",
+  "Back to Home": "Zurück zur Startseite",
 };

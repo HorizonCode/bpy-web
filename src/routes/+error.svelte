@@ -1,5 +1,7 @@
 <script lang="ts">
 	import { page } from '$app/stores';
+	import { __ } from '$lib/language';
+	import { userLanguage } from '$lib/storage';
 
 	const errorCode = $page.status;
 	const errorMessage = $page.error?.message;
@@ -13,7 +15,9 @@
 			<div class="flex flex-col items-center justify-center">
 				<p class="text-5xl">{errorCode}</p>
 				<p class="text-xl">{errorMessage}</p>
-				<a class="mx-auto mt-10 btn variant-filled-surface" href="/">Back to Home</a>
+				<a class="mx-auto mt-10 btn variant-filled-surface" href="/"
+					>{__('Back to Home', $userLanguage)}</a
+				>
 			</div>
 		</div>
 	</div>
