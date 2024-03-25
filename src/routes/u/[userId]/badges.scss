@@ -1,0 +1,47 @@
+@for $i from 0 through 19 {
+	.level-#{$i} {
+		@apply bg-gradient-to-b from-surface-400 to-surface-400;
+	}
+}
+
+@for $i from 20 through 39 {
+	.level-#{$i} {
+		@apply bg-gradient-to-b from-amber-600 to-amber-900;
+	}
+}
+
+@for $i from 40 through 59 {
+	.level-#{$i} {
+		@apply bg-gradient-to-b from-gray-300 to-gray-500;
+	}
+}
+
+@for $i from 60 through 79 {
+	.level-#{$i} {
+		@apply bg-gradient-to-b from-yellow-200 to-yellow-600;
+	}
+}
+
+@for $i from 80 through 99 {
+	.level-#{$i} {
+		@apply bg-gradient-to-b from-cyan-300 to-cyan-500;
+	}
+}
+
+@for $i from 100 through 104 {
+	.level-#{$i} {
+		@apply bg-gradient-to-b from-emerald-200 to-emerald-300;
+	}
+}
+
+@for $i from 105 through 109 {
+	.level-#{$i} {
+		@apply bg-gradient-to-b from-cyan-200 to-violet-500;
+	}
+}
+
+@for $i from 110 through 150 {
+	.level-#{$i} {
+		@apply bg-gradient-to-b from-yellow-400 to-violet-500;
+	}
+}
