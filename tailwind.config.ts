@@ -23,7 +23,11 @@ export default {
         "2xl": "1280px",
       },
     },
-    extend: {},
+    extend: {
+      fontSize: {
+        "2xs": ["0.6rem", "0.85rem"],
+      },
+    },
   },
   plugins: [
     forms,

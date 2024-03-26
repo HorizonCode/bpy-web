@@ -21,9 +21,11 @@
 {#if beatmapScores.length > 0}
 	<div class="p-3" transition:scale={{ start: 0.99, duration: 200 }}>
 		<div
-			class="flex flex-row items-center justify-between py-3 px-6 mt-2 bg-surface-500 rounded-lg shadow"
+			class="flex flex-col md:flex-row items-center justify-between gap-5 md:gap-0 py-3 px-6 mt-2 bg-surface-500 rounded-lg shadow"
 		>
-			<div class="flex flex-row items-center gap-5">
+			<div
+				class="flex flex-row items-center justify-center md:justify-normal gap-5 w-full md:w-fit"
+			>
 				<div class="flex flex-col items-center">
 					<span class="font-bold text-lg">#1</span>
 					<span class="grade grade-{beatmapScores[0].grade.toLowerCase()} !text-2xl !font-bold"
@@ -57,7 +59,7 @@
 				</div>
 			</div>
 			<div class="flex flex-col gap-2">
-				<div class="flex flex-row justify-end gap-10">
+				<div class="flex flex-row justify-center md:justify-end gap-10">
 					<div class="flex flex-col">
 						<span class="text-xs text-surface-300 font-semibold"
 							>{__('Total Score', $userLanguage)}</span
@@ -85,39 +87,67 @@
 						>
 					</div>
 				</div>
-				<div class="flex flex-row justify-end gap-10">
+				<div class="flex flex-row justify-center md:justify-end gap-10">
 					<div class="flex flex-col gap-1">
-						<span class="text-xs text-surface-300 font-semibold">300</span>
+						<span class="text-2xs text-surface-300 font-semibold">300</span>
 						<span
-							class="font-semibold{beatmapScores[0].n300 <= 0
+							class="text-sm font-semibold{beatmapScores[0].n300 <= 0
 								? ' text-surface-400'
 								: ' text-surface-200'}">{numberHumanReadable(beatmapScores[0].n300)}</span
 						>
 					</div>
 					<div class="flex flex-col gap-1">
-						<span class="text-xs text-surface-300 font-semibold">100</span>
+						<span class="text-2xs text-surface-300 font-semibold">100</span>
 						<span
-							class="font-semibold{beatmapScores[0].n100 <= 0
+							class="text-sm font-semibold{beatmapScores[0].n100 <= 0
 								? ' text-surface-400'
 								: ' text-surface-200'}">{numberHumanReadable(beatmapScores[0].n100)}</span
 						>
 					</div>
 					<div class="flex flex-col gap-1">
-						<span class="text-xs text-surface-300 font-semibold">50</span>
+						<span class="text-2xs text-surface-300 font-semibold">50</span>
 						<span
-							class="font-semibold{beatmapScores[0].n50 <= 0
+							class="text-sm font-semibold{beatmapScores[0].n50 <= 0
 								? ' text-surface-400'
 								: ' text-surface-200'}">{numberHumanReadable(beatmapScores[0].n50)}</span
 						>
 					</div>
 					<div class="flex flex-col gap-1">
-						<span class="text-xs text-surface-300 font-semibold">{__('Miss', $userLanguage)}</span>
+						<span class="text-2xs text-surface-300 font-semibold">{__('Miss', $userLanguage)}</span>
 						<span
-							class="font-semibold{beatmapScores[0].nmiss <= 0
+							class="text-sm font-semibold{beatmapScores[0].nmiss <= 0
 								? ' text-surface-400'
 								: ' text-surface-200'}">{numberHumanReadable(beatmapScores[0].nmiss)}</span
 						>
 					</div>
+					<div class="flex flex-col gap-1">
+						<span class="text-2xs text-surface-300 font-semibold">PP</span>
+						<span class="text-sm font-semibold text-surface-200"
+							>{numberHumanReadable(Math.round(beatmapScores[0].pp))}</span
+						>
+					</div>
+					<div class="flex flex-col gap-1">
+						<span class="text-2xs text-surface-300 font-semibold">{__('Time', $userLanguage)}</span>
+						<span class="text-sm font-semibold text-surface-200"
+							>{getTimeSince(new Date(beatmapScores[0].play_time))}</span
+						>
+					</div>
+					<div class="flex flex-col gap-1">
+						<span class="text-2xs text-surface-300 font-semibold">{__('Mods', $userLanguage)}</span>
+						<div class="flex flex-row">
+							{#each parseModsInt(beatmapScores[0].mods) as mod}
+								<div class="tooltip" aria-label={mod.name}>
+									<img
+										src="/mods/{mod.short_name.toLowerCase()}.png"
+										class="w-7 h-5"
+										alt={mod.name}
+									/>
+								</div>
+							{/each}
+						</div>
+					</div>
+				</div>
+				<div class="hidden flex-row justify-center md:justify-end gap-10">
 					<div class="flex flex-col gap-1">
 						<span class="text-xs text-surface-300 font-semibold">PP</span>
 						<span class="font-semibold text-surface-200"
