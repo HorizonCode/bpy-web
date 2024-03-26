@@ -344,14 +344,14 @@
 					<div class="md:absolute md:-top-[55px] w-14 h-14 md:w-56 md:h-32">
 						{#if playerStatus && playerStatus.player_status.online}
 							<div
-								class="top-0 left-[6.75rem] w-6 h-6 hidden md:block absolute badge bg-green-500 shadow"
+								class="top-0 left-[6.75rem] w-6 h-6 hidden md:block absolute badge bg-green-500 border-2 border-green-600 shadow"
 							></div>
 							<div
-								class="top-0 left-[6.75rem] w-6 h-6 animate-ping hidden md:block absolute badge bg-green-500"
+								class="top-0 left-[6.75rem] w-6 h-6 animate-ping hidden md:block absolute badge bg-green-500 border-2 border-green-600"
 							></div>
 						{:else}
 							<div
-								class="top-0 left-[6.75rem] w-6 h-6 hidden md:block absolute badge bg-gray-400"
+								class="top-0 left-[6.75rem] w-6 h-6 hidden md:block absolute badge bg-gray-400 border-2 border-surface-400"
 							></div>
 						{/if}
 						<img
