@@ -13,6 +13,7 @@
 	import { __ } from '$lib/language';
 	import { userLanguage } from '$lib/storage';
 	import TimeAgo from './TimeAgo.svelte';
+	import { fly, scale } from 'svelte/transition';
 
 	export let title: string;
 	export let userId: number;
@@ -84,6 +85,7 @@
 							class="relative w-full flex flex-col md:flex-row items-stretch md:items-center justify-between gap-1 p-2 py-1 bg-surface-500 rounded-lg hover:scale-[1.005] active:scale-[0.995] transition-transform cursor-pointer"
 							on:click={() =>
 								goto(`/beatmaps/${score.beatmap.id}?mode=${currentMode}&type=${currentType}`)}
+							transition:scale={{ start: 0.99, duration: 200 * (idx - (amount - 5) + 1) }}
 						>
 							<div
 								class="absolute h-full w-full top-0 left-0 bg-no-repeat bg-center blur-[3px] opacity-5"
