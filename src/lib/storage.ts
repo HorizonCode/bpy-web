@@ -8,8 +8,16 @@ export const userData: Writable<UserData | undefined> = writable(undefined);
 const defaultLang = "US";
 
 const getLanguageFromStorage = () => {
+  const validLanguageCodes = navigator.languages.filter((langCode) =>
+    langCode.includes("-")
+  );
+
+  let preferedLang = validLanguageCodes[0];
+  if (preferedLang) preferedLang = preferedLang.split("-")[1];
+
   const lang = window.localStorage.getItem("lang") ??
-    navigator.language.toUpperCase();
+    preferedLang;
+
   return getLanguage(lang)?.code ?? defaultLang;
 };
 

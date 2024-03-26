@@ -4,6 +4,7 @@ import US from "./languages/US";
 export type Language = {
   name: string;
   code: string;
+  aliases?: string[];
   translator: string;
   phrases: { [key: string]: string };
 };
@@ -14,7 +15,8 @@ export const languages: Language[] = [
 ];
 
 export const getLanguage = (code: string) =>
-  languages.find((lang) => lang.code === code.toUpperCase());
+  languages.find((lang) => lang.code === code.toUpperCase()) ||
+  languages.find((lang) => lang.aliases?.includes(code.toUpperCase()));
 
 export const __ = (
   key: string,
