@@ -273,9 +273,9 @@
 				<div class="flex flex-row items-center gap-1">
 					<!-- right side of the leaderboard entry-->
 					<div
-						class="min-w-24 font-bold text-xs text-surface-300{user.perfect
-							? ' text-green-300'
-							: ''}"
+						class="min-w-24 font-bold text-xs {user.perfect
+							? ' text-lime-400'
+							: 'text-surface-300'}"
 					>
 						{numberHumanReadable(user.max_combo)}x
 					</div>
