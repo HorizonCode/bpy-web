@@ -2,6 +2,9 @@
 
 bpy-web is a frontend web application developed using SvelteKit for the [bancho.py backend by Akatsuki](https://github.com/osuAkatsuki/bancho.py).
 
+> [!WARNING]
+> at current state, its not recommended to use bpy-web in a production environment!
+
 ## Features
 
 - [x] **Multi Language** Allows users to choose their preffered language.
