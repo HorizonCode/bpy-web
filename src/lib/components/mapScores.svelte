@@ -138,7 +138,9 @@
 					</div>
 					<div class="flex flex-col gap-1">
 						<span class="text-2xs text-surface-300 font-semibold">{__('Time', $userLanguage)}</span>
-						<span class="text-sm font-semibold text-surface-200"
+						<span
+							class="text-sm font-semibold text-surface-200 tooltip"
+							aria-label={new Date(beatmapScores[0].play_time).toUTCString()}
 							>{getTimeSince(new Date(beatmapScores[0].play_time))}</span
 						>
 					</div>
