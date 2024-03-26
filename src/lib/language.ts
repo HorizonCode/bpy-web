@@ -14,7 +14,7 @@ export const languages: Language[] = [
 ];
 
 export const getLanguage = (code: string) =>
-  languages.find((lang) => lang.code === code);
+  languages.find((lang) => lang.code === code.toUpperCase());
 
 export const __ = (
   key: string,

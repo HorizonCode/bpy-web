@@ -207,7 +207,7 @@
 													: 'bg-surface-600 hover:bg-surface-700'} hover:scale-[1.005] active:scale-[0.995] transition-all px-6 py-2 rounded-lg cursor-pointer"
 												on:click={() => userLanguage.set(lang.code)}
 											>
-												<img width="30" src="/flags/{lang}.png" class="mr-2" />
+												<img width="30" src="/flags/{lang.code}.png" class="mr-2" />
 												{lang.name}
 											</button>
 										{/each}
