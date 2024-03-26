@@ -60,7 +60,6 @@
 			mode: mode,
 			scope: scoresType
 		});
-		console.log(recentScoresRequest);
 		if (recentScoresRequest) scores = recentScoresRequest;
 		loading = false;
 	};
