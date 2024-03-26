@@ -251,7 +251,7 @@
 						</div>
 						{#if user.clan_tag}
 							<a
-								class="chip p-1.5 min-w-7 variant-soft-primary hover:variant-filled-primary"
+								class="chip p-1.5 py-0.5 min-w-7 variant-soft-primary hover:variant-filled-primary"
 								href="/clan/{user.clan_id}"
 							>
 								{user.clan_tag}
