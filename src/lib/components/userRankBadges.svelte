@@ -14,7 +14,7 @@
 
 	export let userPriv: number;
 
-	const groups = privsToGroups(userPriv);
+	const groups = privsToGroups(7);
 </script>
 
 <div class="flex flex-row gap-2 px-3 drop-shadow">
@@ -60,7 +60,7 @@
 			</div>
 		{/if}
 		{#if group == Privileges.WHITELISTED}
-			<div class="tooltip text-blue-500" aria-label="Verified">
+			<div class="tooltip text-green-400" aria-label="Verified">
 				<CheckCircle class="pointer-events-none" />
 			</div>
 		{/if}
