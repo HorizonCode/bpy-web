@@ -41,9 +41,17 @@
 					alt="avatar"
 				/>
 				<div class="flex flex-col gap-0">
-					<a class="font-bold text-primary-400" href="/u/{beatmapScores[0].userid}"
-						>{beatmapScores[0].player_name}</a
-					>
+					<a class="font-bold text-primary-400" href="/u/{beatmapScores[0].userid}">
+						{#if beatmapScores[0].clan_tag}
+							<a
+								class="chip p-1.5 py-0.5 min-w-7 variant-soft-primary hover:variant-filled-primary"
+								href="/clan/{beatmapScores[0].clan_id}"
+							>
+								{beatmapScores[0].clan_tag}
+							</a>
+						{/if}
+						{beatmapScores[0].player_name}
+					</a>
 					<span class="text-xs font-semibold"
 						>{__('achieved', $userLanguage)}
 						{getTimeAgo(new Date(beatmapScores[0].play_time), $userLanguage)}</span
