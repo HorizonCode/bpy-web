@@ -218,6 +218,21 @@ export type PlayerScores = {
   };
 };
 
+export type PlayerMostPlayed = {
+  status: "success" | string;
+  maps: {
+    md5: string;
+    id: number;
+    set_id: number;
+    status: number;
+    artist: string;
+    title: string;
+    version: string;
+    creator: string;
+    plays: number;
+  }[];
+};
+
 export type Mod = {
   name: string;
   short_name: string;

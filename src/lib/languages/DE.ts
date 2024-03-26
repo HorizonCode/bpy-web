@@ -91,6 +91,10 @@ const language: Language = {
     "Clan Members": "Clan-Mitglieder",
     "achieved": "erreicht",
     "No Scores found.": "Keine Scores gefunden.",
+    "Historical": "Historisch",
+    "Most Played Beatmaps": "Meistgespielte Beatmaps",
+    "Best Performance": "Beste Performance",
+    "Recent": "Zuletzt gespielt",
   },
 };
 

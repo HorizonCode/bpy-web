@@ -20,6 +20,7 @@
 	import { __ } from '$lib/language';
 	import TimeAgo from '$lib/components/TimeAgo.svelte';
 	import UserRankBadges from '$lib/components/userRankBadges.svelte';
+	import UserMostPlayed from '$lib/components/userMostPlayed.svelte';
 
 	export let data;
 	let clan: Clan | undefined;
@@ -574,6 +575,26 @@
 										userId={data.user.info.id}
 										scoreAmount={5}
 										scoresType="recent"
+									/>
+								{/key}
+							</div>
+						</div>
+					</div>
+					<div class="card !bg-surface-700 w-full py-3 p-6">
+						<div class="flex flex-col gap-5">
+							<p
+								class="text-lg font-bold underline underline-offset-4 decoration-2 decoration-primary-400"
+							>
+								{__('Historical', $userLanguage)}
+							</p>
+							<div class="relative flex flex-col gap-5">
+								{#key currentModeInt}
+									<UserMostPlayed
+										title="Most Played Beatmaps"
+										{currentMode}
+										{currentType}
+										userId={data.user.info.id}
+										scoreAmount={5}
 									/>
 								{/key}
 							</div>

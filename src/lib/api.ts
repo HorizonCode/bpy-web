@@ -4,6 +4,7 @@ import type {
   MapInfo,
   MapScores,
   PlayerCounts,
+  PlayerMostPlayed,
   PlayerScores,
   PlayerStatus,
 } from "./types";
@@ -63,6 +64,22 @@ export const getPlayerScores = async (opts: {
     );
     if (!requestedMapData.ok) return undefined;
     return (await requestedMapData.json()) as PlayerScores;
+  } catch {
+    return undefined;
+  }
+};
+
+export const getPlayerMostPlayed = async (opts: {
+  userId: number;
+  mode: number;
+  limit: number;
+}): Promise<PlayerMostPlayed | undefined> => {
+  try {
+    const requestedMapData = await fetch(
+      `${apiUrl}/get_player_most_played?id=${opts.userId}&mode=${opts.mode}&limit=${opts.limit}`,
+    );
+    if (!requestedMapData.ok) return undefined;
+    return (await requestedMapData.json()) as PlayerMostPlayed;
   } catch {
     return undefined;
   }

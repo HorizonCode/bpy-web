@@ -72,7 +72,7 @@
 	<p
 		class="text-sm font-bold w-max ms-2 before:-ms-2 before:content-[''] before:h-[.65em] before:mt-[.45em] before:absolute before:w-[3px] before:rounded-lg before:bg-primary-400"
 	>
-		{title}
+		{__(title, $userLanguage)}
 	</p>
 	<div class="flex flex-col gap-1">
 		<div class="flex flex-col gap-1 transition-all{loading ? ' blur-sm' : ' blur-none'}">
