@@ -89,6 +89,8 @@ const language: Language = {
     "Login successful": "Anmeldung erfolgreich",
     "Clan Owner": "Clan-Besitzer",
     "Clan Members": "Clan-Mitglieder",
+    "achieved": "erreicht",
+    "No Scores found.": "Keine Scores gefunden.",
   },
 };
 

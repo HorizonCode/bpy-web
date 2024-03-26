@@ -6,10 +6,11 @@
 	import { removeClanTag, removeTrailingZeroes } from '$lib/regex';
 	import { getCountryName } from '$lib/country';
 	import { Frown } from 'svelte-feathers';
-	import { getTimeSince } from '$lib/time';
+	import { getTimeAgo, getTimeSince } from '$lib/time';
 	import { parseModsInt } from '$lib/mods';
 	import { __ } from '$lib/language';
 	import { userLanguage } from '$lib/storage';
+	import { avatarUrl } from '$lib/env';
 
 	export let beatmapScores: MapScore[];
 	export let loading = false;
@@ -17,6 +18,137 @@
 	export let currentType: string;
 </script>
 
+{#if beatmapScores.length > 0}
+	<div class="p-3" transition:scale={{ start: 0.99, duration: 200 }}>
+		<div
+			class="flex flex-row items-center justify-between py-3 px-6 mt-2 bg-surface-500 rounded-lg shadow"
+		>
+			<div class="flex flex-row items-center gap-5">
+				<div class="flex flex-col items-center">
+					<span class="font-bold text-lg">#1</span>
+					<span class="grade grade-{beatmapScores[0].grade.toLowerCase()} !text-2xl !font-bold"
+						>{beatmapScores[0].grade
+							.replaceAll('XH', 'SS')
+							.replaceAll('X', 'SS')
+							.replaceAll('SH', 'S')}</span
+					>
+				</div>
+				<img
+					class="w-20 h-20 bg-surface-700 rounded-[30%] shadow"
+					src="{avatarUrl}/{beatmapScores[0].userid}"
+					alt="avatar"
+				/>
+				<div class="flex flex-col gap-0">
+					<span class="font-bold">{beatmapScores[0].player_name}</span>
+					<span class="text-xs font-semibold"
+						>{__('achieved', $userLanguage)}
+						{getTimeAgo(new Date(beatmapScores[0].play_time), $userLanguage)}</span
+					>
+					<div
+						class="w-fit tooltip"
+						aria-label={getCountryName(beatmapScores[0].country.toUpperCase())}
+					>
+						<img
+							class="h-4 w-6 mt-1"
+							src="/flags/{beatmapScores[0].country.toUpperCase()}.png"
+							alt="flag"
+						/>
+					</div>
+				</div>
+			</div>
+			<div class="flex flex-col gap-2">
+				<div class="flex flex-row justify-end gap-10">
+					<div class="flex flex-col">
+						<span class="text-xs text-surface-300 font-semibold"
+							>{__('Total Score', $userLanguage)}</span
+						>
+						<span class="text-xl font-semibold text-surface-200"
+							>{numberHumanReadable(beatmapScores[0].score)}</span
+						>
+					</div>
+					<div class="flex flex-col">
+						<span class="text-xs text-surface-300 font-semibold"
+							>{__('Accuracy', $userLanguage)}</span
+						>
+						<span class="text-xl font-semibold text-surface-200"
+							>{removeTrailingZeroes(beatmapScores[0].acc)}%</span
+						>
+					</div>
+					<div class="flex flex-col">
+						<span class="text-xs text-surface-300 font-semibold"
+							>{__('Max Combo', $userLanguage)}</span
+						>
+						<span
+							class="text-xl font-semibold{beatmapScores[0].perfect
+								? ' text-lime-400'
+								: ' text-surface-200'}">{numberHumanReadable(beatmapScores[0].max_combo)}x</span
+						>
+					</div>
+				</div>
+				<div class="flex flex-row justify-end gap-10">
+					<div class="flex flex-col gap-1">
+						<span class="text-xs text-surface-300 font-semibold">300</span>
+						<span
+							class="font-semibold{beatmapScores[0].n300 <= 0
+								? ' text-surface-400'
+								: ' text-surface-200'}">{numberHumanReadable(beatmapScores[0].n300)}</span
+						>
+					</div>
+					<div class="flex flex-col gap-1">
+						<span class="text-xs text-surface-300 font-semibold">100</span>
+						<span
+							class="font-semibold{beatmapScores[0].n100 <= 0
+								? ' text-surface-400'
+								: ' text-surface-200'}">{numberHumanReadable(beatmapScores[0].n100)}</span
+						>
+					</div>
+					<div class="flex flex-col gap-1">
+						<span class="text-xs text-surface-300 font-semibold">50</span>
+						<span
+							class="font-semibold{beatmapScores[0].n50 <= 0
+								? ' text-surface-400'
+								: ' text-surface-200'}">{numberHumanReadable(beatmapScores[0].n50)}</span
+						>
+					</div>
+					<div class="flex flex-col gap-1">
+						<span class="text-xs text-surface-300 font-semibold">{__('Miss', $userLanguage)}</span>
+						<span
+							class="font-semibold{beatmapScores[0].nmiss <= 0
+								? ' text-surface-400'
+								: ' text-surface-200'}">{numberHumanReadable(beatmapScores[0].nmiss)}</span
+						>
+					</div>
+					<div class="flex flex-col gap-1">
+						<span class="text-xs text-surface-300 font-semibold">PP</span>
+						<span class="font-semibold text-surface-200"
+							>{numberHumanReadable(Math.round(beatmapScores[0].pp))}</span
+						>
+					</div>
+					<div class="flex flex-col gap-1">
+						<span class="text-xs text-surface-300 font-semibold">{__('Time', $userLanguage)}</span>
+						<span class="font-semibold text-surface-200"
+							>{getTimeSince(new Date(beatmapScores[0].play_time))}</span
+						>
+					</div>
+					<div class="flex flex-col gap-1">
+						<span class="text-xs text-surface-300 font-semibold">{__('Mods', $userLanguage)}</span>
+						<div class="flex flex-row">
+							{#each parseModsInt(beatmapScores[0].mods) as mod}
+								<div class="tooltip" aria-label={mod.name}>
+									<img
+										src="/mods/{mod.short_name.toLowerCase()}.png"
+										class="w-7 h-5"
+										alt={mod.name}
+									/>
+								</div>
+							{/each}
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+{/if}
 <div class="w-full flex flex-col flex-wrap gap-1 p-3 overflow-auto">
 	{#if beatmapScores.length > 0 || loading}
 		<div class="flex flex-row items-center justify-between gap-2 py-1 px-2 text-sm">
@@ -168,7 +300,7 @@
 			transition:scale={{ duration: 200, start: 0.99 }}
 		>
 			<Frown class="pointer-events-none"></Frown>
-			No Scores found.
+			{__('No Scores found.', $userLanguage)}
 		</div>
 	{/if}
 </div>
