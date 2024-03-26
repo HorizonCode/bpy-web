@@ -41,7 +41,9 @@
 					alt="avatar"
 				/>
 				<div class="flex flex-col gap-0">
-					<span class="font-bold">{beatmapScores[0].player_name}</span>
+					<a class="font-bold text-primary-400" href="/u/{beatmapScores[0].userid}"
+						>{beatmapScores[0].player_name}</a
+					>
 					<span class="text-xs font-semibold"
 						>{__('achieved', $userLanguage)}
 						{getTimeAgo(new Date(beatmapScores[0].play_time), $userLanguage)}</span
