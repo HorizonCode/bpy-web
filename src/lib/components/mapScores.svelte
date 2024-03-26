@@ -59,7 +59,7 @@
 				</div>
 			</div>
 			<div class="flex flex-col gap-2">
-				<div class="flex flex-row justify-center md:justify-end gap-10">
+				<div class="flex flex-row justify-around md:justify-end gap-10">
 					<div class="flex flex-col">
 						<span class="text-xs text-surface-300 font-semibold"
 							>{__('Total Score', $userLanguage)}</span
