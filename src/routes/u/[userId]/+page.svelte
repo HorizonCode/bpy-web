@@ -14,11 +14,12 @@
 	import { userData, userLanguage } from '$lib/storage';
 	import { getCountryName } from '$lib/country';
 	import { numberHumanReadable } from '$lib/stringUtil';
-	import { getTimeAgo, secondsToDHM, secondsToHours } from '$lib/time';
+	import { secondsToDHM, secondsToHours } from '$lib/time';
 	import UserScores from '$lib/components/userScores.svelte';
 	import { removeTrailingZeroes } from '$lib/regex';
 	import { __ } from '$lib/language';
 	import TimeAgo from '$lib/components/TimeAgo.svelte';
+	import UserRankBadges from '$lib/components/userRankBadges.svelte';
 
 	export let data;
 	let clan: Clan | undefined;
@@ -388,6 +389,7 @@
 								</svelte:fragment>
 							</Popup>
 							<span class="hidden md:block">{getCountryName(data.user.info.country)}</span>
+							<UserRankBadges userPriv={data.user.info.priv}></UserRankBadges>
 						</div>
 					</div>
 					<div class="ms-auto flex flex-row items-center gap-5">
