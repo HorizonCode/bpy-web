@@ -10,10 +10,9 @@ const defaultLang = "US";
 const getLanguageFromStorage = () => {
   const validLanguageCodes = navigator.languages.filter((langCode) =>
     langCode.includes("-")
-  );
+  ).map((lang) => lang.split("-")[1]);
 
-  let preferedLang = validLanguageCodes[0];
-  if (preferedLang) preferedLang = preferedLang.split("-")[1];
+  const preferedLang = validLanguageCodes[0];
 
   const lang = window.localStorage.getItem("lang") ??
     preferedLang;
