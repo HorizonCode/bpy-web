@@ -87,6 +87,8 @@ const language: Language = {
     "Invalid login credentials": "Ungültige Anmeldedaten",
     "Failed to create session": "Eine Sitzung konnte nicht erstellt werden",
     "Login successful": "Anmeldung erfolgreich",
+    "Clan Owner": "Clan-Besitzer",
+    "Clan Members": "Clan-Mitglieder",
   },
 };
 

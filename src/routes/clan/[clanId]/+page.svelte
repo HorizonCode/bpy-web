@@ -1,5 +1,7 @@
 <script lang="ts">
 	import { appName, appUrl, avatarUrl } from '$lib/env.js';
+	import { __ } from '$lib/language.js';
+	import { userLanguage } from '$lib/storage.js';
 	import { getTimeAgo } from '$lib/time';
 	import { Calendar, LogIn } from 'svelte-feathers';
 
@@ -31,7 +33,7 @@
 				</div>
 				<div class="w-full flex flex-col gap-3 items-center justify-center p-3 bg-surface-800">
 					<div class="w-full text-center">
-						<p class="text-4xl mb-3">Clan Owner</p>
+						<p class="text-4xl mb-3">{__('Clan Owner', $userLanguage)}</p>
 						<div
 							class=" mx-auto w-[50%] flex flex-row items-center gap-3 bg-surface-700 p-3 rounded-lg"
 						>
@@ -52,7 +54,7 @@
 						</div>
 					</div>
 					<div class="w-full text-center">
-						<p class="text-4xl mb-3">Clan Members</p>
+						<p class="text-4xl mb-3">{__('Clan Members', $userLanguage)}</p>
 						<div class="mx-auto grid grid-cols-2 gap-2">
 							{#each data.clan.members as member}
 								<div
