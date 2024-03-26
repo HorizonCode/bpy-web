@@ -1,19 +1,20 @@
 import { type Writable, writable } from "svelte/store";
 import type { UserData } from "./types";
 import { browser } from "$app/environment";
-import { supportedLanguages } from "./language";
+import { languages } from "./language";
 
 export const userData: Writable<UserData | undefined> = writable(undefined);
 
 const defaultLang = "US";
 
 const getLanguageFromStorage = () => {
-  const lang = window.localStorage.getItem("lang") ?? defaultLang;
-  return supportedLanguages.includes(lang) ? lang : defaultLang;
+  const lang = window.localStorage.getItem("lang") ??
+    navigator.language.toUpperCase();
+  return languages[lang].code ?? defaultLang;
 };
 
 const initialLang = browser
-  ? getLanguageFromStorage() ?? defaultLang
+  ? getLanguageFromStorage() ?? navigator.language.toUpperCase()
   : defaultLang;
 
 export const userLanguage = writable(initialLang);

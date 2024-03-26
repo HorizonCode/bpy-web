@@ -41,7 +41,7 @@
 	import NavItems from '$lib/components/navItems.svelte';
 	import type { UserData } from '$lib/types';
 	import Popup from '$lib/components/Popup.svelte';
-	import { __, languageNames, supportedLanguages } from '$lib/language';
+	import { __, languages } from '$lib/language';
 
 	storePopup.set({ computePosition, autoUpdate, flip, shift, offset, arrow });
 	initializeStores();
@@ -200,7 +200,7 @@
 								</button>
 								<svelte:fragment slot="popup">
 									<div class="flex flex-col gap-2 card variant-filled-surface p-2 rounded-lg">
-										{#each supportedLanguages as lang}
+										{#each Object.keys(languages) as lang}
 											<button
 												class="flex flex-row items-center {$userLanguage == lang
 													? 'bg-primary-600/30'
@@ -208,7 +208,7 @@
 												on:click={() => userLanguage.set(lang)}
 											>
 												<img width="30" src="/flags/{lang}.png" class="mr-2" />
-												{__(languageNames[lang], $userLanguage)}
+												{languages[lang].name}
 											</button>
 										{/each}
 									</div>
