@@ -60,4 +60,4 @@ We welcome contributions from the community to help improve bpy-web. If you'd li
 
 ## License
 
-This project is licensed under the [GNU GPLv3 License](LICENSE).
+This project is licensed under the [Apache License 2.0](LICENSE).
