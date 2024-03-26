@@ -543,7 +543,7 @@
 								>
 									{__('me!', $userLanguage)}
 								</p>
-								<div class="w-full text-center userpage max-h-[500px] overflow-y-auto">
+								<div class="w-full text-center userpage max-h-[550px] overflow-y-auto">
 									{@html data.userpage}
 								</div>
 							</div>
