@@ -160,7 +160,9 @@
 							</button>
 							<svelte:fragment slot="popup">
 								{#if score.status > 0}
-									<div class="card p-2 variant-filled-surface z-[9999] text-sm rounded-lg">
+									<div
+										class="card variant-filled-surface !bg-surface-600 p-2 z-[9999] text-sm rounded-lg"
+									>
 										<a
 											class="btn variant-filled-surface text-sm rounded-lg"
 											href="{apiUrl}/get_replay?id={score.id}"
@@ -169,6 +171,7 @@
 											{__('Download Replay', $userLanguage)}
 										</a>
 									</div>
+									<div class="arrow border-r border-b border-gray-700 !bg-surface-600"></div>
 								{/if}
 							</svelte:fragment>
 						</Popup>
