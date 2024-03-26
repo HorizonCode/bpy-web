@@ -10,7 +10,7 @@
 		type ToastSettings,
 		focusTrap
 	} from '@skeletonlabs/skeleton';
-	import { User, Key, SkipBack, ChevronLeft } from 'svelte-feathers';
+	import { User, Key, ChevronLeft } from 'svelte-feathers';
 	import { Turnstile } from 'svelte-turnstile';
 	import { fly, scale } from 'svelte/transition';
 
@@ -36,7 +36,7 @@
 	const performLogin = async () => {
 		if (turnstileSiteKey && loginData.captchaToken.length <= 0) {
 			toastStore.trigger({
-				message: 'Please complete the captcha!',
+				message: __('Please complete the captcha!', $userLanguage),
 				classes: '!bg-red-700 !text-surface-100 !border-red-600 !border'
 			});
 			return;
@@ -53,14 +53,16 @@
 		if (loginRequest.ok) {
 			userData.set(loginResponse.user);
 			const t: ToastSettings = {
-				message: `Welcome back, ${$userData?.username}`,
+				message: __('Welcome back, {{val}}!', $userLanguage, {
+					val: $userData?.username ?? loginData.username
+				}),
 				classes: '!bg-surface-800 !text-surface-200 !border-surface-700 !border'
 			};
 			toastStore.trigger(t);
 			goto('/');
 		} else {
 			const t: ToastSettings = {
-				message: loginResponse.message,
+				message: __(loginResponse.message, $userLanguage),
 				classes: '!bg-red-700 !text-surface-100 !border-red-600 !border'
 			};
 			toastStore.trigger(t);

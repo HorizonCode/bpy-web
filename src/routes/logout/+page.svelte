@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
-	import { userData } from '$lib/storage';
+	import { __ } from '$lib/language';
+	import { userData, userLanguage } from '$lib/storage';
 	import { getToastStore } from '@skeletonlabs/skeleton';
 	import { onMount } from 'svelte';
 
@@ -13,7 +14,7 @@
 		goto('/');
 		if (result.ok) {
 			toastStore.trigger({
-				message: `Logged out!`,
+				message: __('Logged out successfully!', $userLanguage),
 				classes: '!bg-surface-800 !text-surface-200 !border-surface-700 !border'
 			});
 			userData.set(undefined);

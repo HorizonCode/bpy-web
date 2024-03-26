@@ -80,6 +80,13 @@ const language: Language = {
     "The account may be temporarily unavailable due to security or abuse issues":
       "Der Account ist möglicherweise vorübergehend nicht verfügbar",
     "Page": "Seite",
+    "Logged out successfully!": "Erfolgreich abgemeldet!",
+    "Please complete the captcha!": "Bitte löse das Captcha!",
+    "Welcome back, {{val}}!": "Willkommen zurück, {{val}}!",
+    "Catcha validation failed": "Captcha-Überprüfung fehlgeschlagen",
+    "Invalid login credentials": "Ungültige Anmeldedaten",
+    "Failed to create session": "Eine Sitzung konnte nicht erstellt werden",
+    "Login successful": "Anmeldung erfolgreich",
   },
 };
 
