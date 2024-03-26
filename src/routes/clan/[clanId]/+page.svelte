@@ -55,24 +55,26 @@
 						<p class="text-4xl mb-3">{__('Clan Members', $userLanguage)}</p>
 						<div class="mx-auto grid grid-cols-2 gap-2">
 							{#each data.clan.members as member}
-								<div
-									class=" mx-auto flex flex-row items-center gap-3 bg-surface-700 w-full p-3 rounded-lg"
-								>
-									<img
-										class="w-10 h-10 md:w-16 md:h-16 rounded-[30%]"
-										src={avatarUrl + '/' + member.id}
-										alt="playerProfile"
-									/>
-									<img
-										class="w-7"
-										src="/flags/{member.country.toUpperCase()}.png"
-										alt="country flag"
-									/>
-									<a
-										class="text-primary-500 hover:text-primary-300 transition-colors"
-										href="/u/{member.id}">{member.name}</a
+								{#if member.id != data.clan.owner.id}
+									<div
+										class=" mx-auto flex flex-row items-center gap-3 bg-surface-700 w-full p-3 rounded-lg"
 									>
-								</div>
+										<img
+											class="w-10 h-10 md:w-16 md:h-16 rounded-[30%]"
+											src={avatarUrl + '/' + member.id}
+											alt="playerProfile"
+										/>
+										<img
+											class="w-7"
+											src="/flags/{member.country.toUpperCase()}.png"
+											alt="country flag"
+										/>
+										<a
+											class="text-primary-500 hover:text-primary-300 transition-colors"
+											href="/u/{member.id}">{member.name}</a
+										>
+									</div>
+								{/if}
 							{/each}
 						</div>
 					</div>
