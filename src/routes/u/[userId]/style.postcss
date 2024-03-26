@@ -30,9 +30,203 @@
 }
 
 .userpage a {
-	white-space: pre-line !important;
+	display: inline-block !important; /* NOTE: For centering images in userpage */
 }
 
 .status-badge {
 	background: var(--statusBg);
+}
+
+/* Markdown stuff */
+
+.userpage > :first-child {
+	margin-top: 0 !important;
+}
+.userpage a {
+	color: #4183c4;
+	text-decoration: none;
+}
+
+.userpage a:hover {
+	text-decoration: underline;
+}
+
+.userpage ul,
+.userpage ol {
+	padding-left: 2rem;
+	list-style: disc;
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+
+.userpage ul ul {
+	list-style: circle;
+}
+
+.userpage ol {
+	list-style: decimal;
+}
+
+.userpage h1 {
+	border-bottom: 1px solid rgb(var(--color-surface-600));
+	color: #fff;
+	font-size: 2.5em;
+}
+
+.userpage h2 {
+	border-bottom: 1px solid rgb(var(--color-surface-600));
+	color: #fff;
+	font-size: 2em;
+}
+
+.userpage h3 {
+	font-size: 1.5em;
+}
+
+.userpage h4 {
+	font-size: 1.2em;
+}
+
+.userpage h5 {
+	font-size: 1em;
+}
+
+.userpage h6 {
+	font-size: 0.9em;
+}
+
+.userpage h1,
+.userpage h2,
+.userpage h3,
+.userpage h4,
+.userpage h5,
+.userpage h6 {
+	font-weight: bold;
+	line-height: 1.7;
+	margin: 1em 0 15px 0;
+}
+
+.userpage h1 + p,
+.userpage h2 + p,
+.userpage h3 + p {
+	margin-top: 10px;
+}
+
+.userpage img {
+	max-width: 100%;
+}
+
+.userpage pre {
+	margin-top: 0;
+	margin-bottom: 16px;
+	word-wrap: normal;
+	padding: 16px;
+	overflow: auto;
+	font-size: 85%;
+	line-height: 1.45;
+	border-radius: 6px;
+}
+
+.userpage code {
+	padding: 0.2em 0.4em;
+	margin: 0;
+	font-size: 85%;
+	white-space: break-spaces;
+	border-radius: 6px;
+	background-color: #242738;
+}
+
+.userpage p,
+.userpage blockquote,
+.userpage ul,
+.userpage ol,
+.userpage dl,
+.userpage table,
+.userpage pre,
+.userpage details {
+	margin-top: 0;
+	margin-bottom: 16px;
+}
+
+.userpage hr {
+	height: 0.25em;
+	padding: 0;
+	margin: 24px 0;
+	background-color: rgb(var(--color-surface-600));
+	border: 0;
+}
+
+.userpage pre {
+	background-color: #242738;
+	padding: 10px;
+	border-radius: 5px;
+	overflow-x: auto;
+	color: #fff;
+	margin: 10px 0;
+}
+
+.userpage code {
+	font-size: 14px;
+	color: #fff;
+}
+
+.userpage p a {
+	display: inline-block;
+}
+
+.userpage blockquote {
+	padding: 0 1em;
+	color: #bdbec3;
+	border-left: 0.25em solid #50525f;
+}
+
+.userpage > *:last-child {
+	margin-bottom: 0 !important;
+}
+
+.userpage table {
+	display: block;
+	width: 100%;
+	width: max-content;
+	max-width: 100%;
+	overflow: auto;
+	border-color: gray;
+}
+
+.userpage thead {
+	display: table-header-group;
+	vertical-align: middle;
+	border-color: inherit;
+}
+
+.userpage li:has(input[type='checkbox']) {
+	list-style-type: none;
+}
+
+.userpage input[type='checkbox'] {
+	color: rgb(var(--color-surface-400));
+	background-color: rgb(var(--color-surface-600));
+	border-color: rgb(var(--color-surface-400));
+	width: 15px;
+	height: 15px;
+	border-radius: 0.25rem;
+}
+
+.userpage table th {
+	font-weight: 600;
+}
+
+.userpage table th,
+.userpage table td {
+	padding: 6px 13px;
+	border: 1px solid rgb(var(--color-surface-500));
+}
+
+.userpage table tr {
+	background-color: rgb(var(--color-surface-950));
+	border-top: 1px solid rgb(var(--color-surface-500));
+}
+
+.userpage table tr:nth-child(2n) {
+	background-color: #080b18;
 }
