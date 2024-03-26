@@ -5,11 +5,13 @@ import redis from "redis";
 const { knex } = knex_pkg;
 
 let mysqlDatabase: knex_pkg.Knex | undefined;
-let redisClient: redis.RedisClientType<
-  redis.RedisDefaultModules & redis.RedisModules,
-  redis.RedisFunctions,
-  redis.RedisScripts
-> | undefined;
+let redisClient:
+  | redis.RedisClientType<
+    redis.RedisDefaultModules & redis.RedisModules,
+    redis.RedisFunctions,
+    redis.RedisScripts
+  >
+  | undefined;
 
 export const getMySQLDatabase = async (): Promise<knex_pkg.Knex> => {
   if (mysqlDatabase) return mysqlDatabase;
@@ -35,13 +37,15 @@ export const getMySQLDatabase = async (): Promise<knex_pkg.Knex> => {
     );
     process.exit(1);
   }
-}
+};
 
-export const getRedisClient = async (): Promise<redis.RedisClientType<
-  redis.RedisDefaultModules & redis.RedisModules,
-  redis.RedisFunctions,
-  redis.RedisScripts
->> => {
+export const getRedisClient = async (): Promise<
+  redis.RedisClientType<
+    redis.RedisDefaultModules & redis.RedisModules,
+    redis.RedisFunctions,
+    redis.RedisScripts
+  >
+> => {
   if (redisClient) return redisClient;
   const redisUser = env.REDIS_USER ?? undefined;
   const redisPassword = env.REDIS_PASSWORD ?? undefined;
@@ -87,7 +91,6 @@ export const getRedisClient = async (): Promise<redis.RedisClientType<
       console.log(chalk.red("Could not connect to Redis!"));
       process.exit(1);
     }
-
   } catch {
     console.log(
       chalk.red(
@@ -96,8 +99,8 @@ export const getRedisClient = async (): Promise<redis.RedisClientType<
     );
     process.exit(1);
   }
-}
+};
 
-export function handleError(error: Error): void {
-  console.log(chalk.red(JSON.stringify(error, null, 2)));
+export function handleError({ error }): void {
+  console.log(chalk.red((error as Error).stack ?? error));
 }
