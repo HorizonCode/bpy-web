@@ -8,6 +8,8 @@
 	import { Frown } from 'svelte-feathers';
 	import { getTimeSince } from '$lib/time';
 	import { parseModsInt } from '$lib/mods';
+	import { __ } from '$lib/language';
+	import { userLanguage } from '$lib/storage';
 
 	export let beatmapScores: MapScore[];
 	export let loading = false;
@@ -20,22 +22,34 @@
 		<div class="flex flex-row items-center justify-between gap-2 py-1 px-2 text-sm">
 			<!-- is needed to force the data to update because of the transition -->
 			<div class="flex flex-row items-center gap-2">
-				<div class="min-w-10 text-center font-bold text-xs text-surface-300">Rank</div>
-				<div class="min-w-10 text-center font-bold text-xs text-surface-300">Grade</div>
-				<div class="min-w-20 font-bold text-xs text-surface-300">Score</div>
-				<div class="min-w-14 font-bold text-xs text-surface-300">Accuracy</div>
-				<div class="min-w-5 font-bold text-xs text-surface-300">Player</div>
+				<div class="min-w-10 text-center font-bold text-xs text-surface-300">
+					{__('Rank', $userLanguage)}
+				</div>
+				<div class="min-w-10 text-center font-bold text-xs text-surface-300"></div>
+				<div class="min-w-20 font-bold text-xs text-surface-300">{__('Score', $userLanguage)}</div>
+				<div class="min-w-14 font-bold text-xs text-surface-300">
+					{__('Accuracy', $userLanguage)}
+				</div>
+				<div class="min-w-5 font-bold text-xs text-surface-300">{__('Player', $userLanguage)}</div>
 			</div>
 			<div class="flex flex-row text-center items-center gap-1">
 				<!-- right side of the leaderboard entry-->
-				<div class="min-w-32 text-center font-bold text-xs text-surface-300">Max Combo</div>
+				<div class="min-w-32 text-center font-bold text-xs text-surface-300">
+					{__('Max Combo', $userLanguage)}
+				</div>
 				<div class="min-w-8 text-center font-bold text-xs text-surface-300">300</div>
 				<div class="min-w-8 text-center font-bold text-xs text-surface-300">100</div>
 				<div class="min-w-8 text-center font-bold text-xs text-surface-300">50</div>
-				<div class="min-w-8 text-center font-bold text-xs text-surface-300">Miss</div>
+				<div class="min-w-8 text-center font-bold text-xs text-surface-300">
+					{__('Miss', $userLanguage)}
+				</div>
 				<div class="min-w-14 text-center font-bold text-xs text-surface-300">PP</div>
-				<div class="min-w-10 text-center font-bold text-xs text-surface-300">Time</div>
-				<div class="min-w-32 text-start font-bold text-xs text-surface-300">Mods</div>
+				<div class="min-w-10 text-center font-bold text-xs text-surface-300">
+					{__('Time', $userLanguage)}
+				</div>
+				<div class="min-w-32 text-start font-bold text-xs text-surface-300">
+					{__('Mods', $userLanguage)}
+				</div>
 			</div>
 		</div>
 	{/if}

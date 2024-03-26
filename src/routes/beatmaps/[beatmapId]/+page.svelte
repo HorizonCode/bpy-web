@@ -22,6 +22,8 @@
 	import { getBeatmapScores } from '$lib/api';
 	import MapScores from '$lib/components/mapScores.svelte';
 	import { statusIntToString } from '$lib/beatmapStatus';
+	import { __ } from '$lib/language';
+	import { userLanguage } from '$lib/storage';
 
 	/*TODO: fix this page, its still very buggy
 	 * - Scores not sorting properly at some times
@@ -223,10 +225,10 @@
 					<div
 						class="absolute w-full h-full bg-black/70 flex flex-col justify-center items-center md:gap-1"
 					>
-						<p class="text-white text-2xl md:text-3xl truncate text-ellipsis">
+						<p class="text-white text-xl md:text-2xl truncate text-ellipsis">
 							{data.map.title} [{data.map.version}]
 						</p>
-						<p class="text-white md:text-xl truncate text-ellipsis">{data.map.artist}</p>
+						<p class="text-white md:text-lg truncate text-ellipsis">{data.map.artist}</p>
 						<div class="flex flex-row gap-5 items-center bg-black/80 rounded-full p-2 py-1 text-sm">
 							<Popup placement="top">
 								<div class="flex flex-row gap-1 items-center">
@@ -235,7 +237,7 @@
 								</div>
 								<svelte:fragment slot="popup">
 									<div class="card p-2 px-4 rounded-lg variant-filled-surface text-sm">
-										Difficulty Rating
+										{__('Difficulty Rating', $userLanguage)}
 										<div
 											class="arrow border-r border-b border-gray-700 variant-filled-surface"
 										></div>
@@ -249,7 +251,7 @@
 								</div>
 								<svelte:fragment slot="popup">
 									<div class="card p-2 px-4 rounded-lg variant-filled-surface text-sm">
-										Length
+										{__('Length', $userLanguage)}
 										<div
 											class="arrow border-r border-b border-gray-700 variant-filled-surface"
 										></div>
@@ -263,7 +265,7 @@
 								</div>
 								<svelte:fragment slot="popup">
 									<div class="card p-2 px-4 rounded-lg variant-filled-surface text-sm">
-										Plays
+										{__('Play Count', $userLanguage)}
 										<div
 											class="arrow border-r border-b border-gray-700 variant-filled-surface"
 										></div>
@@ -277,7 +279,7 @@
 								</div>
 								<svelte:fragment slot="popup">
 									<div class="card p-2 px-4 rounded-lg variant-filled-surface text-sm">
-										Passes
+										{__('Pass Count', $userLanguage)}
 										<div
 											class="arrow border-r border-b border-gray-700 variant-filled-surface"
 										></div>
@@ -320,7 +322,7 @@
 							href="https://osu.direct/d/{data.map.set_id}"
 						>
 							<Download class="pointer-events-none mr-2" size={18} />
-							Download
+							{__('Download', $userLanguage)}
 						</a>
 						<a
 							class="btn variant-soft-secondary text-sm"
@@ -328,16 +330,16 @@
 							target="_blank"
 						>
 							<ArrowUpRight class="pointer-events-none mr-2" size={18} />
-							Show on osu.ppy.sh
+							{__('Show on osu.ppy.sh', $userLanguage)}
 						</a>
 					</div>
 				</div>
 				<div class="bg-surface-800">
 					{#if failed}
 						<div class="w-full flex flex-col justify-center items-center gap-2">
-							<p class="text-slate-400">Failed to load leaderboard.</p>
+							<p class="text-slate-400">{__('Failed to load leaderboard.', $userLanguage)}</p>
 							<button class="btn variant-filled-surface rounded-lg" on:click={refreshLeaderboard}>
-								Refresh
+								{__('Refresh', $userLanguage)}
 							</button>
 						</div>
 					{:else}
@@ -354,18 +356,20 @@
 			>
 				<div class="flex flex-col items-center justify-center">
 					<p class="text-4xl">404</p>
-					<p class="text-xl">Beatmap not found.</p>
+					<p class="text-xl">{__('Beatmap not found.', $userLanguage)}</p>
 				</div>
 				<div class="flex flex-col items-center lg:items-start justify-normal lg:ps-20 gap-2">
 					<p class="text-lg font-semibold underline underline-offset-2">
-						There are a few possible reasons for this:
+						{__('There are a few possible reasons for this:', $userLanguage)}
 					</p>
 					<ul class="list-disc ms-5">
-						<li>The map was deleted</li>
-						<li>The map has not been cached</li>
-						<li>You may have made a typo!</li>
+						<li>{__('The map was deleted', $userLanguage)}</li>
+						<li>{__('The map has not been cached yet', $userLanguage)}</li>
+						<li>{__('You may have made a typo!', $userLanguage)}</li>
 					</ul>
-					<a class="mx-auto mt-10 btn variant-filled-surface" href="/">Back to Home</a>
+					<a class="mx-auto mt-10 btn variant-filled-surface" href="/"
+						>{__('Back to Home', $userLanguage)}</a
+					>
 				</div>
 			</div>
 		</div>

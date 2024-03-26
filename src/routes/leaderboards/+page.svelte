@@ -269,7 +269,7 @@
 				>
 					<ChevronLeft class="outline-none border-none" />
 				</button>
-				<p class="text-slate-400">Page {currentPage}</p>
+				<p class="text-slate-400">{__('Page', $userLanguage)} {currentPage}</p>
 				<button
 					class="btn variant-filled-surface rounded-lg"
 					on:click={nextPage}
@@ -280,9 +280,9 @@
 			</div>
 			{#if failed}
 				<div class="w-full flex flex-col justify-center items-center gap-2">
-					<p class="text-slate-400">Failed to load leaderboard.</p>
+					<p class="text-slate-400">{__('Failed to load leaderboard.', $userLanguage)}</p>
 					<button class="btn variant-filled-surface rounded-lg" on:click={refreshLeaderboard}>
-						Refresh
+						{__('Refresh', $userLanguage)}
 					</button>
 				</div>
 			{:else}
@@ -303,7 +303,7 @@
 				>
 					<ChevronLeft class="outline-none border-none" />
 				</button>
-				<p class="text-slate-400">Page {currentPage}</p>
+				<p class="text-slate-400">{__('Page', $userLanguage)} {currentPage}</p>
 				<button
 					class="btn variant-filled-surface rounded-lg"
 					on:click={nextPage}

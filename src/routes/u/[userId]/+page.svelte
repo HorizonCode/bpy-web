@@ -586,18 +586,25 @@
 			>
 				<div class="flex flex-col items-center justify-center">
 					<p class="text-4xl">404</p>
-					<p class="text-xl">User Profile not found.</p>
+					<p class="text-xl">{__('User Profile not found.', $userLanguage)}</p>
 				</div>
 				<div class="flex flex-col items-center lg:items-start justify-normal lg:ps-20 gap-2">
 					<p class="text-lg font-semibold underline underline-offset-2">
-						There are a few possible reasons for this:
+						{__('There are a few possible reasons for this:', $userLanguage)}
 					</p>
 					<ul class="list-disc ms-5">
-						<li>They may have changed their username</li>
-						<li>The account may be temporarily unavailable due to security or abuse issues</li>
-						<li>You may have made a typo!</li>
+						<li>{__('They may have changed their username', $userLanguage)}</li>
+						<li>
+							{__(
+								'The account may be temporarily unavailable due to security or abuse issues',
+								$userLanguage
+							)}
+						</li>
+						<li>{__('You may have made a typo!', $userLanguage)}</li>
 					</ul>
-					<a class="mx-auto mt-10 btn variant-filled-surface" href="/">Back to Home</a>
+					<a class="mx-auto mt-10 btn variant-filled-surface" href="/"
+						>{__('Back to Home', $userLanguage)}</a
+					>
 				</div>
 			</div>
 		</div>
