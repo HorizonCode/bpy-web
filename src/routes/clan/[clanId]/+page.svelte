@@ -1,9 +1,7 @@
 <script lang="ts">
-	import { appName, appUrl, avatarUrl } from '$lib/env.js';
-	import { __ } from '$lib/language.js';
-	import { userLanguage } from '$lib/storage.js';
-	import { getTimeAgo } from '$lib/time';
-	import { Calendar, LogIn } from 'svelte-feathers';
+	import { appName, appUrl, avatarUrl } from '$lib/env';
+	import { __ } from '$lib/language';
+	import { userLanguage } from '$lib/storage';
 
 	export let data;
 </script>

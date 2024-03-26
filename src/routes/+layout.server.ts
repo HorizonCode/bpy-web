@@ -1,5 +1,5 @@
-import { getUserFromSession } from '$lib/user.js';
-import { getRedisClient } from '../hooks.server.js';
+import { getUserFromSession } from "$lib/user";
+import { getRedisClient } from "../hooks.server";
 
 export async function load({ url, cookies }) {
   const sessionToken = cookies.get("sessionToken") ?? undefined;
@@ -21,11 +21,10 @@ export async function load({ url, cookies }) {
         currentUser: {
           id: user.id,
           username: user.name,
-        }
-      }
+        },
+      };
     }
   }
-
 
   return {
     url: url.pathname,

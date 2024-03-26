@@ -1,11 +1,11 @@
-import { login } from "$lib/user.js";
+import { login } from "$lib/user";
 import { error, json } from "@sveltejs/kit";
-import { getRedisClient } from "../../hooks.server.js";
-import { makeid } from "$lib/stringUtil.js";
+import { getRedisClient } from "../../hooks.server";
+import { makeid } from "$lib/stringUtil";
 import { env } from "$env/dynamic/private";
 import { env as pubEnv } from "$env/dynamic/public";
-import { validateTurnstileToken } from "$lib/captcha.js";
-import { getClientIP } from "$lib/request.js";
+import { validateTurnstileToken } from "$lib/captcha";
+import { getClientIP } from "$lib/request";
 
 const turnstileEnabled = pubEnv.PUBLIC_TURNSTILE_SITE_KEY &&
   pubEnv.PUBLIC_TURNSTILE_SITE_KEY.length > 0;

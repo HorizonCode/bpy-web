@@ -1,6 +1,6 @@
-import { apiUrl } from "$lib/env.js";
-import { sanitizeHtml } from "$lib/html.js";
-import type { User } from "$lib/types.js";
+import { apiUrl } from "$lib/env";
+import { sanitizeHtml } from "$lib/html";
+import type { User } from "$lib/types";
 import { parse } from "marked";
 
 export async function load({ params }) {

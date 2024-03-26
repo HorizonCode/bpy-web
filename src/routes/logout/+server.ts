@@ -1,5 +1,5 @@
-import { error, json } from '@sveltejs/kit'
-import { getRedisClient } from '../../hooks.server.js';
+import { error, json } from "@sveltejs/kit";
+import { getRedisClient } from "../../hooks.server";
 
 export const POST = async ({ cookies }) => {
   if (cookies.get("sessionToken") !== undefined) {
@@ -12,7 +12,7 @@ export const POST = async ({ cookies }) => {
     });
     return json({
       message: "Logged out!",
-    })
+    });
   }
   return error(400, "Not logged in");
-}
+};
