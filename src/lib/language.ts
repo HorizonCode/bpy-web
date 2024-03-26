@@ -8,17 +8,21 @@ export type Language = {
   phrases: { [key: string]: string };
 };
 
-export const languages: { [code: string]: Language } = {
-  "US": US,
-  "DE": DE,
-};
+export const languages: Language[] = [
+  US,
+  DE,
+];
+
+export const getLanguage = (code: string) =>
+  languages.find((lang) => lang.code === code);
 
 export const __ = (
   key: string,
   lang: string,
   placeholders?: { [key: string]: string | number },
 ) => {
-  let translation = languages[lang]?.phrases[key] ?? key;
+  const language = getLanguage(lang);
+  let translation = language?.phrases[key] ?? key;
   if (placeholders) {
     // Replace placeholders in the translation string
     Object.keys(placeholders).forEach((placeholder) => {
