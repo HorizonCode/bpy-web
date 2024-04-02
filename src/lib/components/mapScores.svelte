@@ -52,10 +52,13 @@
 						{/if}
 						{beatmapScores[0].player_name}
 					</a>
-					<span class="text-xs font-semibold"
-						>{__('achieved', $userLanguage)}
-						{getTimeAgo(new Date(beatmapScores[0].play_time), $userLanguage)}</span
+					<div
+						class="text-xs font-semibold tooltip"
+						aria-label={new Date(beatmapScores[0].play_time).toUTCString()}
 					>
+						{__('achieved', $userLanguage)}
+						{getTimeAgo(new Date(beatmapScores[0].play_time), $userLanguage)}
+					</div>
 					<div
 						class="w-fit tooltip"
 						aria-label={getCountryName(beatmapScores[0].country.toUpperCase())}
