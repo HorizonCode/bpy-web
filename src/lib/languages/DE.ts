@@ -95,6 +95,7 @@ const language: Language = {
     "Most Played Beatmaps": "Meistgespielte Beatmaps",
     "Best Performance": "Beste Performance",
     "Recent": "Zuletzt gespielt",
+    "progress to next level": "Fortschritt bis zum nächsten Level",
   },
 };
 
