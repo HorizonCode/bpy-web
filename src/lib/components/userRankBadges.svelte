@@ -14,7 +14,7 @@
 
 	export let userPriv: number;
 
-	const groups = privsToGroups(7);
+	const groups = privsToGroups(userPriv);
 </script>
 
 <div class="flex flex-row gap-2 px-3 drop-shadow">
