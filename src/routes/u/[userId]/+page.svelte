@@ -409,7 +409,7 @@
 								</div>
 								<svelte:fragment slot="popup">
 									<div class="card p-2 px-4 rounded-lg variant-filled-surface font-normal text-xs">
-										progress to next level
+										{__('progress to next level', $userLanguage)}
 										<div
 											class="arrow border-r border-b border-gray-700 variant-filled-surface"
 										></div>
@@ -601,7 +601,7 @@
 						</div>
 					</div>
 				</div>
-				<div class="p-2 bg-surface-700"></div>
+				<div class="p-2 bg-surface-700 rounded-b-lg"></div>
 			</div>
 		</div>
 	{:else}

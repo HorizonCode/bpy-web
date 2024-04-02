@@ -135,9 +135,9 @@
 </svelte:head>
 <div class="container mx-auto w-full p-5">
 	{#if data.map?.id}
-		<div class="mx-auto card overflow-hidden">
+		<div class="mx-auto card">
 			<div class="w-full flex flex-col">
-				<div class="relative p-3 bg-surface-600">
+				<div class="relative p-3 bg-surface-600 rounded-t-lg">
 					<div
 						class="absolute h-full w-full top-0 left-0 bg-no-repeat bg-top blur opacity-10"
 						style="background-image: url('https://assets.ppy.sh/beatmaps/{data.map
@@ -346,7 +346,7 @@
 						<MapScores beatmapScores={currentLeaderboard} {currentMode} {currentType} {loading} />
 					{/if}
 				</div>
-				<div class="flex flex-row-reverse bg-surface-700 p-7 py-2"></div>
+				<div class="flex flex-row-reverse bg-surface-700 p-7 py-2 rounded-b-lg"></div>
 			</div>
 		</div>
 	{:else}
