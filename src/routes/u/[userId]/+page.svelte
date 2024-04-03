@@ -378,8 +378,7 @@
 									.map((group) =>
 										group > Privileges.VERIFIED ? 'priv-' + Privileges[group].toLowerCase() : ''
 									)
-									.join(' ')
-									.trim()}>{data.user.info.name}</span
+									.pop()}>{data.user.info.name}</span
 							>
 						</div>
 						<div class="flex flex-row md:gap-2">
