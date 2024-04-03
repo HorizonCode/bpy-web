@@ -13,6 +13,11 @@ export function hasPrivilege(playerPriv: number, priv: number) {
   return (playerPriv & priv) === priv;
 }
 
+export function isDonator(playerPriv: number): boolean {
+  return hasPrivilege(playerPriv, Privileges.SUPPORTER) ||
+    hasPrivilege(playerPriv, Privileges.PREMIUM);
+}
+
 /* https://github.com/osuAkatsuki/bancho.py/blob/master/app/constants/privileges.py#L13-L38 */
 export enum Privileges {
   UNRESTRICTED = 1 << 0,
