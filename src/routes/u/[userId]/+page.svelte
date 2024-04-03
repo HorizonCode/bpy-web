@@ -21,6 +21,7 @@
 	import TimeAgo from '$lib/components/TimeAgo.svelte';
 	import UserRankBadges from '$lib/components/userRankBadges.svelte';
 	import UserMostPlayed from '$lib/components/userMostPlayed.svelte';
+	import { isDonator } from '$lib/privs';
 
 	export let data;
 	let clan: Clan | undefined;
@@ -371,7 +372,9 @@
 								>
 							{/if}
 
-							{data.user.info.name}
+							<span class={isDonator(data.user.info.priv) ? 'donator' : ''}
+								>{data.user.info.name}</span
+							>
 						</div>
 						<div class="flex flex-row md:gap-2">
 							<Popup placement="top">
