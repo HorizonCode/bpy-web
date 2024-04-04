@@ -148,9 +148,11 @@
 <div class="container mx-auto w-full p-5">
 	<div class=" flex flex-col justify-center">
 		<div class="bg-surface-700 rounded-t-lg">
-			<div class="bg-surface-700w-full flex justify-center pt-3 px-3">
+			<div
+				class="bg-surface-700w-full flex flex-wrap md:flex-nowrap justify-center gap-y-1 md:gap-y-0 pt-3 px-3"
+			>
 				<button
-					class="w-[100%] !scale-100 btn {currentSort == 'pp'
+					class="w-[50%] md:w-[100%] !scale-100 btn {currentSort == 'pp'
 						? 'bg-surface-500'
 						: 'bg-surface-600'} rounded-lg rounded-r-none"
 					on:click={() => setSort('pp')}
@@ -159,25 +161,25 @@
 					{__('Performance', $userLanguage)}
 				</button>
 				<button
-					class="w-[100%] !scale-100 btn {currentSort == 'tscore'
+					class="w-[50%] md:w-[100%] !scale-100 btn {currentSort == 'tscore'
 						? 'bg-surface-500'
-						: 'bg-surface-600'} rounded-lg rounded-l-none"
+						: 'bg-surface-600'} rounded-lg rounded-l-none md:rounded-none"
 					on:click={() => setSort('tscore')}
 					disabled={loading || failed}
 				>
 					{__('Total Score', $userLanguage)}
 				</button>
 				<button
-					class="w-[100%] !scale-100 btn {currentSort == 'plays'
+					class="w-[50%] md:w-[100%] !scale-100 btn {currentSort == 'plays'
 						? 'bg-surface-500'
-						: 'bg-surface-600'} rounded-none"
+						: 'bg-surface-600'} rounded-lg rounded-r-none md:rounded-none"
 					on:click={() => setSort('plays')}
 					disabled={loading || failed}
 				>
 					{__('Play Count', $userLanguage)}
 				</button>
 				<button
-					class="w-[100%] !scale-100 btn {currentSort == 'acc'
+					class="w-[50%] md:w-[100%] !scale-100 btn {currentSort == 'acc'
 						? 'bg-surface-500'
 						: 'bg-surface-600'} rounded-lg rounded-l-none"
 					on:click={() => setSort('acc')}
