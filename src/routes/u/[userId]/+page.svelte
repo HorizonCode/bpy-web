@@ -375,9 +375,8 @@
 							<span
 								class={privsToGroups(data.user.info.priv)
 									.reverse()
-									.map((group) =>
-										group > Privileges.VERIFIED ? 'priv-' + Privileges[group].toLowerCase() : ''
-									)
+									.filter((group) => group > Privileges.VERIFIED)
+									.map((group) => 'priv-' + Privileges[group].toLowerCase())
 									.pop()}>{data.user.info.name}</span
 							>
 						</div>
