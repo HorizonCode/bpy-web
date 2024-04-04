@@ -316,21 +316,21 @@
 							{statusIntToString(data.map.status)}
 						</div>
 					</div>
-					<div class="me-auto ms-auto md:me-0 flex flex-row items-center gap-3 z-10">
+					<div class="ms-auto flex flex-row items-center gap-3 z-10">
 						<a
 							class="btn variant-soft-primary text-sm"
 							href="https://osu.direct/d/{data.map.set_id}"
 						>
-							<Download class="pointer-events-none mr-2" size={18} />
-							{__('Download', $userLanguage)}
+							<Download class="pointer-events-none md:mr-2" size={18} />
+							<span class="hidden md:block">{__('Download', $userLanguage)}</span>
 						</a>
 						<a
 							class="btn variant-soft-secondary text-sm"
 							href="https://osu.ppy.sh/b/{data.map.id}"
 							target="_blank"
 						>
-							<ArrowUpRight class="pointer-events-none mr-2" size={18} />
-							{__('Show on osu.ppy.sh', $userLanguage)}
+							<ArrowUpRight class="pointer-events-none md:mr-2" size={18} />
+							<span class="hidden md:block">{__('Show on osu.ppy.sh', $userLanguage)}</span>
 						</a>
 					</div>
 				</div>

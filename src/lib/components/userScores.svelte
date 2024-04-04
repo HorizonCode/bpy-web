@@ -80,7 +80,7 @@
 				{#each scores.scores as score, idx}
 					<!-- svelte-ignore a11y-click-events-have-key-events -->
 					<!-- svelte-ignore a11y-no-static-element-interactions -->
-					<div class="flex flex-row gap-2">
+					<div class="flex flex-row gap-2 items-center">
 						<div
 							class="relative w-full flex flex-col md:flex-row items-stretch md:items-center justify-between gap-1 p-2 py-1 bg-surface-500 rounded-lg hover:scale-[1.005] active:scale-[0.995] transition-transform cursor-pointer"
 							on:click={() =>
@@ -98,10 +98,10 @@
 								>
 									{score.grade.replaceAll('XH', 'SS').replaceAll('X', 'SS').replaceAll('SH', 'S')}
 								</div>
-								<div class="flex flex-col">
-									<div class="flex flex-col md:flex-row md:items-center md:gap-1 mb-1">
-										<div class="text-sm font-bold">{score.beatmap.title}</div>
-										<div class="text-xs font-semibold">by {score.beatmap.artist}</div>
+								<div class="flex flex-col w-32 md:w-52 lg:w-full">
+									<div class="flex flex-col lg:flex-row lg:items-center lg:gap-1 mb-1">
+										<div class="text-sm font-bold truncate">{score.beatmap.title}</div>
+										<div class="text-xs font-semibold truncate">by {score.beatmap.artist}</div>
 									</div>
 									<div class="flex flex-row gap-4">
 										<span class="text-xs font-semibold text-yellow-600"

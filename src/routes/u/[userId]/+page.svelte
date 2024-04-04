@@ -384,7 +384,7 @@
 						<div class="flex flex-row md:gap-2">
 							<Popup placement="top">
 								<img
-									class="w-5 md:w-8"
+									class="min-w-5 w-5 md:w-8"
 									src="/flags/{data.user.info.country.toUpperCase()}.png"
 									alt="country flag"
 								/>
