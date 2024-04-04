@@ -31,11 +31,17 @@
 						{:else}
 							<button
 								class="w-32 btn variant-filled-surface rounded-lg"
-								on:click={() => goto('/signin')}>{__('Sign In', $userLanguage)}</button
+								on:click={() => {
+									goto('/signin');
+									drawerStore.close();
+								}}>{__('Sign In', $userLanguage)}</button
 							>
 							<button
 								class="w-32 btn variant-filled-surface rounded-lg"
-								on:click={() => goto('/signup')}>{__('Sign Up', $userLanguage)}</button
+								on:click={() => {
+									goto('/signup');
+									drawerStore.close();
+								}}>{__('Sign Up', $userLanguage)}</button
 							>
 						{/if}
 					</div>
