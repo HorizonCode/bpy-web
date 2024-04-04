@@ -381,7 +381,7 @@
 									.pop()}>{data.user.info.name}</span
 							>
 						</div>
-						<div class="flex flex-row md:gap-2">
+						<div class="flex flex-row items-center md:gap-2">
 							<Popup placement="top">
 								<img
 									class="min-w-5 w-5 md:w-8"
