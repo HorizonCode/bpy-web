@@ -54,12 +54,6 @@
 		userData.set(data.currentUser as UserData);
 	}
 
-	const avatarPopup: PopupSettings = {
-		event: 'click',
-		target: 'avatarPopup',
-		placement: 'bottom-end'
-	};
-
 	let showStickyNav = false;
 
 	let userSearchResults: { id: number; name: string }[] = [];
