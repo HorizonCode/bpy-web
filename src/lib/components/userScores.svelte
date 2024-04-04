@@ -103,7 +103,7 @@
 										<div class="text-sm font-bold truncate">{score.beatmap.title}</div>
 										<div class="text-xs font-semibold truncate">by {score.beatmap.artist}</div>
 									</div>
-									<div class="flex flex-row gap-4">
+									<div class="flex flex-col lg:flex-row lg:gap-4">
 										<span class="text-xs font-semibold text-yellow-600"
 											>{score.beatmap.version}</span
 										>
@@ -125,12 +125,12 @@
 							<div
 								class="flex flex-col md:flex-row gap-1 md:justify-start items-center mt-2 md:mt-0 md:items-center"
 							>
-								<div class="flex flex-row gap-1 items-center">
+								<div class="flex flex-row gap-1 md:gap-0 items-center">
 									{#each parseModsInt(score.mods) as mod}
 										<div class="tooltip" aria-label={mod.name}>
 											<img
 												src="/mods/{mod.short_name.toLowerCase()}.png"
-												class="w-8 h-6"
+												class="w-8 md:w-7 h-6 md:h-5"
 												alt={mod.name}
 											/>
 										</div>
