@@ -11,6 +11,41 @@
 </script>
 
 <div class="flex flex-col md:flex-row p-3 md:p-0 gap-2 h-full w-full">
+	<div class="md:hidden ms-auto">
+		<Popup event="click" placement="bottom">
+			<Avatar
+				src="{avatarUrl}/{$userData?.id ?? 0}"
+				class="!w-10 select-none cursor-pointer hover:ring hover:ring-surface-600 transition-all"
+			/>
+			<svelte:fragment slot="popup">
+				<div class="card p-4 variant-filled-surface">
+					<div class="flex flex-col gap-2">
+						{#if $userData}
+							<button
+								class="w-32 btn variant-filled-surface rounded-lg"
+								on:click={() => goto(`/u/${$userData?.id}`)}>{__('Profile', $userLanguage)}</button
+							>
+							<a class="w-32 btn variant-filled-surface rounded-lg" href="/logout"
+								>{__('Logout', $userLanguage)}</a
+							>
+						{:else}
+							<button
+								class="w-32 btn variant-filled-surface rounded-lg"
+								on:click={() => goto('/signin')}>{__('Sign In', $userLanguage)}</button
+							>
+							<button
+								class="w-32 btn variant-filled-surface rounded-lg"
+								on:click={() => goto('/signup')}>{__('Sign Up', $userLanguage)}</button
+							>
+						{/if}
+					</div>
+					<div
+						class="arrow variant-filled-surface border-t border-l border-gray-700 !right-[0px]"
+					/>
+				</div>
+			</svelte:fragment>
+		</Popup>
+	</div>
 	<a
 		href="/leaderboards"
 		class="btn {$page.data.url == '/leaderboards'
@@ -42,7 +77,7 @@
 	</a>
 
 	<div class="h-full w-full flex flex-row justify-between items-end mt-auto">
-		<div class="md:hidden">
+		<div class="md:hidden ms-auto">
 			<Popup event="click" placement="bottom">
 				<button class="btn px-2 py-2 rounded-lg variant-ghost-surface">
 					<img
@@ -65,42 +100,6 @@
 								{lang.name}
 							</button>
 						{/each}
-					</div>
-				</svelte:fragment>
-			</Popup>
-		</div>
-		<div class="md:hidden">
-			<Popup event="click" placement="bottom">
-				<Avatar
-					src="{avatarUrl}/{$userData?.id ?? 0}"
-					class="!w-10 select-none cursor-pointer hover:ring hover:ring-surface-600 transition-all"
-				/>
-				<svelte:fragment slot="popup">
-					<div class="card p-4 variant-filled-surface">
-						<div class="flex flex-col gap-2">
-							{#if $userData}
-								<button
-									class="w-32 btn variant-filled-surface rounded-lg"
-									on:click={() => goto(`/u/${$userData?.id}`)}
-									>{__('Profile', $userLanguage)}</button
-								>
-								<a class="w-32 btn variant-filled-surface rounded-lg" href="/logout"
-									>{__('Logout', $userLanguage)}</a
-								>
-							{:else}
-								<button
-									class="w-32 btn variant-filled-surface rounded-lg"
-									on:click={() => goto('/signin')}>{__('Sign In', $userLanguage)}</button
-								>
-								<button
-									class="w-32 btn variant-filled-surface rounded-lg"
-									on:click={() => goto('/signup')}>{__('Sign Up', $userLanguage)}</button
-								>
-							{/if}
-						</div>
-						<div
-							class="arrow variant-filled-surface border-b border-r border-gray-700 !right-[0px]"
-						/>
 					</div>
 				</svelte:fragment>
 			</Popup>
