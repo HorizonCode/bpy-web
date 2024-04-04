@@ -112,12 +112,10 @@
 
 <Drawer>
 	{#if $drawerStore.id == 'nav'}
-		<div class="flex flex-col gap-2 p-3">
-			<NavItems {drawerStore} />
-		</div>
+		<NavItems {drawerStore} />
 	{:else if $drawerStore.id == 'search'}
 		<div class="p-3 pb-0 w-full h-full flex flex-col overflow-hidden">
-			<div class="w-fullr" use:focusTrap={true}>
+			<div class="w-full" use:focusTrap={true}>
 				<input
 					class="input mb-3 rounded-lg w-full"
 					placeholder={__('Who are you looking for?', $userLanguage)}
@@ -189,31 +187,38 @@
 							<NavItems {drawerStore} />
 						</div>
 						<div class="flex flex-row gap-5 items-center">
-							<Popup event="click" placement="bottom">
-								<button class="btn px-2 py-2 rounded-lg variant-ghost-surface">
-									<img
-										width="30"
-										class="pointer-events-none"
-										src="/flags/{$userLanguage}.png"
-										alt="language"
-									/>
-								</button>
-								<svelte:fragment slot="popup">
-									<div class="flex flex-col gap-2 card variant-filled-surface p-2 rounded-lg">
-										{#each languages as lang}
-											<button
-												class="flex flex-row items-center {$userLanguage == lang.code
-													? 'bg-primary-600/30'
-													: 'bg-surface-600 hover:bg-surface-700'} hover:scale-[1.005] active:scale-[0.995] transition-all px-6 py-2 rounded-lg cursor-pointer"
-												on:click={() => userLanguage.set(lang.code)}
-											>
-												<img width="30" src="/flags/{lang.code}.png" class="mr-2" />
-												{lang.name}
-											</button>
-										{/each}
-									</div>
-								</svelte:fragment>
-							</Popup>
+							<div class="hidden md:block">
+								<Popup event="click" placement="bottom">
+									<button class="btn px-2 py-2 rounded-lg variant-ghost-surface">
+										<img
+											width="30"
+											class="pointer-events-none"
+											src="/flags/{$userLanguage}.png"
+											alt="language"
+										/>
+									</button>
+									<svelte:fragment slot="popup">
+										<div class="flex flex-col gap-2 card variant-filled-surface p-2 rounded-lg">
+											{#each languages as lang}
+												<button
+													class="flex flex-row items-center {$userLanguage == lang.code
+														? 'bg-primary-600/30'
+														: 'bg-surface-600 hover:bg-surface-700'} hover:scale-[1.005] active:scale-[0.995] transition-all px-6 py-2 rounded-lg cursor-pointer"
+													on:click={() => userLanguage.set(lang.code)}
+												>
+													<img
+														width="30"
+														src="/flags/{lang.code}.png"
+														alt="flag-{lang.code}"
+														class="mr-2"
+													/>
+													{lang.name}
+												</button>
+											{/each}
+										</div>
+									</svelte:fragment>
+								</Popup>
+							</div>
 							<button
 								class="btn px-5 variant-ghost-surface"
 								on:click={() =>
@@ -228,37 +233,41 @@
 							>
 								<Search class="pointer-events-none" size={18} />
 							</button>
-							<div use:popup={avatarPopup}>
-								<Avatar
-									src="{avatarUrl}/{$userData?.id ?? 0}"
-									class="!w-10 select-none cursor-pointer hover:ring hover:ring-surface-600 transition-all"
-								/>
-							</div>
-							<div class="card p-4 variant-filled-surface" data-popup="avatarPopup">
-								<div class="flex flex-col gap-2">
-									{#if $userData}
-										<button
-											class="w-32 btn variant-filled-surface rounded-lg"
-											on:click={() => goto(`/u/${$userData?.id}`)}
-											>{__('Profile', $userLanguage)}</button
-										>
-										<a class="w-32 btn variant-filled-surface rounded-lg" href="/logout"
-											>{__('Logout', $userLanguage)}</a
-										>
-									{:else}
-										<button
-											class="w-32 btn variant-filled-surface rounded-lg"
-											on:click={() => goto('/signin')}>{__('Sign In', $userLanguage)}</button
-										>
-										<button
-											class="w-32 btn variant-filled-surface rounded-lg"
-											on:click={() => goto('/signup')}>{__('Sign Up', $userLanguage)}</button
-										>
-									{/if}
-								</div>
-								<div
-									class="arrow variant-filled-surface border-t border-l border-gray-700 !right-[0px]"
-								/>
+							<div class="hidden md:block">
+								<Popup event="click" placement="bottom">
+									<Avatar
+										src="{avatarUrl}/{$userData?.id ?? 0}"
+										class="!w-10 select-none cursor-pointer hover:ring hover:ring-surface-600 transition-all"
+									/>
+									<svelte:fragment slot="popup">
+										<div class="card p-4 variant-filled-surface">
+											<div class="flex flex-col gap-2">
+												{#if $userData}
+													<button
+														class="w-32 btn variant-filled-surface rounded-lg"
+														on:click={() => goto(`/u/${$userData?.id}`)}
+														>{__('Profile', $userLanguage)}</button
+													>
+													<a class="w-32 btn variant-filled-surface rounded-lg" href="/logout"
+														>{__('Logout', $userLanguage)}</a
+													>
+												{:else}
+													<button
+														class="w-32 btn variant-filled-surface rounded-lg"
+														on:click={() => goto('/signin')}>{__('Sign In', $userLanguage)}</button
+													>
+													<button
+														class="w-32 btn variant-filled-surface rounded-lg"
+														on:click={() => goto('/signup')}>{__('Sign Up', $userLanguage)}</button
+													>
+												{/if}
+											</div>
+											<div
+												class="arrow variant-filled-surface border-t border-l border-gray-700 !right-[0px]"
+											/>
+										</div>
+									</svelte:fragment>
+								</Popup>
 							</div>
 							<div class="md:hidden">
 								<button
