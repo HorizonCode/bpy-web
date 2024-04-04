@@ -85,6 +85,15 @@ export type User = {
   };
 };
 
+export type DBClan = {
+  id: number;
+  name: string;
+  tag: string;
+  owner: number;
+  total_pp: number;
+  users: number;
+}
+
 export type Clan = {
   id: number;
   name: string;

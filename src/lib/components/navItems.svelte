@@ -10,7 +10,7 @@
 	export let drawerStore: DrawerStore;
 </script>
 
-<div class="flex flex-col md:flex-row p-3 md:p-0 h-full w-full">
+<div class="flex flex-col md:flex-row p-3 md:p-0 gap-2 h-full w-full">
 	<a
 		href="/leaderboards"
 		class="btn {$page.data.url == '/leaderboards'
@@ -20,6 +20,17 @@
 	>
 		{__('Leaderboards', $userLanguage)}
 	</a>
+
+	<a
+		href="/clans"
+		class="btn {$page.data.url == '/clans'
+			? 'variant-ghost-surface '
+			: 'hover:variant-outline-surface '}rounded-lg"
+		on:click={() => drawerStore.close()}
+	>
+		{__('Clans', $userLanguage)}
+	</a>
+
 	<a
 		href="/donate"
 		class="btn {$page.data.url == '/donate'
