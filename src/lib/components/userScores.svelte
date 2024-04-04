@@ -107,12 +107,18 @@
 										<span class="text-xs font-semibold text-yellow-600"
 											>{score.beatmap.version}</span
 										>
-										<div
-											class="text-xs font-semibold text-surface-400 tooltip"
-											aria-label={new Date(score.play_time).toUTCString()}
-										>
-											<TimeAgo language={$userLanguage} date={new Date(score.play_time)} />
-										</div>
+										<Popup placement="right">
+											<div class="text-xs font-semibold text-surface-400">
+												<TimeAgo language={$userLanguage} date={new Date(score.play_time)} />
+											</div>
+											<svelte:fragment slot="popup">
+												<div
+													class="hidden md:block card variant-filled-surface px-2 py-1 text-xs z-[9999]"
+												>
+													{new Date(score.play_time).toUTCString()}
+												</div>
+											</svelte:fragment>
+										</Popup>
 									</div>
 								</div>
 							</div>
