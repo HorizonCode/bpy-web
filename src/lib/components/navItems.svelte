@@ -23,7 +23,10 @@
 						{#if $userData}
 							<button
 								class="w-32 btn variant-filled-surface rounded-lg"
-								on:click={() => goto(`/u/${$userData?.id}`)}>{__('Profile', $userLanguage)}</button
+								on:click={() => {
+									goto(`/u/${$userData?.id}`);
+									drawerStore.close();
+								}}>{__('Profile', $userLanguage)}</button
 							>
 							<a class="w-32 btn variant-filled-surface rounded-lg" href="/logout"
 								>{__('Logout', $userLanguage)}</a
