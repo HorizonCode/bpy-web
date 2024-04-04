@@ -41,7 +41,7 @@ export async function GET({ params, setHeaders }) {
   }
 
   const userIDHash = hashCode(parseInt(userId));
-  const usersRandomDefaultCover = defaultCovers[userIDHash % 8];
+  const usersRandomDefaultCover = defaultCovers[(userIDHash % 8) + 1];
 
   return new Response(usersRandomDefaultCover, {
     status: 200,
