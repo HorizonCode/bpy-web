@@ -23,9 +23,7 @@
 		<div
 			class="flex flex-col md:flex-row items-center justify-between gap-5 md:gap-0 py-3 px-6 mt-2 bg-surface-500 rounded-lg shadow"
 		>
-			<div
-				class="flex flex-row items-center justify-center md:justify-normal gap-5 w-full md:w-fit"
-			>
+			<div class="flex flex-row items-center justify-center md:justify-normal gap-5 w-full">
 				<div class="flex flex-col items-center">
 					<span class="font-bold text-lg">#1</span>
 					<span class="grade grade-{beatmapScores[0].grade.toLowerCase()} !text-2xl !font-bold"
