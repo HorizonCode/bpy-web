@@ -7,7 +7,7 @@ export async function load({ params }) {
   const requestedUserId = params.userId;
 
   const requestedUserData = await fetch(
-    `${apiUrl}/get_player_info?id=${requestedUserId}&scope=all`,
+    `${apiUrl}/v1/get_player_info?id=${requestedUserId}&scope=all`,
   );
   if (!requestedUserData.ok) return {};
   const requestedUserDataJson = await requestedUserData.json() as User;

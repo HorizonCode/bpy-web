@@ -96,6 +96,8 @@ const language: Language = {
     "Best Performance": "Beste Performance",
     "Recent": "Zuletzt gespielt",
     "progress to next level": "Fortschritt bis zum nächsten Level",
+    "View Leaderboards": "Ranglisten anzeigen",
+    "View Profile": "Profil anzeigen",
   },
 };
 

@@ -1,7 +1,7 @@
 <script>
 	import { appName } from '$lib/env';
 	import { __ } from '$lib/language';
-	import { userLanguage } from '$lib/storage';
+	import { userData, userLanguage } from '$lib/storage';
 
 	export let data;
 </script>
@@ -21,12 +21,21 @@
 				</h4>
 			</div>
 			<div class="flex flex-row gap-3">
-				<a class="btn variant-filled-surface rounded-lg font-semibold" href="/signup">
-					{__('Sign Up', $userLanguage)}
-				</a>
-				<a class="btn variant-filled-tertiary rounded-lg" href="/signin">
-					{__('Sign In', $userLanguage)}
-				</a>
+				{#if $userData}
+					<a class="btn variant-filled-surface rounded-lg font-semibold" href="/leaderboards">
+						{__('View Leaderboards', $userLanguage)}
+					</a>
+					<a class="btn variant-filled-tertiary rounded-lg" href="/u/{$userData.id}">
+						{__('View Profile', $userLanguage)}
+					</a>
+				{:else}
+					<a class="btn variant-filled-surface rounded-lg font-semibold" href="/signup">
+						{__('Sign Up', $userLanguage)}
+					</a>
+					<a class="btn variant-filled-tertiary rounded-lg" href="/signin">
+						{__('Sign In', $userLanguage)}
+					</a>
+				{/if}
 			</div>
 			<div class="flex flex-row gap-3">
 				<p class="bg-black/50 rounded-full py-1 px-6">

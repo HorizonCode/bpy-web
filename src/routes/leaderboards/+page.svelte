@@ -88,7 +88,7 @@
 		urlParams.set('offset', ((currentPage - 1) * usersPerPage).toFixed(0));
 
 		try {
-			const leaderboard = await fetch(`${apiUrl}/get_leaderboard?` + urlParams.toString());
+			const leaderboard = await fetch(`${apiUrl}/v1/get_leaderboard?` + urlParams.toString());
 			const leaderboardJSON = await leaderboard.json();
 			hasNextPage = leaderboardJSON.leaderboard.length >= usersPerPage;
 			currentLeaderboard = leaderboardJSON.leaderboard;

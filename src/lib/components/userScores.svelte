@@ -173,7 +173,7 @@
 									>
 										<a
 											class="btn variant-filled-surface text-sm rounded-lg"
-											href="{apiUrl}/get_replay?id={score.id}"
+											href="{apiUrl}/v1/get_replay?id={score.id}"
 										>
 											<Download class="pointer-events-none mr-2" size={16} />
 											{__('Download Replay', $userLanguage)}

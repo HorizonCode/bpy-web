@@ -4,7 +4,7 @@ const countryObject: { [key: string]: string } = {
 	AL: 'Albania',
 	DZ: 'Algeria',
 	AS: 'American Samoa',
-	AD: 'AndorrA',
+	AD: 'Andorra',
 	AO: 'Angola',
 	AI: 'Anguilla',
 	AQ: 'Antarctica',
