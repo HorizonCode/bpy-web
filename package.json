@@ -3,9 +3,9 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "dev": "vite dev",
+    "dev": "bunx --bun vite",
     "compile": "npm run build && npm start",
-    "start": "node -r dotenv/config ./build/index.js",
+    "start": "bun -r dotenv/config ./build/index.js",
     "build": "vite build",
     "preview": "vite preview",
     "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
