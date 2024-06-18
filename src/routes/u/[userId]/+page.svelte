@@ -357,11 +357,10 @@
 								class="top-0 left-[6.75rem] w-6 h-6 hidden md:block absolute badge bg-gray-400 border-2 border-surface-400"
 							></div>
 						{/if}
-						<img
-							class="w-14 h-14 md:w-32 md:h-32 bg-surface-600 rounded-[30%] shadow-[0_2px_5px_1px_rgba(0,0,0,0.4)]"
-							src="{avatarUrl}/{data.user.info.id}"
-							alt="playerProfile"
-						/>
+						<span
+							class="block w-14 h-14 md:w-32 md:h-32 bg-no-repeat bg-center bg-cover rounded-[30%] shadow-[0_2px_5px_1px_rgba(0,0,0,0.4)] transition-all"
+							style="background-image: url({avatarUrl}/{data.user.info.id});"
+						></span>
 					</div>
 					<div class="flex flex-col my-auto gap-1 md:gap-2 ms-2 md:ms-36 z-[5]">
 						<div class="flex flex-row items-center gap-1 text-xl md:text-2xl">
