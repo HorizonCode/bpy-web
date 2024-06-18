@@ -1,12 +1,11 @@
 <script lang="ts">
-	import { goto } from '$app/navigation';
 	import { numberHumanReadable } from '$lib/stringUtil';
 	import type { MapScore } from '$lib/types';
 	import { scale } from 'svelte/transition';
 	import { removeTrailingZeroes } from '$lib/regex';
 	import Frown from 'svelte-feathers/Frown.svelte';
 	import Loader from 'svelte-feathers/Loader.svelte';
-	import { getTimeAgo, getTimeSince } from '$lib/time';
+	import { getTimeSince } from '$lib/time';
 	import { parseModsInt } from '$lib/mods';
 	import { __ } from '$lib/language';
 	import { userLanguage } from '$lib/storage';
@@ -32,20 +31,38 @@
 			>
 				<thead class="!bg-transparent">
 					<tr>
-						<td class="text-xs !pb-0">Rank</td>
-						<td class="text-xs !pb-0"></td>
-						<td class="text-xs !pb-0">Score</td>
-						<td class="text-xs !pb-0">Accuracy</td>
-						<td class="text-xs !pb-0"></td>
-						<td class="text-xs !pb-0">Player</td>
-						<td class="text-xs !pb-0">Max Combo</td>
-						<td class="text-xs !pb-0">300</td>
-						<td class="text-xs !pb-0">100</td>
-						<td class="text-xs !pb-0">50</td>
-						<td class="text-xs !pb-0">Miss</td>
-						<td class="text-xs !pb-0">PP</td>
-						<td class="text-xs !pb-0">Time</td>
-						<td class="text-xs !pb-0">Mods</td>
+						<td class="text-2xs text-surface-300 font-bold uppercase !pb-0 pt-2"
+							>{__('Rank', $userLanguage)}</td
+						>
+						<td class="text-2xs text-surface-300 !pb-0"></td>
+						<td class="text-2xs text-surface-300 font-bold uppercase !pb-0 pt-2"
+							>{__('Score', $userLanguage)}</td
+						>
+						<td class="text-2xs text-surface-300 font-bold uppercase !pb-0 pt-2"
+							>{__('Accuracy', $userLanguage)}</td
+						>
+						<td class="text-2xs text-surface-300 !pb-0"></td>
+						<td class="text-2xs text-surface-300 font-bold uppercase !pb-0 pt-2"
+							>{__('Player', $userLanguage)}</td
+						>
+						<td class="text-2xs text-surface-300 font-bold uppercase !pb-0 pt-2"
+							>{__('Max Combo', $userLanguage)}</td
+						>
+						<td class="text-2xs text-surface-300 font-bold uppercase !pb-0 pt-2">300</td>
+						<td class="text-2xs text-surface-300 font-bold uppercase !pb-0 pt-2">100</td>
+						<td class="text-2xs text-surface-300 font-bold uppercase !pb-0 pt-2">50</td>
+						<td class="text-2xs text-surface-300 font-bold uppercase !pb-0 pt-2"
+							>{__('Miss', $userLanguage)}</td
+						>
+						<td class="text-2xs text-surface-300 font-bold uppercase !pb-0 pt-2"
+							>{__('PP', $userLanguage)}</td
+						>
+						<td class="text-2xs text-surface-300 font-bold uppercase !pb-0 pt-2"
+							>{__('Time', $userLanguage)}</td
+						>
+						<td class="text-2xs text-surface-300 font-bold uppercase !pb-0 pt-2"
+							>{__('Mods', $userLanguage)}</td
+						>
 					</tr>
 				</thead>
 				<tbody>
