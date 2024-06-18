@@ -4,19 +4,17 @@
 	import { appName, appUrl } from '$lib/env';
 	import { getFormattedTimeFromSeconds } from '$lib/time';
 	import { onMount } from 'svelte';
-	import {
-		ArrowUpRight,
-		Check,
-		CheckCircle,
-		ChevronsUp,
-		Clock,
-		Download,
-		Heart,
-		HelpCircle,
-		PlayCircle,
-		Star,
-		Trash
-	} from 'svelte-feathers';
+	import ArrowUpRight from 'svelte-feathers/ArrowUpRight.svelte';
+	import Check from 'svelte-feathers/Check.svelte';
+	import CheckCircle from 'svelte-feathers/CheckCircle.svelte';
+	import ChevronsUp from 'svelte-feathers/ChevronsUp.svelte';
+	import Clock from 'svelte-feathers/Clock.svelte';
+	import Download from 'svelte-feathers/Download.svelte';
+	import Heart from 'svelte-feathers/Heart.svelte';
+	import HelpCircle from 'svelte-feathers/HelpCircle.svelte';
+	import PlayCircle from 'svelte-feathers/PlayCircle.svelte';
+	import Star from 'svelte-feathers/Star.svelte';
+	import Trash from 'svelte-feathers/Trash.svelte';
 	import { queryParam } from 'sveltekit-search-params';
 	import { type MapScore } from '$lib/types';
 	import { getBeatmapScores } from '$lib/api';

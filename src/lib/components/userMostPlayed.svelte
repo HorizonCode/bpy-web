@@ -4,7 +4,8 @@
 	import { type PlayerMostPlayed } from '$lib/types';
 	import { ProgressRadial } from '@skeletonlabs/skeleton';
 	import { onMount } from 'svelte';
-	import { ChevronDown, Play } from 'svelte-feathers';
+	import ChevronDown from 'svelte-feathers/ChevronDown.svelte';
+	import Play from 'svelte-feathers/Play.svelte';
 	import { __ } from '$lib/language';
 	import { userLanguage } from '$lib/storage';
 	import { scale } from 'svelte/transition';

@@ -37,7 +37,8 @@
 	import { userData, userLanguage } from '$lib/storage';
 	import { onMount } from 'svelte';
 	import { appName, avatarUrl, apiUrl } from '$lib/env';
-	import { Menu, Search } from 'svelte-feathers';
+	import Menu from 'svelte-feathers/Menu.svelte';
+	import Search from 'svelte-feathers/Search.svelte';
 	import NavItems from '$lib/components/navItems.svelte';
 	import type { UserData } from '$lib/types';
 	import Popup from '$lib/components/Popup.svelte';

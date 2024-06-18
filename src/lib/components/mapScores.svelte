@@ -5,7 +5,7 @@
 	import { scale } from 'svelte/transition';
 	import { removeClanTag, removeTrailingZeroes } from '$lib/regex';
 	import { getCountryName } from '$lib/country';
-	import { Frown } from 'svelte-feathers';
+	import Frown from 'svelte-feathers/Frown.svelte';
 	import { getTimeAgo, getTimeSince } from '$lib/time';
 	import { parseModsInt } from '$lib/mods';
 	import { __ } from '$lib/language';

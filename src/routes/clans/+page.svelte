@@ -1,7 +1,8 @@
 <script lang="ts">
 	import type { DBClan } from '$lib/types';
 	import { onMount } from 'svelte';
-	import { ChevronLeft, ChevronRight } from 'svelte-feathers';
+	import ChevronLeft from 'svelte-feathers/ChevronLeft.svelte';
+	import ChevronRight from 'svelte-feathers/ChevronRight.svelte';
 	import { appName } from '$lib/env';
 	import { queryParam } from 'sveltekit-search-params';
 	import { __ } from '$lib/language';

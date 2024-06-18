@@ -1,7 +1,8 @@
 <script lang="ts">
 	import type { LBUser } from '$lib/types';
 	import { onMount } from 'svelte';
-	import { ChevronLeft, ChevronRight } from 'svelte-feathers';
+  import ChevronLeft from 'svelte-feathers/ChevronLeft.svelte';
+	import ChevronRight from 'svelte-feathers/ChevronRight.svelte';
 	import { apiUrl, appName } from '$lib/env';
 	import { queryParam } from 'sveltekit-search-params';
 	import Leaderboard from '$lib/components/leaderboard.svelte';
@@ -10,7 +11,7 @@
 
 	const modes = ['osu', 'taiko', 'catch', 'mania'];
 	const types = ['vanilla', 'relax', 'autopilot'];
-	const sorts = ['pp', 'tscore', 'acc', 'plays'];
+	const sorts = ['pp', 'tscore', 'plays'];
 
 	let currentLeaderboard: LBUser[] = [];
 	const usersPerPage = 50;
@@ -178,15 +179,6 @@
 				>
 					{__('Play Count', $userLanguage)}
 				</button>
-				<button
-					class="w-[50%] md:w-[100%] !scale-100 btn {currentSort == 'acc'
-						? 'bg-surface-500'
-						: 'bg-surface-600'} rounded-lg rounded-l-none"
-					on:click={() => setSort('acc')}
-					disabled={loading || failed}
-				>
-					{__('Accuracy', $userLanguage)}
-				</button>
 			</div>
 			<div class="grid md:grid-cols-[auto_auto] gap-2 p-3">
 				<div class="w-full flex justify-center md:justify-start rounded-lg">
@@ -294,6 +286,7 @@
 					{usersPerPage}
 					{currentMode}
 					{currentType}
+          {currentSort}
 				/>
 			{/if}
 

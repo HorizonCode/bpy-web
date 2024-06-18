@@ -3,17 +3,18 @@
 	import { getPlayerScores } from '$lib/api';
 	import { parseModsInt } from '$lib/mods';
 	import { removeTrailingZeroes } from '$lib/regex';
-	import { getTimeAgo } from '$lib/time';
 	import { type PlayerScores } from '$lib/types';
 	import { ProgressRadial } from '@skeletonlabs/skeleton';
 	import { onMount } from 'svelte';
-	import { ChevronDown, Download, MoreVertical } from 'svelte-feathers';
+	import ChevronDown from 'svelte-feathers/ChevronDown.svelte';
+	import Download from 'svelte-feathers/Download.svelte';
+	import MoreVertical from 'svelte-feathers/MoreVertical.svelte';
 	import Popup from './Popup.svelte';
 	import { apiUrl } from '$lib/env';
 	import { __ } from '$lib/language';
 	import { userLanguage } from '$lib/storage';
 	import TimeAgo from './TimeAgo.svelte';
-	import { fly, scale } from 'svelte/transition';
+	import { scale } from 'svelte/transition';
 
 	export let title: string;
 	export let userId: number;
@@ -141,15 +142,19 @@
 										<span class="min-w-12 text-sm font-bold text-yellow-500"
 											>{removeTrailingZeroes(score.acc)}%</span
 										>
-										<span class="min-w-12 text-sm font-bold"
-											>{Math.round(score.pp * Math.pow(0.95, idx))}pp</span
-										>
+										{#if scoresType == 'best'}
+											<span class="min-w-12 text-sm font-bold"
+												>{Math.round(score.pp * Math.pow(0.95, idx))}pp</span
+											>
+										{/if}
 									</div>
-									<span class="text-xs font-semibold">
-										{__('weighted {{val}}%', $userLanguage, {
-											val: Math.round(Math.pow(0.95, idx) * 100)
-										})}
-									</span>
+									{#if scoresType == 'best'}
+										<span class="text-xs font-semibold">
+											{__('weighted {{val}}%', $userLanguage, {
+												val: Math.round(Math.pow(0.95, idx) * 100)
+											})}
+										</span>
+									{/if}
 								</div>
 								<div
 									class="min-w-[80px] flex flex-row items-center justify-center text-primary-400 py-1 font-bold bg-black/50 rounded-lg"

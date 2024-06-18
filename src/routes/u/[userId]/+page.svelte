@@ -8,7 +8,7 @@
 	import { onMount } from 'svelte';
 	import { cubicInOut } from 'svelte/easing';
 	import { queryParam } from 'sveltekit-search-params';
-	import { Edit2 } from 'svelte-feathers';
+	import Edit2 from 'svelte-feathers/Edit2.svelte';
 	import type { Clan, PlayerStatus } from '$lib/types';
 	import { getClan, getPlayerStatus } from '$lib/api';
 	import { userData, userLanguage } from '$lib/storage';
@@ -230,7 +230,7 @@
 	{#if data.user?.info.id}
 		<title>{appName} :: {data.user.info.name} - player info</title>
 		<meta property="og:type" content="profile" />
-		<meta property="og:title" content="{data.user.info.name} - player info" />
+		<meta property="og:title" content="{appName} :: {data.user.info.name} - player info" />
 		<meta property="og:url" content="{appUrl}/u/{data.user.info.id}" />
 		<meta property="og:image" content="{avatarUrl}/{data.user.info.id}" />
 		<meta property="profile:username" content={data.user.info.name} />

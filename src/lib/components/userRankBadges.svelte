@@ -1,16 +1,14 @@
 <script lang="ts">
 	import { Privileges, privsToGroups } from '$lib/privs';
-	import {
-		Award,
-		BookOpen,
-		CheckCircle,
-		Code,
-		Heart,
-		Hexagon,
-		Map,
-		Server,
-		Shield
-	} from 'svelte-feathers';
+	import Award from 'svelte-feathers/Award.svelte';
+	import BookOpen from 'svelte-feathers/BookOpen.svelte';
+	import CheckCircle from 'svelte-feathers/CheckCircle.svelte';
+	import Code from 'svelte-feathers/Code.svelte';
+	import Heart from 'svelte-feathers/Heart.svelte';
+	import Hexagon from 'svelte-feathers/Hexagon.svelte';
+	import Map from 'svelte-feathers/Map.svelte';
+	import Server from 'svelte-feathers/Server.svelte';
+	import Shield from 'svelte-feathers/Shield.svelte';
 
 	export let userPriv: number;
 
