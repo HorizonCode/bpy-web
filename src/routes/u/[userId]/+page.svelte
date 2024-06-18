@@ -437,13 +437,13 @@
 								<div class="flex flex-col w-[50%] md:w-fit">
 									<span class="text-xs">{__('Global Ranking', $userLanguage)}</span>
 									<span class="text-xl md:text-3xl font-semibold text-primary-200"
-										>#{$globalRank}</span
+										>#{$globalRank <= 0 ? '-' : $globalRank}</span
 									>
 								</div>
 								<div class="flex flex-col w-[50%] md:w-fit">
 									<span class="text-xs">{__('Country Ranking', $userLanguage)}</span>
 									<span class="text-xl md:text-3xl font-semibold text-primary-200"
-										>#{$countryRank}</span
+										>#{$countryRank <= 0 ? '-' : $countryRank}</span
 									>
 								</div>
 							</div>
