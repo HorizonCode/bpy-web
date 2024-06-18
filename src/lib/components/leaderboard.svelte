@@ -75,18 +75,18 @@
 							class="text-xs text-primary-400 font-semibold">{user.name}</a
 						>
 					</td>
-					<td class="!text-xs text-center w-[10%] text-surface-300 whitespace-nowrap content-center"
+					<td class="!text-xs font-semibold text-center w-[10%] text-surface-300 whitespace-nowrap content-center"
 						>{removeTrailingZeroes(user.acc)}%</td
 					>
 					{#key user}
 						<td
-							class="!text-xs text-center w-[8%] {currentSort == 'plays'
+							class="!text-xs font-semibold text-center w-[8%] {currentSort == 'plays'
 								? 'text-surface-50'
 								: 'text-surface-300'} whitespace-nowrap content-center"
 							>{numberHumanReadable(user.plays)}</td
 						>
 						<td
-							class="!text-xs text-center w-[10%] {currentSort != 'plays'
+							class="!text-xs font-semibold text-center w-[10%] {currentSort != 'plays'
 								? 'text-surface-50'
 								: 'text-surface-300'} whitespace-nowrap content-center"
 						>
@@ -97,14 +97,14 @@
 							{/if}
 						</td>
 					{/key}
-					<td class="!text-xs text-center w-[5%] text-surface-300 whitespace-nowrap content-center"
+					<td class="!text-xs font-semibold text-center w-[5%] text-surface-300 whitespace-nowrap content-center"
 						>{numberHumanReadable(user.x_count + user.xh_count)}</td
 					>
-					<td class="!text-xs text-center w-[5%] text-surface-300 whitespace-nowrap content-center"
+					<td class="!text-xs font-semibold text-center w-[5%] text-surface-300 whitespace-nowrap content-center"
 						>{numberHumanReadable(user.s_count + user.sh_count)}</td
 					>
 					<td
-						class="!text-xs text-center w-[5%] text-surface-300 whitespace-nowrap content-center !rounded-e-lg"
+						class="!text-xs font-semibold text-center w-[5%] text-surface-300 whitespace-nowrap content-center !rounded-e-lg"
 						>{numberHumanReadable(user.a_count)}</td
 					>
 				</tr>
