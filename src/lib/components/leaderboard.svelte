@@ -28,14 +28,14 @@
 			<tr class="text-center">
 				<th class="!pb-0"></th>
 				<th class="!pb-0"></th>
-				<th class="text-center text-sm text-surface-300 !font-semibold !pb-0">{__("Accuracy", $userLanguage)}</th>
+				<th class="text-center text-xs text-surface-300 !font-semibold !pb-0">{__("Accuracy", $userLanguage)}</th>
 				<th
-					class="text-center text-sm {currentSort == 'plays'
+					class="text-center text-xs {currentSort == 'plays'
 						? 'text-surface-50'
 						: 'text-surface-300'} !font-semibold !pb-0">{__("Play Count", $userLanguage)}</th
 				>
 				<th
-					class="text-center text-sm {currentSort != 'plays'
+					class="text-center text-xs {currentSort != 'plays'
 						? 'text-surface-50'
 						: 'text-surface-300'} !font-semibold !pb-0"
 				>
@@ -45,9 +45,9 @@
 						{__("PP", $userLanguage)}
 					{/if}
 				</th>
-				<th class="text-center text-sm text-surface-300 !font-semibold !pb-0">SS</th>
-				<th class="text-center text-sm text-surface-300 !font-semibold !pb-0">S</th>
-				<th class="text-center text-sm text-surface-300 !font-semibold !pb-0">A</th>
+				<th class="text-center text-xs text-surface-300 !font-semibold !pb-0">SS</th>
+				<th class="text-center text-xs text-surface-300 !font-semibold !pb-0">S</th>
+				<th class="text-center text-xs text-surface-300 !font-semibold !pb-0">A</th>
 			</tr>
 		</thead>
 		<tbody>
