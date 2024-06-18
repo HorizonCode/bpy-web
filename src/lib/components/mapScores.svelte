@@ -3,347 +3,173 @@
 	import { numberHumanReadable } from '$lib/stringUtil';
 	import type { MapScore } from '$lib/types';
 	import { scale } from 'svelte/transition';
-	import { removeClanTag, removeTrailingZeroes } from '$lib/regex';
-	import { getCountryName } from '$lib/country';
+	import { removeTrailingZeroes } from '$lib/regex';
 	import Frown from 'svelte-feathers/Frown.svelte';
+	import Loader from 'svelte-feathers/Loader.svelte';
 	import { getTimeAgo, getTimeSince } from '$lib/time';
 	import { parseModsInt } from '$lib/mods';
 	import { __ } from '$lib/language';
 	import { userLanguage } from '$lib/storage';
-	import { avatarUrl } from '$lib/env';
+	import Flag from './Flag.svelte';
+	import Mod from './Mod.svelte';
+	import Popup from './Popup.svelte';
 
 	export let beatmapScores: MapScore[];
-	export let loading = false;
+	export let loading: boolean;
 	export let currentMode: string;
 	export let currentType: string;
 </script>
 
 {#if beatmapScores.length > 0}
-	<div class="p-3" transition:scale={{ start: 0.99, duration: 200 }}>
+	{#if !loading}
 		<div
-			class="flex flex-col md:flex-row items-center justify-between gap-5 md:gap-0 py-3 px-6 mt-2 bg-surface-500 rounded-lg shadow"
+			class="table-container table-extracompact !rounded-none px-5 pb-3"
+			transition:scale={{ duration: 200, start: 0.99 }}
 		>
-			<div class="flex flex-row items-center justify-center md:justify-normal gap-5 w-full">
-				<div class="flex flex-col items-center">
-					<span class="font-bold text-lg">#1</span>
-					<span class="grade grade-{beatmapScores[0].grade.toLowerCase()} !text-2xl !font-bold"
-						>{beatmapScores[0].grade
-							.replaceAll('XH', 'SS')
-							.replaceAll('X', 'SS')
-							.replaceAll('SH', 'S')}</span
-					>
-				</div>
-				<img
-					class="w-20 h-20 bg-surface-700 rounded-[30%] shadow"
-					src="{avatarUrl}/{beatmapScores[0].userid}"
-					alt="avatar"
-				/>
-				<div class="flex flex-col gap-0">
-					<a class="font-bold text-primary-400" href="/u/{beatmapScores[0].userid}">
-						{#if beatmapScores[0].clan_tag}
-							<a
-								class="chip p-1.5 py-0.5 min-w-7 variant-soft-primary hover:variant-filled-primary"
-								href="/clan/{beatmapScores[0].clan_id}"
+			<table
+				class="table !rounded-none"
+				style="border-collapse: separate !important; border-spacing: 0 3px !important;"
+			>
+				<thead class="!bg-transparent">
+					<tr>
+						<td class="text-xs !pb-0">Rank</td>
+						<td class="text-xs !pb-0"></td>
+						<td class="text-xs !pb-0">Score</td>
+						<td class="text-xs !pb-0">Accuracy</td>
+						<td class="text-xs !pb-0"></td>
+						<td class="text-xs !pb-0">Player</td>
+						<td class="text-xs !pb-0">Max Combo</td>
+						<td class="text-xs !pb-0">300</td>
+						<td class="text-xs !pb-0">100</td>
+						<td class="text-xs !pb-0">50</td>
+						<td class="text-xs !pb-0">Miss</td>
+						<td class="text-xs !pb-0">PP</td>
+						<td class="text-xs !pb-0">Time</td>
+						<td class="text-xs !pb-0">Mods</td>
+					</tr>
+				</thead>
+				<tbody>
+					{#each beatmapScores as score, rank}
+						<tr class="!bg-surface-700 hover:!bg-surface-600 transition-colors">
+							<td
+								class="!text-xs font-bold text-center table-cell-fit content-center w-[1%] whitespace-nowrap !rounded-s-lg"
+								>#{rank + 1}</td
 							>
-								{beatmapScores[0].clan_tag}
-							</a>
-						{/if}
-						{beatmapScores[0].player_name}
-					</a>
-					<div
-						class="text-xs font-semibold tooltip"
-						aria-label={new Date(beatmapScores[0].play_time).toUTCString()}
-					>
-						{__('achieved', $userLanguage)}
-						{getTimeAgo(new Date(beatmapScores[0].play_time), $userLanguage)}
-					</div>
-					<div
-						class="w-fit tooltip"
-						aria-label={getCountryName(beatmapScores[0].country.toUpperCase())}
-					>
-						<img
-							class="h-4 w-6 mt-1"
-							src="/flags/{beatmapScores[0].country.toUpperCase()}.png"
-							alt="flag"
-						/>
-					</div>
-				</div>
-			</div>
-			<div class="w-full flex flex-col gap-2">
-				<div class="flex flex-row justify-around md:justify-end md:gap-10">
-					<div class="flex flex-col">
-						<span class="text-xs text-surface-300 font-semibold"
-							>{__('Total Score', $userLanguage)}</span
-						>
-						<span class="text-xl font-semibold text-surface-200"
-							>{numberHumanReadable(beatmapScores[0].score)}</span
-						>
-					</div>
-					<div class="flex flex-col">
-						<span class="text-xs text-surface-300 font-semibold"
-							>{__('Accuracy', $userLanguage)}</span
-						>
-						<span class="text-xl font-semibold text-surface-200"
-							>{removeTrailingZeroes(beatmapScores[0].acc)}%</span
-						>
-					</div>
-					<div class="flex flex-col">
-						<span class="text-xs text-surface-300 font-semibold"
-							>{__('Max Combo', $userLanguage)}</span
-						>
-						<span
-							class="text-xl font-semibold{beatmapScores[0].perfect
-								? ' text-lime-400'
-								: ' text-surface-200'}">{numberHumanReadable(beatmapScores[0].max_combo)}x</span
-						>
-					</div>
-				</div>
-				<div class="flex flex-row w-full justify-evenly md:justify-end md:gap-5 lg:gap-10">
-					<div class="flex flex-col gap-1">
-						<span class="text-2xs text-surface-300 font-semibold">300</span>
-						<span
-							class="text-sm font-semibold{beatmapScores[0].n300 <= 0
-								? ' text-surface-400'
-								: ' text-surface-200'}">{numberHumanReadable(beatmapScores[0].n300)}</span
-						>
-					</div>
-					<div class="flex flex-col gap-1">
-						<span class="text-2xs text-surface-300 font-semibold">100</span>
-						<span
-							class="text-sm font-semibold{beatmapScores[0].n100 <= 0
-								? ' text-surface-400'
-								: ' text-surface-200'}">{numberHumanReadable(beatmapScores[0].n100)}</span
-						>
-					</div>
-					<div class="flex flex-col gap-1">
-						<span class="text-2xs text-surface-300 font-semibold">50</span>
-						<span
-							class="text-sm font-semibold{beatmapScores[0].n50 <= 0
-								? ' text-surface-400'
-								: ' text-surface-200'}">{numberHumanReadable(beatmapScores[0].n50)}</span
-						>
-					</div>
-					<div class="flex flex-col gap-1">
-						<span class="text-2xs text-surface-300 font-semibold">{__('Miss', $userLanguage)}</span>
-						<span
-							class="text-sm font-semibold{beatmapScores[0].nmiss <= 0
-								? ' text-surface-400'
-								: ' text-surface-200'}">{numberHumanReadable(beatmapScores[0].nmiss)}</span
-						>
-					</div>
-					<div class="flex flex-col gap-1">
-						<span class="text-2xs text-surface-300 font-semibold">PP</span>
-						<span class="text-sm font-semibold text-surface-200"
-							>{numberHumanReadable(Math.round(beatmapScores[0].pp))}</span
-						>
-					</div>
-					<div class="flex flex-col gap-1">
-						<span class="text-2xs text-surface-300 font-semibold">{__('Time', $userLanguage)}</span>
-						<span
-							class="text-sm font-semibold text-surface-200 tooltip"
-							aria-label={new Date(beatmapScores[0].play_time).toUTCString()}
-							>{getTimeSince(new Date(beatmapScores[0].play_time))}</span
-						>
-					</div>
-					<div class="flex flex-col gap-1">
-						<span class="text-2xs text-surface-300 font-semibold">{__('Mods', $userLanguage)}</span>
-						<div class="flex flex-row">
-							{#each parseModsInt(beatmapScores[0].mods) as mod}
-								<div class="tooltip" aria-label={mod.name}>
-									<img
-										src="/mods/{mod.short_name.toLowerCase()}.png"
-										class="w-7 h-5"
-										alt={mod.name}
-									/>
+							<td
+								class="!text-sm !font-semibold w-[3%] whitespace-nowrap content-center text-center grade grade-{score.grade.toLowerCase()}"
+								>{score.grade}</td
+							>
+							<td
+								class="w-[1%] whitespace-nowrap !text-xs {rank == 0
+									? 'font-bold'
+									: 'font-semibold'} content-center">{numberHumanReadable(score.score)}</td
+							>
+							<td class="w-[1%] whitespace-nowrap !text-xs font-semibold content-center"
+								>{removeTrailingZeroes(score.acc)}%</td
+							>
+							<td class="w-[1%] !px-0 whitespace-nowrap content-center text-end"
+								><Flag country={score.country} size={12} tooltip={true}></Flag></td
+							>
+							<td class="!text-xs content-center"
+								><a
+									class="text-primary-400 font-semibold"
+									href="/u/{score.userid}?mode=${currentMode}&type=${currentType}"
+									>{score.player_name}</a
+								></td
+							>
+							<td
+								class="w-[10%] whitespace-nowrap !text-xs !font-semibold {score.perfect
+									? 'text-lime-400 '
+									: ''}content-center">{score.max_combo}x</td
+							>
+							<td
+								class="w-[1%] whitespace-nowrap !text-xs !font-semibold content-center {score.n300 <=
+								0
+									? 'text-surface-400'
+									: ''}">{score.n300}</td
+							>
+							<td
+								class="w-[1%] whitespace-nowrap !text-xs !font-semibold content-center {score.n100 <=
+								0
+									? 'text-surface-400'
+									: ''}">{score.n100}</td
+							>
+							<td
+								class="w-[1%] whitespace-nowrap !text-xs !font-semibold content-center {score.n50 <=
+								0
+									? 'text-surface-400'
+									: ''}">{score.n50}</td
+							>
+							<td
+								class="w-[1%] whitespace-nowrap !text-xs !font-semibold content-center {score.nmiss <=
+								0
+									? 'text-surface-400'
+									: ''}">{score.nmiss}</td
+							>
+							<td class="w-[1%] whitespace-nowrap !text-xs !font-semibold content-center">
+								<Popup>
+									{Math.round(score.pp)}
+									<svelte:fragment slot="popup">
+										<div
+											class="flex flex-col gap-2 card variant-filled-surface p-2 rounded-lg text-xs"
+										>
+											{score.pp}
+										</div>
+									</svelte:fragment>
+								</Popup>
+							</td>
+							<td class="w-[1%] whitespace-nowrap !text-xs !font-semibold content-center">
+								<Popup>
+									{getTimeSince(new Date(score.play_time))}
+									<svelte:fragment slot="popup">
+										<div class="flex flex-col gap-2 card variant-filled-surface p-2 rounded-lg">
+											{new Date(score.play_time).toUTCString()}
+										</div>
+									</svelte:fragment>
+								</Popup>
+							</td>
+							<td class="w-[1%] whitespace-nowrap !rounded-e-lg content-center text-start">
+								<div class="flex flex-row gap-0.5">
+									{#each parseModsInt(score.mods) as mod}
+										<Mod {mod} size={18} tooltip={true}></Mod>
+									{/each}
 								</div>
-							{/each}
-						</div>
-					</div>
-				</div>
-				<div class="hidden flex-row justify-center md:justify-end gap-10">
-					<div class="flex flex-col gap-1">
-						<span class="text-xs text-surface-300 font-semibold">PP</span>
-						<span class="font-semibold text-surface-200"
-							>{numberHumanReadable(Math.round(beatmapScores[0].pp))}</span
-						>
-					</div>
-					<div class="flex flex-col gap-1">
-						<span class="text-xs text-surface-300 font-semibold">{__('Time', $userLanguage)}</span>
-						<span class="font-semibold text-surface-200"
-							>{getTimeSince(new Date(beatmapScores[0].play_time))}</span
-						>
-					</div>
-					<div class="flex flex-col gap-1">
-						<span class="text-xs text-surface-300 font-semibold">{__('Mods', $userLanguage)}</span>
-						<div class="flex flex-row">
-							{#each parseModsInt(beatmapScores[0].mods) as mod}
-								<div class="tooltip" aria-label={mod.name}>
-									<img
-										src="/mods/{mod.short_name.toLowerCase()}.png"
-										class="w-7 h-5"
-										alt={mod.name}
-									/>
-								</div>
-							{/each}
-						</div>
-					</div>
-				</div>
-			</div>
+							</td>
+						</tr>
+					{/each}
+				</tbody>
+			</table>
 		</div>
+	{/if}
+{:else}
+	<div
+		class="p-4 m-2 bg-surface-500 text-lg rounded-lg shadow"
+		transition:scale={{ delay: 200, duration: 200, start: 0.99 }}
+	>
+		{#key loading}
+			<div
+				class="flex flex-row items-center justify-center gap-2"
+				transition:scale={{ delay: 0, duration: 200, start: 0.99 }}
+			>
+				{#if loading}
+					<Loader class="pointer-events-none animate-spin"></Loader>
+					{__('Loading Scores...', $userLanguage)}
+				{:else}
+					<Frown class="pointer-events-none"></Frown>
+					{__('No Scores found.', $userLanguage)}
+				{/if}
+			</div>
+		{/key}
 	</div>
 {/if}
-<div class="w-full flex flex-col flex-wrap gap-1 p-3 overflow-auto">
-	{#if beatmapScores.length > 0 || loading}
-		<div class="flex flex-row items-center justify-between gap-2 py-1 px-2 text-sm">
-			<!-- is needed to force the data to update because of the transition -->
-			<div class="flex flex-row items-center gap-2">
-				<div class="min-w-10 text-center font-bold text-xs text-surface-300">
-					{__('Rank', $userLanguage)}
-				</div>
-				<div class="min-w-10 text-center font-bold text-xs text-surface-300"></div>
-				<div class="min-w-20 font-bold text-xs text-surface-300">{__('Score', $userLanguage)}</div>
-				<div class="min-w-14 font-bold text-xs text-surface-300">
-					{__('Accuracy', $userLanguage)}
-				</div>
-				<div class="min-w-5 font-bold text-xs text-surface-300">{__('Player', $userLanguage)}</div>
-			</div>
-			<div class="flex flex-row text-center items-center gap-1">
-				<!-- right side of the leaderboard entry-->
-				<div class="min-w-32 text-center font-bold text-xs text-surface-300">
-					{__('Max Combo', $userLanguage)}
-				</div>
-				<div class="min-w-8 text-center font-bold text-xs text-surface-300">300</div>
-				<div class="min-w-8 text-center font-bold text-xs text-surface-300">100</div>
-				<div class="min-w-8 text-center font-bold text-xs text-surface-300">50</div>
-				<div class="min-w-8 text-center font-bold text-xs text-surface-300">
-					{__('Miss', $userLanguage)}
-				</div>
-				<div class="min-w-14 text-center font-bold text-xs text-surface-300">PP</div>
-				<div class="min-w-10 text-center font-bold text-xs text-surface-300">
-					{__('Time', $userLanguage)}
-				</div>
-				<div class="min-w-32 text-start font-bold text-xs text-surface-300">
-					{__('Mods', $userLanguage)}
-				</div>
-			</div>
-		</div>
-	{/if}
-	{#each beatmapScores as user, rank}
-		<!-- svelte-ignore a11y-click-events-have-key-events -->
-		<!-- svelte-ignore a11y-no-static-element-interactions -->
-		<div
-			class="flex flex-row items-center justify-between gap-2 p-2 hover:scale-[1.005] active:scale-[0.995] transition-transform cursor-pointer bg-surface-500 text-sm rounded-lg shadow"
-			on:click={() => goto(`/u/${user.userid}?mode=${currentMode}&type=${currentType}`)}
-			transition:scale={{ duration: 200, start: 0.99 }}
-		>
-			{#key user}
-				<!-- is needed to force the data to update because of the transition -->
-				<div class="flex flex-row items-center gap-2">
-					<!-- left side of the leaderboard entry-->
-					<div class="min-w-10 text-center">#{rank + 1}</div>
-					<div class="min-w-10 text-center font-semibold grade grade-{user.grade.toLowerCase()}">
-						{user.grade.replaceAll('XH', 'SS').replaceAll('X', 'SS').replaceAll('SH', 'S')}
-					</div>
-					<div class="min-w-20 text-xs{rank >= 1 ? ' font-normal' : ' font-bold'}">
-						{numberHumanReadable(user.score)}
-					</div>
-					<div class="min-w-14 text-xs font-semibold {user.acc >= 100 ? ' text-green-300' : ''}">
-						{removeTrailingZeroes(user.acc)}%
-					</div>
-					<div
-						class="flex text-xs flex-row gap-2 items-center min-w-56 text-primary-400 hover:text-primary-200 font-semibold transition-colors cursor-pointer"
-					>
-						<div class="w-7 h-5 tooltip" aria-label={getCountryName(user.country)}>
-							<img
-								src="/flags/{user.country.toUpperCase()}.png"
-								class="w-7 h-5"
-								alt="{user.country} Flag"
-							/>
-						</div>
-						{#if user.clan_tag}
-							<a
-								class="chip p-1.5 py-0.5 min-w-7 variant-soft-primary hover:variant-filled-primary"
-								href="/clan/{user.clan_id}"
-							>
-								{user.clan_tag}
-							</a>
-						{/if}
-						{removeClanTag(user.player_name)}
-					</div>
-				</div>
-				<div class="flex flex-row items-center gap-1">
-					<!-- right side of the leaderboard entry-->
-					<div
-						class="min-w-24 font-bold text-xs {user.perfect
-							? ' text-lime-400'
-							: 'text-surface-300'}"
-					>
-						{numberHumanReadable(user.max_combo)}x
-					</div>
-					<div
-						class="min-w-8 text-center font-bold text-xs{user.n300 <= 0
-							? ' text-surface-400'
-							: ' text-surface-100'}"
-					>
-						{numberHumanReadable(user.n300)}
-					</div>
-					<div
-						class="min-w-8 text-center font-bold text-xs{user.n100 <= 0
-							? ' text-surface-400'
-							: ' text-surface-100'}"
-					>
-						{numberHumanReadable(user.n100)}
-					</div>
-					<div
-						class="min-w-8 text-center font-bold text-xs{user.n50 <= 0
-							? ' text-surface-400'
-							: ' text-surface-100'}"
-					>
-						{numberHumanReadable(user.n50)}
-					</div>
-					<div
-						class="min-w-8 text-center font-bold text-xs{user.nmiss <= 0
-							? ' text-surface-400'
-							: ' text-surface-100'}"
-					>
-						{numberHumanReadable(user.nmiss)}
-					</div>
-					<div
-						class="min-w-14 text-center font-bold text-xs text-surface-100 tooltip"
-						aria-label={user.pp.toFixed(3)}
-					>
-						{numberHumanReadable(parseFloat(user.pp.toFixed(0)))}
-					</div>
-					<div
-						class="min-w-10 text-center font-bold text-xs text-surface-100 tooltip"
-						aria-label={new Date(user.play_time).toUTCString()}
-					>
-						{getTimeSince(new Date(user.play_time))}
-					</div>
-					<div class="min-w-32 text-center font-bold text-xs text-surface-100">
-						<div class="flex flex-row">
-							{#each parseModsInt(user.mods) as mod}
-								<div class="tooltip" aria-label={mod.name}>
-									<img
-										src="/mods/{mod.short_name.toLowerCase()}.png"
-										class="w-7 h-5"
-										alt={mod.name}
-									/>
-								</div>
-							{/each}
-						</div>
-					</div>
-				</div>
-			{/key}
-		</div>
-	{/each}
-	{#if beatmapScores.length <= 0 && !loading}
-		<div
-			class="flex flex-row items-center justify-center gap-2 p-4 bg-surface-500 text-lg rounded-lg shadow"
-			transition:scale={{ duration: 200, start: 0.99 }}
-		>
-			<Frown class="pointer-events-none"></Frown>
-			{__('No Scores found.', $userLanguage)}
-		</div>
-	{/if}
-</div>
+
+<style>
+	.table thead td {
+		padding-left: 0.75rem;
+		padding-right: 0.75rem;
+	}
+	.table-extracompact tbody td {
+		padding-top: 0.35rem !important;
+		padding-bottom: 0.35rem !important;
+	}
+</style>

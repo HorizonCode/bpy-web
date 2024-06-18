@@ -221,12 +221,13 @@
 						.set_id}/covers/cover@2x.jpg');"
 				>
 					<div
-						class="absolute w-full h-full bg-black/70 flex flex-col justify-center items-center md:gap-1"
+						class="absolute w-full h-full bg-black/70 flex flex-col justify-center items-center md:gap-1 overflow-hidden"
 					>
 						<p class="text-white text-xl md:text-2xl truncate text-ellipsis">
-							{data.map.title} [{data.map.version}]
+							{data.map.title}
 						</p>
 						<p class="text-white md:text-lg truncate text-ellipsis">{data.map.artist}</p>
+            <p class="chip variant-filled-primary py-1 mb-1 cursor-default">{data.map.version}</p>
 						<div class="flex flex-row gap-5 items-center bg-black/80 rounded-full p-2 py-1 text-sm">
 							<Popup placement="top">
 								<div class="flex flex-row gap-1 items-center">

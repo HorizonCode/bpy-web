@@ -25,7 +25,7 @@
 		style="border-collapse: separate !important; border-spacing: 0 3px !important;"
 	>
 		<thead class="!bg-transparent">
-			<tr class="text-center">
+			<tr>
 				<th class="!pb-0"></th>
 				<th class="!pb-0"></th>
 				<th class="text-center text-xs text-surface-300 !font-semibold !pb-0">{__("Accuracy", $userLanguage)}</th>
@@ -57,7 +57,7 @@
 					transition:scale={{ delay: 20 * rank, duration: 100, start: 0.99 }}
 				>
 					<td
-						class="!text-xs text-center table-cell-fit content-center w-[1%] whitespace-nowrap !rounded-s-lg"
+						class="!text-xs !font-semibold text-center table-cell-fit content-center w-[1%] whitespace-nowrap !rounded-s-lg"
 						>#{rank + (page - 1) * usersPerPage + 1}</td
 					>
 					<td class="flex flex-row gap-2 items-center content-center">
