@@ -144,13 +144,10 @@
 {:else}
 	<div
 		class="p-4 m-2 bg-surface-500 text-lg rounded-lg shadow"
-		transition:scale={{ delay: 200, duration: 200, start: 0.99 }}
+		transition:scale={{ duration: 200, start: 0.99 }}
 	>
 		{#key loading}
-			<div
-				class="flex flex-row items-center justify-center gap-2"
-				transition:scale={{ delay: 0, duration: 200, start: 0.99 }}
-			>
+			<div class="flex flex-row items-center justify-center gap-2">
 				{#if loading}
 					<Loader class="pointer-events-none animate-spin"></Loader>
 					{__('Loading Scores...', $userLanguage)}
