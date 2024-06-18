@@ -28,16 +28,16 @@
 			<tr>
 				<th class="!pb-0"></th>
 				<th class="!pb-0"></th>
-				<th class="text-center text-xs text-surface-300 !font-semibold !pb-0">{__("Accuracy", $userLanguage)}</th>
+				<th class="text-center uppercase text-2xs text-surface-300 font-bold !pb-0">{__("Accuracy", $userLanguage)}</th>
 				<th
-					class="text-center text-xs {currentSort == 'plays'
+					class="text-center uppercase text-2xs {currentSort == 'plays'
 						? 'text-surface-50'
-						: 'text-surface-300'} !font-semibold !pb-0">{__("Play Count", $userLanguage)}</th
+						: 'text-surface-300'} font-bold !pb-0">{__("Play Count", $userLanguage)}</th
 				>
 				<th
-					class="text-center text-xs {currentSort != 'plays'
+					class="text-center text-2xs {currentSort != 'plays'
 						? 'text-surface-50'
-						: 'text-surface-300'} !font-semibold !pb-0"
+						: 'text-surface-300'} !font-bold uppercase !pb-0"
 				>
 					{#if currentSort == 'tscore'}
 						{__("Total Score", $userLanguage)}
@@ -45,9 +45,9 @@
 						{__("PP", $userLanguage)}
 					{/if}
 				</th>
-				<th class="text-center text-xs text-surface-300 !font-semibold !pb-0">SS</th>
-				<th class="text-center text-xs text-surface-300 !font-semibold !pb-0">S</th>
-				<th class="text-center text-xs text-surface-300 !font-semibold !pb-0">A</th>
+				<th class="text-center text-2xs font-bold text-surface-300 !pb-0">SS</th>
+				<th class="text-center text-2xs font-bold text-surface-300 !pb-0">S</th>
+				<th class="text-center text-2xs font-bold text-surface-300 !pb-0">A</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -80,7 +80,7 @@
 					>
 					{#key user}
 						<td
-							class="!text-xs text-center w-[10%] {currentSort == 'plays'
+							class="!text-xs text-center w-[8%] {currentSort == 'plays'
 								? 'text-surface-50'
 								: 'text-surface-300'} whitespace-nowrap content-center"
 							>{numberHumanReadable(user.plays)}</td
