@@ -28,11 +28,13 @@
 			<tr>
 				<th class="!pb-0"></th>
 				<th class="!pb-0"></th>
-				<th class="text-center uppercase text-2xs text-surface-300 font-bold !pb-0">{__("Accuracy", $userLanguage)}</th>
+				<th class="text-center uppercase text-2xs text-surface-300 font-bold !pb-0"
+					>{__('Accuracy', $userLanguage)}</th
+				>
 				<th
 					class="text-center uppercase text-2xs {currentSort == 'plays'
 						? 'text-surface-50'
-						: 'text-surface-300'} font-bold !pb-0">{__("Play Count", $userLanguage)}</th
+						: 'text-surface-300'} font-bold !pb-0">{__('Play Count', $userLanguage)}</th
 				>
 				<th
 					class="text-center text-2xs {currentSort != 'plays'
@@ -40,9 +42,9 @@
 						: 'text-surface-300'} !font-bold uppercase !pb-0"
 				>
 					{#if currentSort == 'tscore'}
-						{__("Total Score", $userLanguage)}
+						{__('Total Score', $userLanguage)}
 					{:else}
-						{__("PP", $userLanguage)}
+						{__('PP', $userLanguage)}
 					{/if}
 				</th>
 				<th class="text-center text-2xs font-bold text-surface-300 !pb-0">SS</th>
@@ -70,12 +72,15 @@
 								{user.clan_tag}
 							</a>
 						{/if}
-						<a
-							href="/u/{user.player_id}?mode=${currentMode}&type=${currentType}"
-							class="text-xs text-primary-400 font-semibold">{user.name}</a
-						>
+						{#key user}
+							<a
+								href="/u/{user.player_id}?mode=${currentMode}&type=${currentType}"
+								class="text-xs text-primary-400 font-semibold">{user.name}</a
+							>
+						{/key}
 					</td>
-					<td class="!text-xs font-semibold text-center w-[10%] text-surface-300 whitespace-nowrap content-center"
+					<td
+						class="!text-xs font-semibold text-center w-[10%] text-surface-300 whitespace-nowrap content-center"
 						>{removeTrailingZeroes(user.acc)}%</td
 					>
 					{#key user}
@@ -97,10 +102,12 @@
 							{/if}
 						</td>
 					{/key}
-					<td class="!text-xs font-semibold text-center w-[5%] text-surface-300 whitespace-nowrap content-center"
+					<td
+						class="!text-xs font-semibold text-center w-[5%] text-surface-300 whitespace-nowrap content-center"
 						>{numberHumanReadable(user.x_count + user.xh_count)}</td
 					>
-					<td class="!text-xs font-semibold text-center w-[5%] text-surface-300 whitespace-nowrap content-center"
+					<td
+						class="!text-xs font-semibold text-center w-[5%] text-surface-300 whitespace-nowrap content-center"
 						>{numberHumanReadable(user.s_count + user.sh_count)}</td
 					>
 					<td
