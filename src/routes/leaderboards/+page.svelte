@@ -173,7 +173,7 @@
 				<button
 					class="w-[50%] md:w-[100%] !scale-100 btn {currentSort == 'plays'
 						? 'bg-surface-500'
-						: 'bg-surface-600'} rounded-lg rounded-r-none md:rounded-none"
+						: 'bg-surface-600'} rounded-lg md:rounded-l-none"
 					on:click={() => setSort('plays')}
 					disabled={loading || failed}
 				>
