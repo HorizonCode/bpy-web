@@ -1,4 +1,4 @@
-import { env } from "$env/dynamic/public";
+import { env } from '$env/dynamic/public';
 
 export const appName = env.PUBLIC_APP_NAME;
 export const appUrl = env.PUBLIC_APP_URL;

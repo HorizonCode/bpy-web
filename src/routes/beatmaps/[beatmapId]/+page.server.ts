@@ -1,9 +1,9 @@
-import { getBeatmap } from "$lib/api";
+import { getBeatmap } from '$lib/api';
 
 export async function load({ params }) {
-  const beatmapId = params.beatmapId;
-  if (!(/^\d.+$/.test(beatmapId))) return {};
-  return {
-    map: (await getBeatmap(parseInt(beatmapId)))?.map,
-  };
+	const beatmapId = params.beatmapId;
+	if (!/^\d.+$/.test(beatmapId)) return {};
+	return {
+		map: (await getBeatmap(parseInt(beatmapId)))?.map
+	};
 }

@@ -1,26 +1,28 @@
-import { apiUrl } from "$lib/env";
-import { sanitizeHtml } from "$lib/html";
-import type { User } from "$lib/types";
-import { parse } from "marked";
+import { getClan, getPlayer } from '$lib/api.js';
+import { sanitizeHtml } from '$lib/html';
+import { isNumber } from '$lib/stringUtil.js';
+import { parse } from 'marked';
 
 export async function load({ params }) {
-  const requestedUserId = params.userId;
+	const requestedUserId = params.userId;
 
-  const requestedUserData = await fetch(
-    `${apiUrl}/v1/get_player_info?id=${requestedUserId}&scope=all`,
-  );
-  if (!requestedUserData.ok) return {};
-  const requestedUserDataJson = await requestedUserData.json() as User;
-  const userpageData = requestedUserDataJson.player?.info.userpage_content ??
-    "";
-  const sanitizedUserPage = sanitizeHtml(userpageData);
-  const parsedUserPage = await parse(sanitizedUserPage, {
-    async: true,
-    gfm: true,
-  });
+	if (!isNumber(requestedUserId)) {
+		return;
+	}
 
-  return {
-    user: requestedUserDataJson.player,
-    userpage: parsedUserPage,
-  };
+	const user = await getPlayer(parseInt(requestedUserId), 'all');
+	const userpageData = user?.player?.info.userpage_content ?? '';
+	const sanitizedUserPage = sanitizeHtml(userpageData);
+	const parsedUserPage = await parse(sanitizedUserPage, {
+		async: true,
+		gfm: true
+	});
+
+	const clan = user?.player?.info.clan_id ? await getClan(user.player.info.clan_id) : undefined;
+
+	return {
+		user: user?.player,
+		clan: clan,
+		userpage: parsedUserPage
+	};
 }

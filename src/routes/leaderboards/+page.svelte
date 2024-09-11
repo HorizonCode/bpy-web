@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { LBUser } from '$lib/types';
 	import { onMount } from 'svelte';
-  import ChevronLeft from 'svelte-feathers/ChevronLeft.svelte';
+	import ChevronLeft from 'svelte-feathers/ChevronLeft.svelte';
 	import ChevronRight from 'svelte-feathers/ChevronRight.svelte';
 	import { apiUrl, appName } from '$lib/env';
 	import { queryParam } from 'sveltekit-search-params';
@@ -286,7 +286,7 @@
 					{usersPerPage}
 					{currentMode}
 					{currentType}
-          {currentSort}
+					{currentSort}
 				/>
 			{/if}
 

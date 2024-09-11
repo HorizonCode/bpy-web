@@ -8,7 +8,7 @@
 	export let event: 'hover' | 'click' | 'focus-blur' | 'focus-click' = 'hover';
 	export let placement: Placement = 'top';
 
-  $: cssProps = $$props.class;
+	$: cssProps = $$props.class;
 	$: classList = twMerge(cssProps, [`w-fit inline-block`]);
 
 	const popupSettings: PopupSettings = {
@@ -18,7 +18,7 @@
 	};
 </script>
 
-<div class="{classList}" use:popup={popupSettings}>
+<div class={classList} use:popup={popupSettings}>
 	<slot />
 </div>
 

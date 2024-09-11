@@ -91,7 +91,7 @@
 							<td class="!text-xs content-center"
 								><a
 									class="text-primary-400 font-semibold"
-									href="/u/{score.userid}?mode=${currentMode}&type=${currentType}"
+									href="/u/{score.userid}?mode={currentMode}&type={currentType}"
 									>{score.player_name}</a
 								></td
 							>

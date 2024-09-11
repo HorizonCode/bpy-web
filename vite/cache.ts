@@ -1,19 +1,19 @@
-import fs from "fs";
-import path from "path";
+import fs from 'fs';
+import path from 'path';
 
-const dirPath = path.join(process.cwd(), "node_modules", ".progress");
-const filePath = path.join(dirPath, "index.json");
+const dirPath = path.join(process.cwd(), 'node_modules', '.progress');
+const filePath = path.join(dirPath, 'index.json');
 
 export interface ICacheData {
-  /**
-   * Transform all count
-   */
-  cacheTransformCount: number;
+	/**
+	 * Transform all count
+	 */
+	cacheTransformCount: number;
 
-  /**
-   * chunk all count
-   */
-  cacheChunkCount: number;
+	/**
+	 * chunk all count
+	 */
+	cacheChunkCount: number;
 }
 
 /**
@@ -29,14 +29,14 @@ export const isDirExists = fs.existsSync(dirPath) || false;
  * @returns ICacheData
  */
 export const getCacheData = (): ICacheData => {
-  if (!isFileExists) {
-    return {
-      cacheTransformCount: 0,
-      cacheChunkCount: 0,
-    };
-  }
+	if (!isFileExists) {
+		return {
+			cacheTransformCount: 0,
+			cacheChunkCount: 0
+		};
+	}
 
-  return JSON.parse(fs.readFileSync(filePath, "utf8"));
+	return JSON.parse(fs.readFileSync(filePath, 'utf8'));
 };
 
 /**
@@ -44,6 +44,6 @@ export const getCacheData = (): ICacheData => {
  * @returns
  */
 export const setCacheData = (data: ICacheData) => {
-  !isDirExists && fs.mkdirSync(dirPath);
-  fs.writeFileSync(filePath, JSON.stringify(data));
+	!isDirExists && fs.mkdirSync(dirPath);
+	fs.writeFileSync(filePath, JSON.stringify(data));
 };

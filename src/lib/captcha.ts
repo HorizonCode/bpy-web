@@ -1,30 +1,27 @@
 interface TokenValidateResponse {
-  'error-codes': string[];
-  success: boolean;
-  action: string;
-  cdata: string;
+	'error-codes': string[];
+	success: boolean;
+	action: string;
+	cdata: string;
 }
 
-export async function validateTurnstileToken(opts: { token: string, secret: string, ip: string }) {
-  const response = await fetch(
-    'https://challenges.cloudflare.com/turnstile/v0/siteverify',
-    {
-      method: 'POST',
-      headers: {
-        'content-type': 'application/json',
-      },
-      body: JSON.stringify({
-        response: opts.token,
-        secret: opts.secret,
-        remoteip: opts.ip,
-      }),
-    },
-  );
+export async function validateTurnstileToken(opts: { token: string; secret: string; ip: string }) {
+	const response = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
+		method: 'POST',
+		headers: {
+			'content-type': 'application/json'
+		},
+		body: JSON.stringify({
+			response: opts.token,
+			secret: opts.secret,
+			remoteip: opts.ip
+		})
+	});
 
-  const data: TokenValidateResponse = await response.json();
+	const data: TokenValidateResponse = await response.json();
 
-  return {
-    success: data.success,
-    error: data['error-codes']?.length ? data['error-codes'][0] : null,
-  };
+	return {
+		success: data.success,
+		error: data['error-codes']?.length ? data['error-codes'][0] : null
+	};
 }
