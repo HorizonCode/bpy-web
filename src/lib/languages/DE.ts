@@ -11,7 +11,7 @@ const language: Language = {
     "Accuracy": "Genauigkeit",
     "Play Count": "Gespielt",
     "Pass Count": "Geschafft",
-    "Total Score": "Gesammtpunktzahl",
+    "Total Score": "Gesamtpunktzahl",
     "Score": "Punktzahl",
     "Joined": "Beigetreten",
     "Latest Activity": "Letzte Aktivität",

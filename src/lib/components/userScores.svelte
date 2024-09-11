@@ -13,8 +13,8 @@
 	import { apiUrl } from '$lib/env';
 	import { __ } from '$lib/language';
 	import { userLanguage } from '$lib/storage';
-	import TimeAgo from './TimeAgo.svelte';
 	import { scale } from 'svelte/transition';
+	import Time, { dayjs } from 'svelte-time';
 
 	export let title: string;
 	export let userId: number;
@@ -75,7 +75,7 @@
 	>
 		{__(title, $userLanguage)}
 	</p>
-	<div class="flex flex-col gap-1">
+	<div class="flex flex-col gap-1 justify-center">
 		<div class="flex flex-col gap-1 transition-all{loading ? ' blur-sm' : ' blur-none'}">
 			{#if scores}
 				{#each scores.scores as score, idx}
@@ -93,24 +93,24 @@
 								style="background-image: url('https://assets.ppy.sh/beatmaps/{score.beatmap
 									.set_id}/covers/cover@2x.jpg');"
 							></div>
-							<div class="flex flex-row gap-2 items-center justify-start z-10 truncate">
+							<div class="flex flex-row gap-2 items-center justify-center z-10">
 								<div
 									class="w-10 md:w-8 text-center !text-4xl md:!text-2xl font-bold grade grade-{score.grade.toLowerCase()}"
 								>
 									{score.grade.replaceAll('XH', 'SS').replaceAll('X', 'SS').replaceAll('SH', 'S')}
 								</div>
-								<div class="flex flex-col w-32 md:w-52 lg:w-full">
+								<div class="flex flex-col w-full truncate">
 									<div class="flex flex-col lg:flex-row lg:items-center lg:gap-1 mb-1">
 										<div class="text-sm font-bold truncate">{score.beatmap.title}</div>
 										<div class="text-xs font-semibold truncate">by {score.beatmap.artist}</div>
 									</div>
-									<div class="flex flex-col lg:flex-row lg:gap-4">
+									<div class="flex flex-col lg:flex-row lg:gap-3">
 										<span class="text-xs font-semibold text-yellow-600"
 											>{score.beatmap.version}</span
 										>
 										<Popup placement="right">
-											<div class="text-xs font-semibold text-surface-400">
-												<TimeAgo language={$userLanguage} date={new Date(score.play_time)} />
+											<div class="text-xs font-semibold text-surface-300">
+												<Time timestamp={dayjs(score.play_time).locale($userLanguage)} relative />
 											</div>
 											<svelte:fragment slot="popup">
 												<div
@@ -164,7 +164,7 @@
 							</div>
 						</div>
 
-						<Popup event="click" placement="top">
+						<Popup event="click" placement="top" class="!hidden !md:inline-block">
 							<button
 								class="hidden md:flex btn variant-soft-surface cursor-pointer rounded-lg p-2 px-3 justify-center items-center"
 								disabled={score.status <= 0}

@@ -23,9 +23,7 @@
 	import { __ } from '$lib/language';
 	import { userLanguage } from '$lib/storage';
 
-	/*TODO: fix this page, its still very buggy
-	 * - Scores not sorting properly at some times
-	 * - when Mods are in a popup, they are multiply after each mode/type change
+	/*TODO: maybe rework this at another time
 	 */
 	export let data;
 
@@ -215,7 +213,7 @@
 						</div>
 					</div>
 				</div>
-				<div
+				<!-- <div
 					class="relative h-28 md:h-64 bg-center bg-cover bg-no-repeat"
 					style="background-image: url('https://assets.ppy.sh/beatmaps/{data.map
 						.set_id}/covers/cover@2x.jpg');"
@@ -223,12 +221,86 @@
 					<div
 						class="absolute w-full h-full bg-black/70 flex flex-col justify-center items-center md:gap-1 overflow-hidden"
 					>
-						<p class="text-white text-xl md:text-2xl truncate text-ellipsis">
+						<p class="text-white text-xl md:text-2xl truncate">
 							{data.map.title}
 						</p>
 						<p class="text-white md:text-lg truncate text-ellipsis">{data.map.artist}</p>
             <p class="chip variant-filled-primary py-1 mb-1 cursor-default">{data.map.version}</p>
 						<div class="flex flex-row gap-5 items-center bg-black/80 rounded-full p-2 py-1 text-sm">
+							<Popup placement="top">
+								<div class="flex flex-row gap-1 items-center">
+									<Star class="pointer-events-none" size={14} />
+									{data.map.diff.toFixed(2)}
+								</div>
+								<svelte:fragment slot="popup">
+									<div class="card p-2 px-4 rounded-lg variant-filled-surface text-sm">
+										{__('Difficulty Rating', $userLanguage)}
+										<div
+											class="arrow border-r border-b border-gray-700 variant-filled-surface"
+										></div>
+									</div>
+								</svelte:fragment>
+							</Popup>
+							<Popup placement="top">
+								<div class="flex flex-row gap-1 items-center">
+									<Clock class="pointer-events-none" size={14} />
+									{getFormattedTimeFromSeconds(data.map.total_length)}
+								</div>
+								<svelte:fragment slot="popup">
+									<div class="card p-2 px-4 rounded-lg variant-filled-surface text-sm">
+										{__('Length', $userLanguage)}
+										<div
+											class="arrow border-r border-b border-gray-700 variant-filled-surface"
+										></div>
+									</div>
+								</svelte:fragment>
+							</Popup>
+							<Popup placement="top">
+								<div class="flex flex-row gap-1 items-center">
+									<PlayCircle class="pointer-events-none" size={14} />
+									{data.map.plays.toFixed(0)}
+								</div>
+								<svelte:fragment slot="popup">
+									<div class="card p-2 px-4 rounded-lg variant-filled-surface text-sm">
+										{__('Play Count', $userLanguage)}
+										<div
+											class="arrow border-r border-b border-gray-700 variant-filled-surface"
+										></div>
+									</div>
+								</svelte:fragment>
+							</Popup>
+							<Popup placement="top">
+								<div class="flex flex-row gap-1 items-center">
+									<CheckCircle class="pointer-events-none" size={14} />
+									{data.map.passes.toFixed(0)}
+								</div>
+								<svelte:fragment slot="popup">
+									<div class="card p-2 px-4 rounded-lg variant-filled-surface text-sm">
+										{__('Pass Count', $userLanguage)}
+										<div
+											class="arrow border-r border-b border-gray-700 variant-filled-surface"
+										></div>
+									</div>
+								</svelte:fragment>
+							</Popup>
+						</div>
+					</div>
+				</div> -->
+				<div class="relative h-60 w-full">
+					<div
+						class="absolute top-0 left-0 h-full w-full bg-no-repeat bg-cover bg-center opacity-30"
+						style="background-image: url('https://assets.ppy.sh/beatmaps/{data.map
+							.set_id}/covers/cover@2x.jpg');"
+					></div>
+					<div
+						class="flex flex-col items-center justify-center gap-0 absolute top-0 left-0 h-full w-full z-10 truncate"
+					>
+						<p class="text-xl md:text-2xl truncate">{data.map.title}</p>
+						<p class="text-lg md:text-xl truncate">{data.map.artist}</p>
+						<div class="bg-primary-500 text-sm rounded py-0.5 px-2 mt-3">{data.map.version}</div>
+						<div
+							class="flex flex-row gap-5 items-center bg-black/80 rounded-full p-2 py-1 text-sm mt-3"
+						>
 							<Popup placement="top">
 								<div class="flex flex-row gap-1 items-center">
 									<Star class="pointer-events-none" size={14} />
@@ -318,7 +390,7 @@
 					<div class="ms-auto flex flex-row items-center gap-3 z-10">
 						<a
 							class="btn variant-soft-primary text-sm"
-							href="https://osu.direct/d/{data.map.set_id}"
+							href="https://osu.direct/api/d/{data.map.set_id}"
 						>
 							<Download class="pointer-events-none md:mr-2" size={18} />
 							<span class="hidden md:block">{__('Download', $userLanguage)}</span>

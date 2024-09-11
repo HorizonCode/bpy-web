@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { getTimeAgo, secondsToHours } from '$lib/time';
+	import { secondsToHours } from '$lib/time';
 
 	export let language: string;
 	export let seconds: number;

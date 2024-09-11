@@ -18,10 +18,10 @@
 	import UserScores from '$lib/components/userScores.svelte';
 	import { removeTrailingZeroes } from '$lib/regex';
 	import { __ } from '$lib/language';
-	import TimeAgo from '$lib/components/TimeAgo.svelte';
 	import UserRankBadges from '$lib/components/userRankBadges.svelte';
 	import UserMostPlayed from '$lib/components/userMostPlayed.svelte';
 	import { Privileges, isDonator, privsToGroups } from '$lib/privs';
+	import Time, { dayjs } from 'svelte-time';
 
 	export let data;
 	let clan: Clan | undefined;
@@ -496,9 +496,9 @@
 									class="tooltip"
 									aria-label={new Date(data.user.info.creation_time * 1000).toUTCString()}
 								>
-									<TimeAgo
-										language={$userLanguage}
-										date={new Date(data.user.info.creation_time * 1000)}
+									<Time
+										timestamp={dayjs(data.user.info.creation_time * 1000).locale($userLanguage)}
+										relative
 									/>
 								</dd>
 							</dl>
@@ -508,9 +508,9 @@
 									class="tooltip"
 									aria-label={new Date(data.user.info.latest_activity * 1000).toUTCString()}
 								>
-									<TimeAgo
-										language={$userLanguage}
-										date={new Date(data.user.info.latest_activity * 1000)}
+									<Time
+										timestamp={dayjs(data.user.info.latest_activity * 1000).locale($userLanguage)}
+										relative
 									/>
 								</dd>
 							</dl>

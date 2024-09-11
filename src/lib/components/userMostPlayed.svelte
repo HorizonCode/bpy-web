@@ -88,9 +88,9 @@
 									src="https://b.ppy.sh/thumb/{score.set_id}l.jpg?{Date.now() / 1000}"
 									alt="beatmap"
 								/>
-								<div class="flex flex-col">
+								<div class="flex flex-col truncate">
 									<div class="flex flex-col md:flex-row md:items-center md:gap-1 mb-1">
-										<div class="text-sm font-bold">{score.title}</div>
+										<div class="text-sm font-bold truncate">{score.title}</div>
 										<div class="text-xs font-semibold">by {score.artist}</div>
 									</div>
 									<div class="flex flex-row gap-4">

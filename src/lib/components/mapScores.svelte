@@ -23,7 +23,8 @@
 	{#if !loading}
 		<div
 			class="table-container table-extracompact !rounded-none px-5 pb-3"
-			transition:scale={{ duration: 200, start: 0.99 }}
+			in:scale={{ duration: 200, start: 0.99, delay: 200 }}
+			out:scale={{ duration: 200, start: 0.99, delay: 0 }}
 		>
 			<table
 				class="table !rounded-none"
@@ -161,7 +162,8 @@
 {:else}
 	<div
 		class="p-4 m-2 bg-surface-500 text-lg rounded-lg shadow"
-		transition:scale={{ duration: 200, start: 0.99 }}
+		in:scale={{ duration: 200, start: 0.99, delay: 200 }}
+		out:scale={{ duration: 200, start: 0.99, delay: 0 }}
 	>
 		{#key loading}
 			<div class="flex flex-row items-center justify-center gap-2">
