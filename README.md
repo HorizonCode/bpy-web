@@ -44,7 +44,7 @@ To get started with bpy-web, follow these steps:
 3. **Configure .env:** Copy the sample .env file to .env and configure it with the appropriate API endpoints and other settings:
 
    ```
-   cp sample.env .env
+   cp example.env .env
    nano .env
    ```
 
