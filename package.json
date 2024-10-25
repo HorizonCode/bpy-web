@@ -58,6 +58,7 @@
 	"dependencies": {
 		"@floating-ui/dom": "1.6.1",
 		"bcrypt": "^5.1.1",
+		"dayjs": "^1.11.13",
 		"highlight.js": "11.9.0",
 		"knex": "^3.1.0",
 		"marked": "^12.0.1",

@@ -1,7 +1,5 @@
-import { login } from '$lib/user';
+import { register } from '$lib/user';
 import { error, json } from '@sveltejs/kit';
-import { getRedisClient } from '../../hooks.server';
-import { makeid } from '$lib/stringUtil';
 import { env } from '$env/dynamic/private';
 import { env as pubEnv } from '$env/dynamic/public';
 import { validateTurnstileToken } from '$lib/captcha';
@@ -16,6 +14,17 @@ export const POST = async ({ cookies, request, getClientAddress }) => {
 		return error(400, 'Invalid content type');
 	}
 
+	if (cookies.get('sessionToken')) {
+		return json(
+			{
+				message: 'Already logged in'
+			},
+			{
+				status: 400
+			}
+		);
+	}
+
 	if (!env.ALLOW_REGISTRATIONS)
 		return json(
 			{
@@ -27,9 +36,8 @@ export const POST = async ({ cookies, request, getClientAddress }) => {
 		);
 
 	const clientIP = getClientIP(request, getClientAddress());
-	const bodyData: { username: string; password: string; captchaToken: string } = JSON.parse(
-		Buffer.from(await request.arrayBuffer()).toString('utf-8')
-	);
+	const bodyData: { username: string; password: string; email: string; captchaToken: string } =
+		JSON.parse(Buffer.from(await request.arrayBuffer()).toString('utf-8'));
 
 	if (turnstileEnabled) {
 		const captchaCheck = await validateTurnstileToken({
@@ -49,48 +57,25 @@ export const POST = async ({ cookies, request, getClientAddress }) => {
 			);
 	}
 
-	const user = await login({
+	const registerAction = await register({
 		username: bodyData.username,
-		password: bodyData.password
+		password: bodyData.password,
+		email: bodyData.email,
+		ip: clientIP
 	});
-	if (!user)
+
+	if (!registerAction.succeeded) {
 		return json(
 			{
-				message: 'Invalid login credentials'
+				message: registerAction.message
 			},
 			{
 				status: 400
 			}
 		);
-
-	const redisClient = await getRedisClient();
-	const sessionToken = makeid(128);
-
-	const result = await redisClient.set(`user:session:${sessionToken}`, user.id, {
-		EX: 86400
-	});
-
-	if (result !== 'OK')
-		return json(
-			{
-				message: 'Failed to create session'
-			},
-			{
-				status: 500
-			}
-		);
-
-	cookies.set('sessionToken', sessionToken, {
-		path: '/',
-		priority: 'high',
-		maxAge: Number.MAX_SAFE_INTEGER
-	});
+	}
 
 	return json({
-		message: 'Login successful',
-		user: {
-			id: user.id,
-			username: user.name
-		}
+		message: 'Register successful'
 	});
 };

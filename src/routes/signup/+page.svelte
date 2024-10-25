@@ -15,14 +15,17 @@
 	import Key from 'svelte-feathers/Key.svelte';
 	import { Turnstile } from 'svelte-turnstile';
 	import { fly, scale } from 'svelte/transition';
+	import { emailRegex, passwordRegex, usernameRegex } from '$lib/regex';
 
 	const turnstileSiteKey = env.PUBLIC_TURNSTILE_SITE_KEY;
 
 	const toastStore = getToastStore();
 
-	const loginData = {
+	const registerData = {
 		username: '',
+		email: '',
 		password: '',
+		passwordConfirm: '',
 		captchaToken: ''
 	};
 	let errored = false;
@@ -32,13 +35,27 @@
 	let loading = false;
 
 	const handleCaptcha = (event: CustomEvent<{ token: string }>) => {
-		loginData.captchaToken = event.detail.token;
+		registerData.captchaToken = event.detail.token;
 	};
 
 	const performLogin = async () => {
-		if (turnstileSiteKey && loginData.captchaToken.length <= 0) {
+		if (turnstileSiteKey && registerData.captchaToken.length <= 0) {
 			toastStore.trigger({
 				message: __('Please complete the captcha!', $userLanguage),
+				classes: '!bg-red-700 !text-surface-100 !border-red-600 !border'
+			});
+			return;
+		}
+		if (registerData.password !== registerData.passwordConfirm) {
+			toastStore.trigger({
+				message: __('Passwords do not match!', $userLanguage),
+				classes: '!bg-red-700 !text-surface-100 !border-red-600 !border'
+			});
+			return;
+		}
+		if (!passwordRegex.test(registerData.password)) {
+			toastStore.trigger({
+				message: __('Your password is not strong enough!', $userLanguage),
 				classes: '!bg-red-700 !text-surface-100 !border-red-600 !border'
 			});
 			return;
@@ -46,7 +63,7 @@
 		loading = true;
 		const loginRequest = await fetch(window.location.href, {
 			method: 'POST',
-			body: JSON.stringify(loginData),
+			body: JSON.stringify(registerData),
 			headers: {
 				'Content-Type': 'application/json'
 			}
@@ -56,7 +73,7 @@
 			userData.set(loginResponse.user);
 			const t: ToastSettings = {
 				message: __('Welcome back, {{val}}!', $userLanguage, {
-					val: $userData?.username ?? loginData.username
+					val: $userData?.username ?? registerData.username
 				}),
 				classes: '!bg-surface-800 !text-surface-200 !border-surface-700 !border'
 			};
@@ -88,7 +105,7 @@
 		>
 			<ChevronLeft class="pointer-events-none" />
 		</a>
-		<div class="p-10">
+		<div class="p-10 h-full">
 			{#if !passwordMask}
 				<div
 					class="w-full h-full flex flex-col justify-center items-center"
@@ -100,18 +117,23 @@
 						<User size={45} class="!outline-none !border-none" />
 					</div>
 					<div class="text-center">
-						<p class="text-2xl font-normal">{__('Sign In', $userLanguage)}</p>
-						<p class="mb-20">{__('Use your {{val}} Account', $userLanguage, { val: appName })}</p>
+						<p class="text-2xl font-normal">{__('Sign Up', $userLanguage)}</p>
+						<p class="mb-10">{__('Create a {{val}} Account', $userLanguage, { val: appName })}</p>
 					</div>
 					<input
 						id="username"
 						type="text"
-						placeholder={__('Email or Username', $userLanguage)}
+						placeholder={__('Username', $userLanguage)}
 						on:input={() => (errored = false)}
 						on:keypress={(e) => {
 							if (e.key === 'Enter') {
-								if (loginData.username.length <= 3) {
+								if (!usernameRegex.test(registerData.username)) {
 									errored = true;
+									const t = {
+										message: __('Enter a valid username', $userLanguage),
+										classes: '!bg-red-700 !text-surface-100 !border-red-600 !border'
+									};
+									toastStore.trigger(t);
 									return;
 								}
 								passwordMask = true;
@@ -120,21 +142,56 @@
 						class="border border-surface-700 bg-surface-900 rounded-lg !ring-pink-700 focus:!border-pink-700 p-4 text-[17px] mb-2 w-full transition-colors {errored
 							? 'input-error'
 							: ''}"
-						bind:value={loginData.username}
+						bind:value={registerData.username}
 					/>
-					<a href="/login" class="text-pink-700 me-auto mb-7"
-						>{__('Forgot email?', $userLanguage)}</a
-					>
-					<div class="w-full flex flex-row justify-between mt-auto">
+					<input
+						id="email"
+						type="text"
+						placeholder={__('Email', $userLanguage)}
+						on:input={() => (errored = false)}
+						on:keypress={(e) => {
+							if (e.key === 'Enter') {
+								if (!emailRegex.test(registerData.email)) {
+									errored = true;
+									const t = {
+										message: __('Enter a valid email', $userLanguage),
+										classes: '!bg-red-700 !text-surface-100 !border-red-600 !border'
+									};
+									toastStore.trigger(t);
+									return;
+								}
+								passwordMask = true;
+							}
+						}}
+						class="border border-surface-700 bg-surface-900 rounded-lg !ring-pink-700 focus:!border-pink-700 p-4 text-[17px] mb-2 w-full transition-colors {errored
+							? 'input-error'
+							: ''}"
+						bind:value={registerData.email}
+					/>
+					<div class="w-full flex flex-row justify-between mt-auto mb-16">
 						<button
 							class="btn variant-ghost-tertiary !bg-transparent hover:!bg-surface-100/5 ring-0"
-							on:click={() => goto('/register')}>{__('Create account', $userLanguage)}</button
+							on:click={() => goto('/signin')}>{__('Login', $userLanguage)}</button
 						>
 						<button
 							class="btn bg-pink-700"
 							on:click={() => {
-								if (loginData.username.length <= 3) {
+								if (!usernameRegex.test(registerData.username)) {
 									errored = true;
+									const t = {
+										message: __('Enter a valid username', $userLanguage),
+										classes: '!bg-red-700 !text-surface-100 !border-red-600 !border'
+									};
+									toastStore.trigger(t);
+									return;
+								}
+								if (!emailRegex.test(registerData.email)) {
+									errored = true;
+									const t = {
+										message: __('Enter a valid email', $userLanguage),
+										classes: '!bg-red-700 !text-surface-100 !border-red-600 !border'
+									};
+									toastStore.trigger(t);
 									return;
 								}
 								passwordMask = true;
@@ -157,14 +214,22 @@
 						class="flex flex-row justify-center items-center gap-2 mt-2 mb-8 rounded-full !border-[1px] p-1 px-2 border-surface-700"
 					>
 						<User class="border border-white rounded-full" size={12} />
-						{loginData.username}
+						{registerData.username}
 					</p>
 					<input
 						id="password"
 						type="password"
-						placeholder={__('Password', $userLanguage)}
+						placeholder={__('password', $userLanguage)}
 						class="border border-surface-700 !ring-pink-700 focus:!border-pink-700 bg-surface-900 rounded-lg p-4 text-[17px] w-full mb-2"
-						bind:value={loginData.password}
+						bind:value={registerData.password}
+						disabled={loading}
+					/>
+					<input
+						id="password"
+						type="password"
+						placeholder={__('repeat password', $userLanguage)}
+						class="border border-surface-700 !ring-pink-700 focus:!border-pink-700 bg-surface-900 rounded-lg p-4 text-[17px] w-full mb-2"
+						bind:value={registerData.passwordConfirm}
 						disabled={loading}
 						on:keypress={(e) => {
 							if (e.key === 'Enter') {
@@ -183,10 +248,7 @@
 							bind:reset={resetCaptcha}
 						/>
 					{/if}
-					<a href="/login" class="text-pink-700 me-auto mb-7"
-						>{__('Forgot password?', $userLanguage)}</a
-					>
-					<div class="w-full flex flex-row justify-between mt-auto">
+					<div class="w-full flex flex-row justify-between mt-10">
 						<button
 							class="btn variant-ghost-tertiary !bg-transparent hover:!bg-surface-100/5 ring-0"
 							disabled={loading}
@@ -198,7 +260,7 @@
 							{#if loading}
 								<ProgressRadial class="h-5 w-5" />
 							{:else}
-								{__('Login', $userLanguage)}
+								{__('Register', $userLanguage)}
 							{/if}
 						</button>
 					</div>
