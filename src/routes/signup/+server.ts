@@ -16,6 +16,16 @@ export const POST = async ({ cookies, request, getClientAddress }) => {
 		return error(400, 'Invalid content type');
 	}
 
+	if (!env.ALLOW_REGISTRATIONS)
+		return json(
+			{
+				message: 'Registrations are currently disabled.'
+			},
+			{
+				status: 400
+			}
+		);
+
 	const clientIP = getClientIP(request, getClientAddress());
 	const bodyData: { username: string; password: string; captchaToken: string } = JSON.parse(
 		Buffer.from(await request.arrayBuffer()).toString('utf-8')
@@ -28,14 +38,30 @@ export const POST = async ({ cookies, request, getClientAddress }) => {
 			ip: clientIP
 		});
 
-		if (!captchaCheck.success) return error(400, 'Catcha validation failed');
+		if (!captchaCheck.success)
+			return json(
+				{
+					message: 'Captcha validation failed.'
+				},
+				{
+					status: 400
+				}
+			);
 	}
 
 	const user = await login({
 		username: bodyData.username,
 		password: bodyData.password
 	});
-	if (!user) return error(400, 'Invalid login credentials');
+	if (!user)
+		return json(
+			{
+				message: 'Invalid login credentials'
+			},
+			{
+				status: 400
+			}
+		);
 
 	const redisClient = await getRedisClient();
 	const sessionToken = makeid(128);
@@ -44,7 +70,15 @@ export const POST = async ({ cookies, request, getClientAddress }) => {
 		EX: 86400
 	});
 
-	if (result !== 'OK') return error(500, 'Failed to create session');
+	if (result !== 'OK')
+		return json(
+			{
+				message: 'Failed to create session'
+			},
+			{
+				status: 500
+			}
+		);
 
 	cookies.set('sessionToken', sessionToken, {
 		path: '/',
