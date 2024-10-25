@@ -88,7 +88,7 @@
 		>
 			<ChevronLeft class="pointer-events-none" />
 		</a>
-		<div class="p-10">
+		<div class="p-10 h-full">
 			{#if !passwordMask}
 				<div
 					class="w-full h-full flex flex-col justify-center items-center"
@@ -125,10 +125,10 @@
 					<a href="/login" class="text-pink-700 me-auto mb-7"
 						>{__('Forgot email?', $userLanguage)}</a
 					>
-					<div class="w-full flex flex-row justify-between mt-auto">
+					<div class="w-full flex flex-row justify-between mt-auto mb-14">
 						<button
 							class="btn variant-ghost-tertiary !bg-transparent hover:!bg-surface-100/5 ring-0"
-							on:click={() => goto('/register')}>{__('Create account', $userLanguage)}</button
+							on:click={() => goto('/signup')}>{__('Create account', $userLanguage)}</button
 						>
 						<button
 							class="btn bg-pink-700"
@@ -186,7 +186,7 @@
 					<a href="/login" class="text-pink-700 me-auto mb-7"
 						>{__('Forgot password?', $userLanguage)}</a
 					>
-					<div class="w-full flex flex-row justify-between mt-auto">
+					<div class="w-full flex flex-row justify-between mt-auto mb-14">
 						<button
 							class="btn variant-ghost-tertiary !bg-transparent hover:!bg-surface-100/5 ring-0"
 							disabled={loading}

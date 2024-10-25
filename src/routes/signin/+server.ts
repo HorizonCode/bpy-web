@@ -6,6 +6,7 @@ import { env } from '$env/dynamic/private';
 import { env as pubEnv } from '$env/dynamic/public';
 import { validateTurnstileToken } from '$lib/captcha';
 import { getClientIP } from '$lib/request';
+import dayjs from 'dayjs';
 
 const turnstileEnabled =
 	pubEnv.PUBLIC_TURNSTILE_SITE_KEY && pubEnv.PUBLIC_TURNSTILE_SITE_KEY.length > 0;
@@ -39,9 +40,10 @@ export const POST = async ({ cookies, request, getClientAddress }) => {
 
 	const redisClient = await getRedisClient();
 	const sessionToken = makeid(128);
+	const sessionExpiry = dayjs().add(30, 'day');
 
 	const result = await redisClient.set(`user:session:${sessionToken}`, user.id, {
-		EX: 86400
+		EXAT: sessionExpiry.toDate().getTime()
 	});
 
 	if (result !== 'OK') return error(500, 'Failed to create session');
@@ -49,7 +51,7 @@ export const POST = async ({ cookies, request, getClientAddress }) => {
 	cookies.set('sessionToken', sessionToken, {
 		path: '/',
 		priority: 'high',
-		maxAge: Number.MAX_SAFE_INTEGER
+		maxAge: sessionExpiry.toDate().getTime()
 	});
 
 	return json({
