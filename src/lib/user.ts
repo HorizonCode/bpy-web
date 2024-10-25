@@ -62,7 +62,7 @@ export const register = async (opts: {
 			message: 'a user with this name already exists'
 		};
 
-	const hashedPassword = createPassword(password);
+	const hashedPassword = await createPassword(password);
 	const safeName = username.toLowerCase().replaceAll(' ', '_');
 	let countryCode = '';
 	try {

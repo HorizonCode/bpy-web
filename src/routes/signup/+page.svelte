@@ -72,7 +72,7 @@
 		if (loginRequest.ok) {
 			userData.set(loginResponse.user);
 			const t: ToastSettings = {
-				message: __('Welcome back, {{val}}!', $userLanguage, {
+				message: __('Welcome, {{val}}!', $userLanguage, {
 					val: $userData?.username ?? registerData.username
 				}),
 				classes: '!bg-surface-800 !text-surface-200 !border-surface-700 !border'
