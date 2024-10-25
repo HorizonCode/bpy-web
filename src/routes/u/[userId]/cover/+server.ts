@@ -1,6 +1,6 @@
 import path from 'path';
-import { existsSync, mkdirSync, writeFileSync } from 'fs';
-import { readFile } from 'fs/promises';
+import { existsSync, mkdirSync } from 'fs';
+import { readFile, writeFile } from 'fs/promises';
 import { hashCode } from '$lib/intUtil.js';
 
 const defaultCovers: { [key: string]: Buffer } = {};
@@ -26,8 +26,9 @@ export async function GET({ params, setHeaders }) {
 			const response = await fetch(`https://osu.ppy.sh/images/headers/profile-covers/c${i}.jpg`, {
 				method: 'GET'
 			});
-			const arrayBuffer = await response.arrayBuffer();
-			writeFileSync(defaultCoverPath, Buffer.from(arrayBuffer));
+			const arrayBuffer: ArrayBuffer = await response.arrayBuffer();
+			const buffer: Uint8Array = new Uint8Array(Buffer.from(arrayBuffer));
+			await writeFile(defaultCoverPath, buffer);
 			defaultCovers[i] = Buffer.from(arrayBuffer);
 		} else {
 			if (!defaultCovers[i]) {
