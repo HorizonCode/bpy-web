@@ -17,6 +17,13 @@ bpy-web is a frontend web application developed using SvelteKit for the [bancho.
 - [ ] **Beatmap Requests:** Ability for users to request new beatmaps to be ranked/loved/approved.
 - [ ] **Admin Panel:** A secure area for administrators to manage users, beatmaps, and system settings.
 
+## Requirements
+
+- a working bancho.py instance
+- Bun
+- Redis
+- MySQL
+
 ## Getting Started
 
 To get started with bpy-web, follow these steps:
@@ -31,7 +38,7 @@ To get started with bpy-web, follow these steps:
 
    ```
    cd bpy-web
-   npm i
+   bun i
    ```
 
 3. **Configure .env:** Copy the sample .env file to .env and configure it with the appropriate API endpoints and other settings:
@@ -44,7 +51,7 @@ To get started with bpy-web, follow these steps:
 4. **Compile and run:** Compile and start the frontend:
 
    ```
-   npm run compile
+   bun run compile
    ```
 
 5. **Open in Browser:** Once the development server is running, open your web browser and navigate to `http://localhost:3000` to view the application.
