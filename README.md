@@ -58,7 +58,7 @@ To get started with bpy-web, follow these steps:
 
 ## Contributing
 
-We welcome contributions from the community to help improving bpy-web. If you'd like to contribute, please follow these guidelines:
+We welcome contributions from the community to help improve bpy-web. If you'd like to contribute, please follow these guidelines:
 
 - Fork the repository and create your branch from `main`.
 - Make your contributions, ensuring adherence to coding standards and practices.
