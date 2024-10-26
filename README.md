@@ -7,7 +7,7 @@ bpy-web is a frontend web application developed using SvelteKit for the [bancho.
 
 ## Features
 
-- [x] **Multi Language** Allows users to choose their preferred language.
+- [x] **Multi Language:** Allows users to choose their preferred language.
 - [x] **User Pages:** Allows users to view their profiles and statistics.
 - [x] **Login:** Provides a secure authentication system for users to log in to their accounts.
 - [x] **Beatmap Pages:** Enables users to browse and view details of available beatmaps on this bancho.py instance.
