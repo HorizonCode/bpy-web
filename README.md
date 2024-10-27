@@ -34,27 +34,33 @@ To get started with bpy-web, follow these steps:
    git clone https://github.com/HorizonCode/bpy-web.git
    ```
 
-2. **Install Dependencies:** Navigate into the project directory and install the necessary dependencies using bun:
+2. **Install bun:** Before we start with installing the dependencies you might not have bun installed yet. The official installer for bun should help:
+
+   ```
+   curl -fsSL https://bun.sh/install | bash
+   ```
+
+3. **Install Dependencies:** Navigate into the project directory and install the necessary dependencies using bun:
 
    ```
    cd bpy-web
    bun i
    ```
 
-3. **Configure .env:** Copy the sample .env file to .env and configure it with the appropriate API endpoints and other settings:
+4. **Configure .env:** Copy the sample .env file to .env and configure it with the appropriate API endpoints and other settings:
 
    ```
    cp example.env .env
    nano .env
    ```
 
-4. **Compile and run:** Compile and start the frontend:
+5. **Compile and run:** Compile and start the frontend:
 
    ```
    bun run compile
    ```
 
-5. **Open in Browser:** Once the development server is running, open your web browser and navigate to `http://localhost:3000` to view the application.
+6. **Open in Browser:** Once the development server is running, open your web browser and navigate to `http://localhost:3000` to view the application.
 
 ## Contributing
 
