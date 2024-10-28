@@ -383,7 +383,7 @@
 							<Popup placement="top">
 								<img
 									class="min-w-5 w-5 md:w-8"
-									src="/flags/{data.user.info.country.toUpperCase()}.png"
+									src="/flags/{data.user.info.country?.toUpperCase() ?? "XX"}.png"
 									alt="country flag"
 								/>
 								<svelte:fragment slot="popup">

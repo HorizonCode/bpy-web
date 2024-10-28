@@ -159,7 +159,8 @@ export type MapScore = {
 	userid: number;
 	perfect: number;
 	player_name: string;
-	country: string;
+  player_country: string;
+	country?: string; // Deprecated
 	clan_id: number;
 	clan_name: string;
 	clan_tag: string;

@@ -17,6 +17,12 @@
 	export let loading: boolean;
 	export let currentMode: string;
 	export let currentType: string;
+
+	const getPlayerCountryFromScore = (score: MapScore) => {
+		if (score.country) return score.country;
+		if (score.player_country) return score.player_country;
+		return 'xx';
+	};
 </script>
 
 {#if beatmapScores.length > 0}
@@ -86,7 +92,8 @@
 								>{removeTrailingZeroes(score.acc)}%</td
 							>
 							<td class="w-[1%] !px-0 whitespace-nowrap content-center text-end"
-								><Flag country={score.country} size={12} tooltip={true}></Flag></td
+								><Flag country={getPlayerCountryFromScore(score)} size={12} tooltip={true}
+								></Flag></td
 							>
 							<td class="!text-xs content-center"
 								><a

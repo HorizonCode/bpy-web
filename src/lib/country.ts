@@ -245,6 +245,6 @@ const countryObject: { [key: string]: string } = {
 	XX: 'Unknown'
 };
 
-export function getCountryName(code: string | undefined) {
-	return code ? countryObject[code.toUpperCase()] : 'Unknown';
+export function getCountryName(code: string) {
+	return countryObject[code.toUpperCase()] ?? 'Unknown';
 }

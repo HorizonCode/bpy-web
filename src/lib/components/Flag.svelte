@@ -11,7 +11,7 @@
 	<Popup>
 		<span
 			class="flag-country"
-			style="--height: {size}px; background-image: url(/flags/{country.toUpperCase()}.png);"
+			style="--height: {size}px; background-image: url(/flags/{country?.toUpperCase() ?? "XX"}.png);"
 		></span>
 		<svelte:fragment slot="popup">
 			<div class="flex flex-col gap-2 card variant-filled-surface p-2 rounded-lg">
@@ -22,7 +22,7 @@
 {:else}
 	<span
 		class="flag-country"
-		style="--height: {size}px; background-image: url(/flags/{country.toUpperCase()}.png);"
+		style="--height: {size}px; background-image: url(/flags/{country?.toUpperCase() ?? "XX"}.png);"
 	></span>
 {/if}
 
