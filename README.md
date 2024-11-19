@@ -32,8 +32,9 @@ To get started with bpy-web, follow these steps:
 
    ```
    git clone https://github.com/HorizonCode/bpy-web.git
+   cd bpy-web
    ```
-
+   
 2. **Install bun:** Before we start with installing the dependencies you might not have bun installed yet. The official installer for bun should help:
 
    ```
@@ -43,7 +44,6 @@ To get started with bpy-web, follow these steps:
 3. **Install Dependencies:** Navigate into the project directory and install the necessary dependencies using bun:
 
    ```
-   cd bpy-web
    bun i
    ```
 
